@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — 2048 AI Castle Clash</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/projet.css"/>
+</head>
+<body>
+
+  <nav-bar root="../"></nav-bar>
+
+  <main>
+    <div class="section">
+
+      <!-- ══════ HERO ══════ -->
+      <div class="project-hero">
+        <return-project></return-project>
+        <div class="project-hero__category">Projet personnel</div>
+        <h1 class="project-hero__title">2048 AI — Castle Clash</h1>
+        <p class="project-hero__tagline">
+          Un bot qui joue automatiquement au mini-jeu 2048 de Castle Clash : il capture l'écran,
+          lit la grille via OCR, calcule le meilleur coup avec l'algorithme Expectimax
+          et envoie la touche correspondante au jeu.
+        </p>
+        <div class="project-hero__meta">
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Langage</span>
+            <span class="project-meta-item__value">Python</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Interface</span>
+            <span class="project-meta-item__value">Terminale</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Statut</span>
+            <span class="project-meta-item__value">Terminé</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <a class="project-github-link" href="https://github.com/mortdu1234/2048-AI.git" target="_blank" rel="noopener">
+            <svg class="project-github-link__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            Voir sur GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- ══════ CORPS ══════ -->
+      <div class="project-body">
+
+        <!-- ── Galerie carrousel ── -->
+        <section>
+          <h2 class="project-section__heading">Aperçu</h2>
+          <div class="project-carousel" id="gallery-carousel">
+            <button class="project-carousel__btn project-carousel__btn--prev" aria-label="Image précédente">&#8592;</button>
+            <div class="project-carousel__track-wrapper">
+              <div class="project-carousel__track" id="carousel-track">
+                <div class="project-carousel__slide">
+                  <img src="../img/2048-ai-main.png" alt="Aperçu du bot 2048 Castle Clash">
+                </div>
+              </div>
+            </div>
+            <button class="project-carousel__btn project-carousel__btn--next" aria-label="Image suivante">&#8594;</button>
+            <div class="project-carousel__dots" id="carousel-dots"></div>
+          </div>
+        </section>
+
+        <!-- Présentation -->
+        <section>
+          <h2 class="project-section__heading">Présentation</h2>
+          <div class="project-section__text">
+            <p>
+              Castle Clash intègre un mini-jeu 2048 dans lequel les tuiles représentent des niveaux de héros
+              (affichés sous la forme « Lv.X »). Le but est de fusionner ces tuiles pour atteindre la tuile
+              maximale, en effectuant jusqu'à 1000 mouvements sur une journée.
+            </p>
+            <p>
+              Le bot automatise entièrement cette tâche : à chaque tour, il prend une capture d'écran du jeu,
+              la lit avec <strong>EasyOCR</strong> pour reconstruire l'état de la grille 4×4, calcule le meilleur
+              coup grâce à l'algorithme <strong>Expectimax</strong>, puis simule la frappe clavier correspondante
+              via <strong>PyAutoGUI</strong>. Un délai aléatoire gaussien entre chaque action lui donne un comportement
+              plus naturel.
+            </p>
+          </div>
+        </section>
+
+        <!-- Fonctionnalités -->
+        <section>
+          <h2 class="project-section__heading">Fonctionnalités</h2>
+          <div class="project-features">
+            <div class="project-feature">
+              <div class="project-feature__title">Capture d'écran automatique</div>
+              <p class="project-feature__desc">Déclenche une capture dans Castle Clash via une touche simulée, puis récupère et renomme le fichier généré.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Lecture OCR de la grille</div>
+              <p class="project-feature__desc">Utilise EasyOCR pour détecter les textes « Lv.X » sur la capture, puis associe chaque valeur à sa case grâce aux coordonnées configurées.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Algorithme Expectimax</div>
+              <p class="project-feature__desc">Calcule le meilleur coup en explorant l'arbre de jeu avec une profondeur de 2, en modélisant les apparitions aléatoires de nouvelles tuiles (90 % de chances pour un 2, 10 % pour un 4).</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Simulation clavier</div>
+              <p class="project-feature__desc">Envoie la direction choisie (Z/Q/S/D) directement au jeu via PyAutoGUI, sans interaction manuelle.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Délai aléatoire</div>
+              <p class="project-feature__desc">Attend un temps variable entre chaque coup (distribution gaussienne autour de 90 ms ± 20 ms) pour simuler un comportement humain.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Affichage terminal</div>
+              <p class="project-feature__desc">Affiche la grille avant et après chaque coup côte à côte dans le terminal, avec l'action effectuée et le temps d'attente.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stack technique -->
+        <section>
+          <h2 class="project-section__heading">Stack technique</h2>
+          <div class="project-section__text">
+            <p>
+              Le projet est entièrement en Python. La lecture de la grille repose sur <strong>EasyOCR</strong>
+              pour la reconnaissance de texte sur les captures d'écran. La configuration de la zone de capture
+              et des coordonnées de chaque case est stockée dans un fichier <strong>JSON</strong> pour faciliter
+              l'adaptation à différentes résolutions. La prise de décision utilise l'algorithme
+              <strong>Expectimax</strong> avec une table de heuristiques précalculées pour chaque ligne possible
+              (65 536 entrées). Les actions sont envoyées au jeu via <strong>PyAutoGUI</strong>.
+            </p>
+          </div>
+          <div class="project-stack">
+            <span class="project-stack__tag">Python</span>
+            <span class="project-stack__tag">EasyOCR</span>
+            <span class="project-stack__tag">PyAutoGUI</span>
+            <span class="project-stack__tag">Expectimax</span>
+            <span class="project-stack__tag">JSON</span>
+          </div>
+        </section>
+
+        <!-- Démarche -->
+        <section>
+          <h2 class="project-section__heading">Démarche</h2>
+          <div class="project-steps">
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Lecture de la grille par OCR</div>
+                <p class="project-step__desc">
+                  La première difficulté était de lire l'état du jeu depuis une capture d'écran. Les tuiles
+                  dans Castle Clash affichent des textes du type « Lv.3 » plutôt que de simples chiffres.
+                  J'ai utilisé EasyOCR pour détecter ces textes, puis filtré uniquement ceux contenant « Lv »
+                  pour ignorer le reste de l'interface. Chaque valeur détectée est ensuite associée à la bonne
+                  case de la grille grâce aux coordonnées configurées manuellement dans <code>config.json</code>.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Configuration des coordonnées</div>
+                <p class="project-step__desc">
+                  Pour relier les positions détectées par OCR aux cases de la grille, j'ai développé un script
+                  <code>config.py</code> qui affiche les coordonnées de chaque élément détecté avec son numéro.
+                  Il suffit d'exécuter ce script une fois et de renseigner les coordonnées dans <code>config.json</code>
+                  pour calibrer le bot à sa propre résolution d'écran.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Algorithme Expectimax et heuristique</div>
+                <p class="project-step__desc">
+                  Pour la prise de décision, j'ai réutilisé et adapté l'implémentation Expectimax de
+                  <a href="https://github.com/cczhong11/2048-ai" target="_blank" rel="noopener">cczhong11</a>.
+                  L'algorithme explore les 4 directions possibles en profondeur 2, en modélisant les cases
+                  aléatoires comme une espérance (90 % tuile 2 / 10 % tuile 4). L'heuristique évalue chaque
+                  état via une table précalculée de 65 536 entrées qui prend en compte le nombre de cases vides,
+                  les fusions possibles et la monotonie des lignes.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Boucle principale et simulation des touches</div>
+                <p class="project-step__desc">
+                  Une fois le meilleur coup déterminé, PyAutoGUI envoie la touche correspondante (Z, Q, S ou D)
+                  directement au jeu. La boucle principale effectue jusqu'à 1000 mouvements, avec un délai
+                  aléatoire gaussien entre chaque action pour éviter une détection comme bot. La grille avant
+                  et après chaque coup est affichée dans le terminal pour suivre la progression.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Configuration -->
+        <section>
+          <h2 class="project-section__heading">Configuration</h2>
+          <div class="project-usage-steps">
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">01</span>
+              <p class="project-usage-step__text">Dans <code>config.json</code>, renseigner les coordonnées de la zone de capture sous la forme <strong>[x, y, largeur, hauteur]</strong>, le coin haut-gauche de l'écran étant [0, 0].</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">02</span>
+              <p class="project-usage-step__text">Exécuter <strong>config.py</strong> et choisir l'option <strong>1</strong> pour prendre une capture de référence et vérifier le cadrage.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">03</span>
+              <p class="project-usage-step__text">Exécuter <strong>config.py</strong> et choisir l'option <strong>2</strong> : les coordonnées de chaque case détectée s'affichent. Les renseigner dans <code>config.json</code> selon leur position dans la grille.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Utilisation -->
+        <section>
+          <h2 class="project-section__heading">Utilisation</h2>
+          <div class="project-usage-steps">
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">01</span>
+              <p class="project-usage-step__text">Ouvrir Castle Clash et naviguer jusqu'au mini-jeu 2048.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">02</span>
+              <p class="project-usage-step__text">Lancer <strong>main.py</strong>. Le bot démarre après 5 secondes et joue automatiquement jusqu'à 1000 coups.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Remerciements -->
+        <section>
+          <h2 class="project-section__heading">Remerciements</h2>
+          <p class="project-section__text" style="margin-bottom: 20px;">
+            Les fichiers <code>ExpectedMax.py</code> et <code>Game.py</code> sont issus du travail open source de cczhong11.
+          </p>
+          <div class="project-credits">
+            <a class="project-credit-item" href="https://github.com/cczhong11/2048-ai" target="_blank" rel="noopener">
+              <div class="project-credit-item__info">
+                <span class="project-credit-item__name">cczhong11 — 2048-ai</span>
+                <span class="project-credit-item__role">Implémentation de l'algorithme Expectimax et de la logique de jeu 2048</span>
+              </div>
+              <span class="project-credit-item__arrow">→</span>
+            </a>
+          </div>
+        </section>
+
+        <return-project></return-project>
+      </div>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+  <script src="../js/components.js"></script>
+
+  <script>
+    (function () {
+      const track         = document.getElementById('carousel-track');
+      const dotsContainer = document.getElementById('carousel-dots');
+      const slides        = Array.from(track.querySelectorAll('.project-carousel__slide'));
+      const total         = slides.length;
+      let current         = 0;
+
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'project-carousel__dot' + (i === 0 ? ' project-carousel__dot--active' : '');
+        dot.setAttribute('aria-label', `Aller à l'image ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dotsContainer.appendChild(dot);
+      });
+
+      function updateUI() {
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dotsContainer.querySelectorAll('.project-carousel__dot').forEach((d, i) => {
+          d.classList.toggle('project-carousel__dot--active', i === current);
+        });
+      }
+
+      function goTo(index) {
+        current = (index + total) % total;
+        updateUI();
+      }
+
+      document.querySelector('.project-carousel__btn--prev')
+        .addEventListener('click', () => goTo(current - 1));
+      document.querySelector('.project-carousel__btn--next')
+        .addEventListener('click', () => goTo(current + 1));
+
+      document.getElementById('gallery-carousel').addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft')  goTo(current - 1);
+        if (e.key === 'ArrowRight') goTo(current + 1);
+      });
+
+      let startX = 0;
+      track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchend',   e => {
+        const delta = startX - e.changedTouches[0].clientX;
+        if (Math.abs(delta) > 40) goTo(current + (delta > 0 ? 1 : -1));
+      });
+
+      updateUI();
+    })();
+  </script>
+
+</body>
+</html>
