@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — Serveur Minecraft</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/projet.css"/>
+</head>
+<body>
+
+  <nav-bar root="../"></nav-bar>
+
+  <main>
+    <div class="section">
+
+      <!-- ══════ HERO ══════ -->
+      <div class="project-hero">
+        <return-project></return-project>
+        <div class="project-hero__category">Infrastructure personnelle</div>
+        <h1 class="project-hero__title">Serveur Minecraft</h1>
+        <p class="project-hero__tagline">
+          Hébergement d'un serveur Minecraft sur ma propre infrastructure pour jouer avec mes amis,
+          avec exploration de plusieurs solutions pour le rendre accessible depuis l'extérieur.
+        </p>
+        <div class="project-hero__meta">
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Type</span>
+            <span class="project-meta-item__value">Vanilla · Forge</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Hébergement</span>
+            <span class="project-meta-item__value">Proxmox VM</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Statut</span>
+            <span class="project-meta-item__value">Terminé</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ CORPS ══════ -->
+      <div class="project-body">
+
+        <!-- Présentation -->
+        <section>
+          <h2 class="project-section__heading">Présentation</h2>
+          <div class="project-section__text">
+            <p>
+              Ce projet est une extension naturelle de mon
+              <a href="server.html" style="color: var(--gold); text-decoration: none;">serveur auto-hébergé</a>.
+              Disposant déjà d'une infrastructure Proxmox, j'ai voulu en profiter pour héberger un serveur
+              Minecraft et jouer avec mes amis sans dépendre d'un hébergeur tiers.
+            </p>
+            <p>
+              J'ai créé une <strong>machine virtuelle dédiée</strong> sous Proxmox, installé Java et les fichiers
+              du serveur Minecraft dessus. J'ai fait tourner deux types de serveurs selon les besoins : un serveur
+              <strong>Vanilla</strong> (officiel Mojang, sans modification) et un serveur <strong>Forge</strong>
+              pour jouer avec des mods. La principale difficulté a été de trouver un moyen simple et fiable
+              de rendre ce serveur accessible depuis l'extérieur du réseau local.
+            </p>
+          </div>
+        </section>
+
+        <!-- Démarche -->
+        <section>
+          <h2 class="project-section__heading">Démarche</h2>
+          <div class="project-steps">
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Création de la VM et installation du serveur</div>
+                <p class="project-step__desc">
+                  J'ai créé une machine virtuelle sous Proxmox, installé Java, puis déployé les fichiers
+                  du serveur Minecraft. Le serveur Vanilla a été mis en place en premier, puis un serveur
+                  Forge a été ajouté pour permettre de jouer avec des mods. Les deux instances tournaient
+                  sur la même VM, sur des ports différents.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Première tentative : Tailscale</div>
+                <p class="project-step__desc">
+                  <strong>Tailscale</strong> est un VPN mesh basé sur WireGuard qui crée un réseau privé
+                  entre plusieurs appareils via Internet, sans configuration de routeur. En théorie, mes amis
+                  auraient pu rejoindre le serveur comme s'ils étaient sur mon réseau local. En pratique,
+                  cela impliquait que chacun installe et configure Tailscale sur sa machine, ce qui s'est
+                  révélé trop contraignant pour une utilisation détendue entre amis.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Deuxième tentative : playit.gg</div>
+                <p class="project-step__desc">
+                  <strong>playit.gg</strong> est un service de tunnel qui expose un serveur local sur
+                  Internet via une adresse publique fournie par playit, sans avoir besoin de toucher
+                  au routeur ni d'ouvrir de port. Côté client, aucune installation n'est requise : une
+                  simple adresse IP suffit pour se connecter. C'était bien plus simple pour mes amis,
+                  mais la version gratuite imposait des limitations (nombre de tunnels, bande passante)
+                  qui ont fini par freiner l'usage au quotidien.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Bilan</div>
+                <p class="project-step__desc">
+                  Ce projet m'a permis d'explorer différentes approches pour exposer un service réseau
+                  sur Internet : VPN mesh, tunnel applicatif, et ouverture de port classique. Aucune
+                  solution ne s'est avérée entièrement satisfaisante dans ce contexte, et le serveur
+                  n'est plus actif aujourd'hui. L'expérience reste utile : ces mêmes problématiques
+                  d'exposition réseau se retrouvent dans tous mes projets d'auto-hébergement.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Stack technique -->
+        <section>
+          <h2 class="project-section__heading">Stack technique</h2>
+          <div class="project-section__text">
+            <p>
+              Le serveur tourne dans une <strong>machine virtuelle Linux</strong> sous Proxmox avec
+              <strong>Java</strong> comme seule dépendance. Deux types de serveurs ont été déployés :
+              le serveur <strong>Vanilla</strong> officiel de Mojang, et un serveur <strong>Forge</strong>
+              pour la gestion des mods. L'accès externe a été tenté via <strong>Tailscale</strong>
+              puis <strong>playit.gg</strong>.
+            </p>
+          </div>
+          <div class="project-stack">
+            <span class="project-stack__tag">Java</span>
+            <span class="project-stack__tag">Minecraft Vanilla</span>
+            <span class="project-stack__tag">Forge</span>
+            <span class="project-stack__tag">NeoForge</span>
+            <span class="project-stack__tag">Proxmox VM</span>
+            <span class="project-stack__tag">Tailscale</span>
+            <span class="project-stack__tag">playit.gg</span>
+          </div>
+        </section>
+
+        <return-project></return-project>
+      </div>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+  <script src="../js/components.js"></script>
+
+</body>
+</html>
