@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — Génération de Nombres Aléatoires</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/projet.css"/>
+  <script src="../js/components.js"></script>
+</head>
+<body>
+
+  <nav-bar root="../"></nav-bar>
+
+  <main>
+    <div class="section">
+
+      <!-- ══════ HERO ══════ -->
+      <div class="project-hero">
+        <return-project></return-project>
+        <div class="project-hero__category">Projet académique</div>
+        <h1 class="project-hero__title">Génération de Nombres Aléatoires</h1>
+        <p class="project-hero__tagline">
+          Implémentation et analyse de plusieurs algorithmes de génération de nombres pseudo-aléatoires,
+          accompagnée de tests statistiques et d'attaques pédagogiques sur des générateurs vulnérables.
+        </p>
+        <div class="project-hero__meta">
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Langage</span>
+            <span class="project-meta-item__value">Python</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Contexte</span>
+            <span class="project-meta-item__value">Projet de cours</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Statut</span>
+            <span class="project-meta-item__value">Terminé</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <a class="project-github-link" href="https://github.com/mortdu1234/Generation_de_nombres_aleatoires.git" target="_blank" rel="noopener">
+            <svg class="project-github-link__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            Voir sur GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- ══════ CORPS ══════ -->
+      <div class="project-body">
+
+        <!-- Présentation -->
+        <section>
+          <h2 class="project-section__heading">Présentation</h2>
+          <div class="project-section__text">
+            <p>
+              Le hasard et la capacité à produire des nombres aléatoires sont au cœur des protocoles de sécurité
+              informatique. Les nombres aléatoires servent à générer des clés secrètes, des nonces, des vecteurs
+              d'initialisation ou des jetons CSRF. Une génération non sécurisée permettrait à un attaquant
+              d'inférer ou de prédire des clés ultérieures, compromettant ainsi la sécurité du système.
+            </p>
+            <p>
+              Ce projet académique réalisé à l'ENSIBS propose l'implémentation en Python de plusieurs
+              méthodes de génération de nombres pseudo-aléatoires (PRNG), leur évaluation statistique,
+              ainsi que deux attaques pédagogiques démontrant la vulnérabilité de certains générateurs.
+              Il est à but pédagogique — les attaques réalisées sont interdites sur des systèmes réels.
+            </p>
+          </div>
+        </section>
+
+        <!-- Générateurs implémentés -->
+        <section>
+          <h2 class="project-section__heading">Générateurs implémentés</h2>
+          <div class="project-features">
+            <div class="project-feature">
+              <div class="project-feature__title">Linear Congruential Generator</div>
+              <p class="project-feature__desc">PRNG simple basé sur la récurrence <em>Xₙ₊₁ = (aXₙ + c) mod m</em>. Rapide mais facilement attaquable et statistiquement faible.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Mersenne Twister (MT19937)</div>
+              <p class="project-feature__desc">Générateur à période de 2<sup>19937</sup>−1 avec d'excellentes propriétés statistiques. Inadapté à la cryptographie car son état interne est reconstructible.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Blum–Blum–Shub (BBS)</div>
+              <p class="project-feature__desc">CSPRNG fondé sur la difficulté de factorisation de grands entiers. Repose sur la suite <em>Xₙ₊₁ = Xₙ² mod M</em> avec p, q premiers ≡ 3 mod 4.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Hash-DRBG (NIST SP 800-90A)</div>
+              <p class="project-feature__desc">Générateur déterministe cryptographiquement sûr basé sur SHA-256, conforme aux standards NIST. État interne mis à jour à chaque génération.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Transformée de Box–Muller</div>
+              <p class="project-feature__desc">Convertit deux variables uniformes indépendantes en une paire de variables suivant une loi normale centrée réduite N(0,1).</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Construction XOR NRBG</div>
+              <p class="project-feature__desc">Combine trois sources d'entropie (os.urandom, MT19937, BBS) via XOR bit-à-bit. La sécurité est assurée tant qu'au moins une source reste intègre.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stack technique -->
+        <section>
+          <h2 class="project-section__heading">Stack technique</h2>
+          <div class="project-section__text">
+            <p>
+              Le projet est entièrement développé en Python, sans bibliothèques tierces pour les algorithmes de génération
+              eux-mêmes — chaque générateur est implémenté de zéro à des fins pédagogiques. Seuls les tests statistiques
+              font appel à <strong>SciPy</strong> pour le calcul de la valeur critique du Chi². La bibliothèque standard
+              <strong>hashlib</strong> est utilisée pour SHA-256 dans le Hash-DRBG, et <strong>os</strong> fournit
+              l'entropie système pour le générateur NRBG.
+            </p>
+          </div>
+          <div class="project-stack">
+            <span class="project-stack__tag">Python 3.8+</span>
+            <span class="project-stack__tag">hashlib (SHA-256)</span>
+            <span class="project-stack__tag">SciPy</span>
+            <span class="project-stack__tag">os.urandom</span>
+            <span class="project-stack__tag">math</span>
+            <span class="project-stack__tag">functools</span>
+          </div>
+        </section>
+
+        <!-- Tests statistiques -->
+        <section>
+          <h2 class="project-section__heading">Méthodologie des tests statistiques</h2>
+          <div class="project-section__text">
+            <p>
+              Quatre tests statistiques ont été implémentés pour évaluer la qualité de chaque générateur. Toutes les
+              données sont d'abord normalisées entre 0 et 1, puis converties en octets (0–255) pour les tests d'uniformité.
+            </p>
+          </div>
+          <div class="project-steps" style="margin-top: 28px;">
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Entropie de Shannon</div>
+                <p class="project-step__desc">Mesure la diversité de distribution des octets via <em>H = −Σ pᵢ·ln(pᵢ)</em>. Un ratio supérieur à 0.99 indique une distribution très uniforme (valeur idéale : 8 bits/octet).</p>
+              </div>
+            </div>
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Test du Chi² (χ²)</div>
+                <p class="project-step__desc">Compare la fréquence observée de chaque octet à la fréquence théorique uniforme. On rejette H₀ (distribution uniforme) si χ²calculé > χ²théorique à 255 degrés de liberté.</p>
+              </div>
+            </div>
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Autocorrélation (lags 1, 2, 8, 16)</div>
+                <p class="project-step__desc">Détecte les motifs cycliques et la prédictibilité via la formule ρ(lag). Une corrélation est signalée lorsque |ρ| dépasse l'intervalle de confiance à 95% (1.96/√n).</p>
+              </div>
+            </div>
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Test de Kolmogorov-Smirnov</div>
+                <p class="project-step__desc">Compare la distribution empirique cumulée à la loi uniforme théorique. La distance maximale D est comparée à la valeur critique 1.36/√n pour α = 5%.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Résultats -->
+        <section>
+          <h2 class="project-section__heading">Résultats des tests</h2>
+          <div class="project-section__text" style="margin-bottom: 20px;">
+            <p>Tests effectués sur 10 000 valeurs générées par chaque algorithme. Les résultats montrent clairement la hiérarchie entre générateurs non sécurisés, statistiquement performants, et cryptographiquement sûrs.</p>
+          </div>
+          <div class="results-table-wrapper">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Algorithme</th>
+                  <th>Shannon</th>
+                  <th>Chi²</th>
+                  <th>Corrélation</th>
+                  <th>Kolmogorov-Smirnov</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong style="color:var(--accent)">Mersenne Twister</strong></td>
+                  <td><span class="badge badge--good">Excellent</span></td>
+                  <td><span class="badge badge--good">Uniforme</span></td>
+                  <td><span class="badge badge--good">Aucune</span></td>
+                  <td><span class="badge badge--good">Uniforme</span></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--accent)">BBS</strong></td>
+                  <td><span class="badge badge--good">Excellent</span></td>
+                  <td><span class="badge badge--good">Uniforme</span></td>
+                  <td><span class="badge badge--good">Aucune</span></td>
+                  <td><span class="badge badge--good">Uniforme</span></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--accent)">Générateur système</strong></td>
+                  <td><span class="badge badge--good">Excellent</span></td>
+                  <td><span class="badge badge--good">Uniforme</span></td>
+                  <td><span class="badge badge--good">Aucune</span></td>
+                  <td><span class="badge badge--good">Uniforme</span></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--accent)">Hash DRBG</strong></td>
+                  <td><span class="badge badge--good">Excellent</span></td>
+                  <td><span class="badge badge--good">Uniforme</span></td>
+                  <td><span class="badge badge--good">Aucune</span></td>
+                  <td><span class="badge badge--good">Uniforme</span></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--accent)">Box–Muller</strong></td>
+                  <td><span class="badge badge--warn">Bon</span></td>
+                  <td><span class="badge badge--bad">Non uniforme</span></td>
+                  <td><span class="badge badge--warn">lag-1 seul</span></td>
+                  <td><span class="badge badge--bad">Non uniforme</span></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--accent)">LCG</strong></td>
+                  <td><span class="badge badge--bad">Faible</span></td>
+                  <td><span class="badge badge--bad">Non uniforme</span></td>
+                  <td><span class="badge badge--bad">Tous les lags</span></td>
+                  <td><span class="badge badge--bad">Non uniforme</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Attaques -->
+        <section>
+          <h2 class="project-section__heading">Attaques cryptographiques</h2>
+          <div class="project-section__text" style="margin-bottom: 24px;">
+            <p>Deux attaques pédagogiques ont été implémentées pour démontrer la vulnérabilité des PRNG non sécurisés face à un attaquant passif observant les sorties.</p>
+          </div>
+          <div class="attacks-grid">
+            <div class="attack-card">
+              <div class="attack-card__label">Attaque 01</div>
+              <div class="attack-card__title">Récupération de graine LCG</div>
+              <p class="attack-card__desc">
+                En observant des sorties consécutives, on remonte la suite par inversion modulaire
+                (<em>Xₙ = (Xₙ₊₁ − c) · a⁻¹ mod m</em>). Le cas 2, sans paramètres connus,
+                retrouve m via PGCD de différences, puis a et c par substitution.
+                Résultat : graine 339 retrouvée à 100% avec seulement 8 sorties.
+              </p>
+              <span class="attack-card__tag">Inversion modulaire</span>
+              <span class="attack-card__tag">PGCD</span>
+              <span class="attack-card__tag">Known-plaintext</span>
+            </div>
+            <div class="attack-card">
+              <div class="attack-card__label">Attaque 02</div>
+              <div class="attack-card__title">Reconstruction d'état MT19937</div>
+              <p class="attack-card__desc">
+                Le tempering de Mersenne Twister étant entièrement réversible par XOR, 624 sorties
+                consécutives suffisent à reconstruire l'intégralité de l'état interne. La fonction
+                <code>untemper()</code> inverse les 4 opérations de tempering bit par bit.
+                Toutes les sorties futures deviennent alors prédictibles.
+              </p>
+              <span class="attack-card__tag">Untemper</span>
+              <span class="attack-card__tag">624 sorties</span>
+              <span class="attack-card__tag">State recovery</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Démarche -->
+        <section>
+          <h2 class="project-section__heading">Démarche du projet</h2>
+          <div class="project-steps">
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Implémentation des générateurs</div>
+                <p class="project-step__desc">Chaque algorithme a été implémenté from scratch en Python, en suivant les spécifications mathématiques : récurrence LCG, norme MT19937 32 bits, congruences BBS, standard NIST SP 800-90A pour Hash-DRBG et coordonnées polaires pour Box-Muller.</p>
+              </div>
+            </div>
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Mise en place des tests statistiques</div>
+                <p class="project-step__desc">Suite de quatre tests (Shannon, Chi², autocorrélation, Kolmogorov-Smirnov) implémentée sur mesure. Une pipeline de normalisation et conversion en octets permet d'appliquer les mêmes tests à tous les générateurs de manière uniforme.</p>
+              </div>
+            </div>
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Développement des attaques</div>
+                <p class="project-step__desc">Les deux attaques pédagogiques ont été conçues avec rigueur : modèle de menace, hypothèses, algorithme, conditions de succès et métriques de résultat documentées. Les assertions Python valident automatiquement le succès de chaque attaque.</p>
+              </div>
+            </div>
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Analyse comparative et rapport</div>
+                <p class="project-step__desc">Les résultats ont été consignés dans un tableau comparatif généré automatiquement par le script de tests. Le rapport de 42 pages documente l'ensemble des algorithmes, méthodologies, résultats et recommandations pratiques.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Utilisation -->
+        <section>
+          <h2 class="project-section__heading">Utilisation</h2>
+          <div class="project-usage-steps">
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">01</span>
+              <p class="project-usage-step__text">Cloner le dépôt et installer la dépendance : <strong>pip install scipy</strong></p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">02</span>
+              <p class="project-usage-step__text">Lancer les tests statistiques avec <strong>python testsStatistiques.py</strong> — génère automatiquement le fichier <strong>resultat.txt</strong> avec le tableau comparatif.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">03</span>
+              <p class="project-usage-step__text">Démontrer l'attaque sur LCG avec <strong>python LCG_attack.py</strong> — les deux cas (paramètres connus et inconnus) s'exécutent et affichent la graine retrouvée.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">04</span>
+              <p class="project-usage-step__text">Démontrer la reconstruction d'état MT19937 avec <strong>python Attaque_MT.py</strong> — les assertions valident automatiquement la reconstitution des 624 états internes.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">05</span>
+              <p class="project-usage-step__text">Importer individuellement n'importe quel générateur dans ses propres scripts : <strong>from Mersenne_twister import MersenneTwister</strong>, <strong>from BBS import BBS</strong>, etc.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Discussion -->
+        <section>
+          <h2 class="project-section__heading">Discussion &amp; recommandations</h2>
+          <div class="project-section__text">
+            <p>
+              Les résultats montrent que les propriétés statistiques d'un générateur ne garantissent pas sa sécurité
+              cryptographique. Mersenne Twister présente des résultats statistiques parfaits mais est totalement
+              cassable avec 624 sorties. À l'inverse, LCG échoue à la fois aux tests statistiques et aux attaques.
+            </p>
+            <p>
+              Pour les applications de sécurité, seuls Hash-DRBG, BBS ou le générateur système doivent être utilisés.
+              Pour des simulations scientifiques ou du jeu, Mersenne Twister reste un excellent choix.
+              Box-Muller est adapté uniquement lorsqu'une distribution gaussienne est requise.
+              LCG ne devrait jamais être utilisé hors cadre pédagogique.
+            </p>
+          </div>
+        </section>
+        
+        <return-project></return-project>
+    </div><!-- /.project-body -->
+
+    </div><!-- /.section -->
+    
+  </main>
+
+  <footer>
+    <span class="brand">Denis ROBERT</span>
+    <span>Projet pédagogique — ENSIBS ICE · Les attaques sont interdites sur des systèmes réels</span>
+  </footer>
+
+</body>
+</html>
