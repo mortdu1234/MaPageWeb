@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — Serveur auto-hébergé</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/projet.css"/>
+</head>
+<body>
+
+  <nav-bar root="../"></nav-bar>
+
+  <main>
+    <div class="section">
+
+      <!-- ══════ HERO ══════ -->
+      <div class="project-hero">
+        <return-project></return-project>
+        <div class="project-hero__category">Infrastructure personnelle</div>
+        <h1 class="project-hero__title">Serveur auto-hébergé</h1>
+        <p class="project-hero__tagline">
+          Mise en place d'un serveur maison sous Proxmox à partir d'un vieux PC de bureau,
+          point de départ de toute mon infrastructure personnelle.
+        </p>
+        <div class="project-hero__meta">
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Hyperviseur</span>
+            <span class="project-meta-item__value">Proxmox</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Matériel</span>
+            <span class="project-meta-item__value">PC de bureau</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Disponibilité</span>
+            <span class="project-meta-item__value">24h/24</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Statut</span>
+            <span class="project-meta-item__value">Terminé</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ CORPS ══════ -->
+      <div class="project-body">
+
+        <!-- Présentation -->
+        <section>
+          <h2 class="project-section__heading">Présentation</h2>
+          <div class="project-section__text">
+            <p>
+              Tout a commencé lors d'un cours où j'ai effectué ma première installation de Proxmox.
+              Cette découverte m'a immédiatement donné envie d'aller plus loin : j'avais plein d'idées
+              de services à héberger moi-même, et un vieux PC de bureau inutilisé était là pour ça.
+            </p>
+            <p>
+              J'ai installé <strong>Proxmox</strong> sur cette machine et appris à m'en servir : créer
+              et gérer des machines virtuelles et des conteneurs LXC, accéder à l'infrastructure via
+              <strong>SSH</strong> et l'interface web, configurer des <strong>IP fixes</strong> pour
+              chaque service, et gérer mon réseau local. Le serveur tourne désormais en continu 24h/24
+              et héberge plusieurs services que j'utilise au quotidien.
+            </p>
+          </div>
+        </section>
+
+        <!-- Services hébergés -->
+        <section>
+          <h2 class="project-section__heading">Services hébergés</h2>
+          <div class="project-features">
+            <div class="project-feature">
+              <div class="project-feature__title">Serveur web — nginx</div>
+              <p class="project-feature__desc">Mon site portfolio est hébergé sur ce serveur, servi par nginx depuis un dépôt GitHub synchronisé automatiquement.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">VPN WireGuard</div>
+              <p class="project-feature__desc">Un conteneur LXC dédié fait tourner WireGuard pour accéder à mon réseau local depuis n'importe où en toute sécurité.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Serveur Minecraft</div>
+              <p class="project-feature__desc">Une VM dédiée héberge un serveur Minecraft Vanilla et Forge pour jouer avec des amis.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Et d'autres à venir</div>
+              <p class="project-feature__desc">L'infrastructure est conçue pour grandir : de nouveaux services seront ajoutés au fil des projets.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Ce que j'ai appris -->
+        <section>
+          <h2 class="project-section__heading">Compétences acquises</h2>
+          <div class="project-section__text">
+            <p>
+              Ce projet a été avant tout un terrain d'apprentissage. Partir d'un PC inutilisé pour
+              arriver à une infrastructure qui tourne 24h/24 m'a demandé de monter en compétences
+              sur plusieurs aspects à la fois.
+            </p>
+          </div>
+          <div class="project-stack">
+            <span class="project-stack__tag">Proxmox</span>
+            <span class="project-stack__tag">SSH</span>
+            <span class="project-stack__tag">VMs &amp; LXC</span>
+            <span class="project-stack__tag">IP fixes</span>
+            <span class="project-stack__tag">Linux</span>
+            <span class="project-stack__tag">Réseau local</span>
+          </div>
+        </section>
+
+        <!-- Démarche -->
+        <section>
+          <h2 class="project-section__heading">Démarche</h2>
+          <div class="project-steps">
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Installation de Proxmox</div>
+                <p class="project-step__desc">
+                  Après avoir découvert Proxmox en cours, j'ai installé l'hyperviseur sur un vieux PC
+                  de bureau. Proxmox permet de faire cohabiter plusieurs machines virtuelles et conteneurs
+                  sur une seule machine physique, et de tout gérer depuis une interface web. C'est ce qui
+                  en fait un outil idéal pour un homelab.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Prise en main de SSH et de l'interface web</div>
+                <p class="project-step__desc">
+                  J'ai appris à administrer le serveur à distance via <strong>SSH</strong> pour exécuter
+                  des commandes sur les VMs et conteneurs, et via l'<strong>interface web Proxmox</strong>
+                  pour gérer l'infrastructure dans son ensemble — créer des VMs, suivre les ressources,
+                  configurer le réseau.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Gestion du réseau et IP fixes</div>
+                <p class="project-step__desc">
+                  Pour que chaque service soit joignable de façon stable, j'ai configuré des
+                  <strong>adresses IP fixes</strong> pour chaque VM et conteneur LXC. Cela m'a permis
+                  de comprendre les bases de la gestion réseau : adressage, passerelle, et configuration
+                  des interfaces réseau sous Linux.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Déploiement des premiers services</div>
+                <p class="project-step__desc">
+                  Une fois l'infrastructure en place, j'ai déployé mes premiers services : un serveur web
+                  nginx, un VPN WireGuard dans un conteneur LXC, et un serveur Minecraft dans une VM dédiée.
+                  Chaque projet m'a amené à approfondir mes connaissances et à résoudre de nouveaux problèmes
+                  réseau et système.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <return-project></return-project>
+      </div>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+  <script src="../js/components.js"></script>
+
+</body>
+</html>
