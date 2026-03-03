@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — Splendor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/projet.css"/>
+  <script src="../js/components.js"></script>
+<style>
+
+    :root {
+      --bg: #f5f2ee;
+      --surface: #ffffff;
+      --text: #1a1714;
+      --muted: #7a7168;
+      --accent: #3b3028;
+      --gold: #b89a6a;
+      --line: #e0d9d0;
+      --nav-h: 72px;
+
+      /* gemme colors */
+      --diamond:  #e8e4df;
+      --sapphire: #4a7fb5;
+      --emerald:  #3d9a5c;
+      --ruby:     #c04a4a;
+      --onyx:     #2e2e2e;
+    }
+
+
+    /* ── GEMMES ── */
+    .gem {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.78rem; font-weight: 500; padding: 3px 10px 3px 8px;
+      border-radius: 2px; white-space: nowrap;
+    }
+    .gem__dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .gem--diamond { background: #f2f0ed; color: #5a5450; border: 1px solid #d0cac2; }
+    .gem--diamond .gem__dot { background: #c5bdb2; border: 1px solid #aaa49c; }
+    .gem--sapphire { background: #dde9f5; color: #2d5a87; border: 1px solid #a8c5e0; }
+    .gem--sapphire .gem__dot { background: var(--sapphire); }
+    .gem--emerald  { background: #d8f0e3; color: #1f6b3a; border: 1px solid #8ecfaa; }
+    .gem--emerald  .gem__dot { background: var(--emerald); }
+    .gem--ruby     { background: #f5dada; color: #8a2020; border: 1px solid #d89090; }
+    .gem--ruby     .gem__dot { background: var(--ruby); }
+    .gem--onyx     { background: #e0dedd; color: #3b3028; border: 1px solid #b8b0a8; }
+    .gem--onyx     .gem__dot { background: #555; }
+
+    /* ── STATS GLOBALES ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px; margin-top: 4px;
+    }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--line); padding: 20px 18px;
+      text-align: center;
+    }
+    .stat-card__value {
+      font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600;
+      color: var(--accent); line-height: 1;
+    }
+    .stat-card__label {
+      font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-top: 6px;
+    }
+
+    /* ── TIER SECTIONS ── */
+    .tier-section { margin-top: 4px; }
+    .tier-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 16px;
+    }
+    .tier-badge {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 4px 14px;
+      border: 1px solid var(--line); color: var(--muted); background: var(--surface);
+    }
+    .tier-badge--1 { border-color: var(--gold); color: var(--gold); background: color-mix(in srgb, var(--gold) 8%, transparent); }
+    .tier-badge--2 { border-color: #888; color: #555; background: color-mix(in srgb, #888 8%, transparent); }
+    .tier-badge--3 { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+    .tier-desc { font-size: 0.8rem; color: var(--muted); }
+
+    .cards-table-wrapper { overflow-x: auto; }
+    .cards-table {
+      width: 100%; border-collapse: collapse; font-size: 0.78rem;
+      background: var(--surface); border: 1px solid var(--line);
+    }
+    .cards-table th {
+      background: var(--accent); color: #fff; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; font-size: 0.62rem; padding: 9px 12px; text-align: left;
+      border-bottom: 2px solid var(--gold);
+    }
+    .cards-table th.gem-col { text-align: center; }
+    .cards-table td { padding: 9px 12px; border-bottom: 1px solid var(--line); color: var(--muted); vertical-align: middle; }
+    .cards-table tr:last-child td { border-bottom: none; }
+    .cards-table tr:hover td { background: color-mix(in srgb, var(--gold) 4%, transparent); }
+    .cards-table td.gem-col { text-align: center; }
+
+    .gem-cost {
+      display: inline-block; width: 28px; height: 28px; line-height: 28px;
+      text-align: center; border-radius: 50%; font-weight: 600; font-size: 0.8rem;
+      border: 1px solid transparent;
+    }
+    .gem-cost--zero { opacity: 0.2; color: var(--muted); }
+    .gem-cost--diamond { background: #eceae6; color: #5a5450; border-color: #ccc6be; }
+    .gem-cost--sapphire { background: #dde9f5; color: #2d5a87; border-color: #a8c5e0; }
+    .gem-cost--emerald  { background: #d8f0e3; color: #1f6b3a; border-color: #8ecfaa; }
+    .gem-cost--ruby     { background: #f5dada; color: #8a2020; border-color: #d89090; }
+    .gem-cost--onyx     { background: #e0dedd; color: #3b3028; border-color: #b0a898; }
+
+    .pts-badge {
+      display: inline-block; width: 26px; height: 26px; line-height: 26px;
+      text-align: center; border-radius: 50%;
+      font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600;
+      background: color-mix(in srgb, var(--gold) 15%, transparent);
+      color: var(--gold); border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+    }
+    .pts-badge--zero { opacity: 0.25; background: transparent; border-color: var(--line); color: var(--muted); }
+
+    .type-gem {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%; font-size: 0.6rem; font-weight: 600;
+      border: 1px solid transparent; flex-shrink: 0;
+    }
+    .type-gem--DIAMOND  { background: #eceae6; color: #5a5450; border-color: #ccc6be; }
+    .type-gem--SAPPHIRE { background: #dde9f5; color: #2d5a87; border-color: #a8c5e0; }
+    .type-gem--EMERALD  { background: #d8f0e3; color: #1f6b3a; border-color: #8ecfaa; }
+    .type-gem--RUBY     { background: #f5dada; color: #8a2020; border-color: #d89090; }
+    .type-gem--ONYX     { background: #e0dedd; color: #3b3028; border-color: #b0a898; }
+
+
+  </style>
+</head>
+<body>
+
+  
+  <nav-bar root="../"></nav-bar>
+
+  <main>
+    <div class="section">
+
+      <!-- ══════ HERO ══════ -->
+      <div class="project-hero">
+        <return-project></return-project>
+        <div class="project-hero__category">Projet académique — Jeu de société</div>
+        <h1 class="project-hero__title">Splendor</h1>
+        <p class="project-hero__tagline">
+          Implémentation numérique du jeu de plateau Splendor — gestion de gemmes, cartes de développement
+          et nobles, moteur de règles complet avec IA et interface jouable.
+        </p>
+        <div class="project-hero__meta">
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Langage</span>
+            <span class="project-meta-item__value">Java</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Contexte</span>
+            <span class="project-meta-item__value">Projet de cours</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Statut</span>
+            <span class="project-meta-item__value">Terminé</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <a class="project-github-link" href="#" target="_blank" rel="noopener" aria-label="Voir sur GitHub">
+            <svg class="project-github-link__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            Voir sur GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- ══════ CORPS ══════ -->
+      <div class="project-body">
+
+        <!-- Présentation -->
+        <section>
+          <h2 class="project-section__heading">Présentation</h2>
+          <div class="project-section__text">
+            <p>
+              Splendor est un jeu de plateau de commerce et de stratégie pour 2 à 4 joueurs. Chaque joueur
+              incarne un marchand de la Renaissance qui collecte des jetons-gemmes pour acquérir des mines,
+              des modes de transport et des artisans — représentés par des cartes de développement réparties
+              sur trois niveaux de difficulté. L'objectif est d'atteindre 15 points de prestige avant les adversaires.
+            </p>
+            <p>
+              Ce projet consiste en une implémentation complète du jeu en Java : modélisation des règles,
+              gestion du plateau et des decks, logique de tour, système des nobles visiteurs,
+              et une ou plusieurs stratégies d'IA jouable contre des humains.
+            </p>
+          </div>
+        </section>
+
+        <!-- Règles du jeu -->
+        <section>
+          <h2 class="project-section__heading">Mécaniques de jeu</h2>
+          <div class="project-features">
+            <div class="project-feature">
+              <div class="project-feature__title">Jetons-gemmes</div>
+              <p class="project-feature__desc">5 types de gemmes colorées (Diamant, Saphir, Émeraude, Rubis, Onyx) + l'Or joker. Les joueurs en prennent 2 identiques ou 3 différentes par tour.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Cartes de développement</div>
+              <p class="project-feature__desc">90 cartes réparties en 3 niveaux. Chaque carte a un coût en gemmes, produit une gemme permanente et rapporte 0 à 5 points de prestige.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Nobles visiteurs</div>
+              <p class="project-feature__desc">10 tuiles nobles (3 en jeu). Elles accordent 3 points automatiquement au joueur qui atteint le seuil requis de gemmes permanentes.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Réservation de carte</div>
+              <p class="project-feature__desc">Un joueur peut réserver une carte face visible ou le sommet d'un deck pour se l'approprier plus tard, en recevant un jeton Or en contrepartie.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Condition de victoire</div>
+              <p class="project-feature__desc">Le premier joueur à atteindre 15 points de prestige déclenche le dernier tour. La partie se termine après que tous les joueurs ont joué autant de tours.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Stratégie & équilibre</div>
+              <p class="project-feature__desc">Choix entre accumulation de gemmes, chaîne de réductions ou course aux points directs. Anticipation des achats adverses et compétition pour les nobles.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stack technique -->
+        <section>
+          <h2 class="project-section__heading">Stack technique</h2>
+          <div class="project-section__text">
+            <p>
+              Le projet est développé en Java avec une architecture orientée objet rigoureuse : pattern MVC
+              pour séparer la logique de jeu de l'affichage, pattern Strategy pour les différents modes d'IA,
+              et sérialisation JSON pour la persistance des données de cartes issues du fichier <code>stats.csv</code>.
+            </p>
+          </div>
+          <div class="project-stack">
+            <span class="project-stack__tag">Java 17</span>
+            <span class="project-stack__tag">MVC</span>
+            <span class="project-stack__tag">Pattern Strategy (IA)</span>
+            <span class="project-stack__tag">JUnit 5</span>
+            <span class="project-stack__tag">CSV parsing</span>
+            <span class="project-stack__tag">Swing / CLI</span>
+          </div>
+        </section>
+
+        <!-- Stats globales du jeu -->
+        <section>
+          <h2 class="project-section__heading">Le deck — 90 cartes</h2>
+          <div class="project-section__text" style="margin-bottom: 24px;">
+            <p>
+              Les 90 cartes de développement sont réparties équitablement entre les 3 niveaux de difficulté,
+              chacune produisant l'un des 5 types de gemmes. Les coûts et points de prestige croissent
+              avec le niveau, créant une courbe de progression naturelle vers la victoire.
+            </p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-card__value">90</div>
+              <div class="stat-card__label">Cartes totales</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__value">3</div>
+              <div class="stat-card__label">Niveaux</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__value">5</div>
+              <div class="stat-card__label">Types de gemmes</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__value">15</div>
+              <div class="stat-card__label">Points pour gagner</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__value">10</div>
+              <div class="stat-card__label">Tuiles nobles</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__value">4</div>
+              <div class="stat-card__label">Joueurs max</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Distribution par gemme produite -->
+        <section>
+          <h2 class="project-section__heading">Répartition par gemme produite</h2>
+          <div class="project-section__text" style="margin-bottom: 24px;">
+            <p>
+              Chaque carte de développement produit une gemme permanente qui sert de réduction pour les achats futurs.
+              La répartition est équilibrée entre les 5 couleurs, avec 18 cartes par type sur les 90 du deck.
+            </p>
+          </div>
+          <div class="dist-chart">
+            <div class="dist-row">
+              <div class="dist-label">Diamant</div>
+              <div class="dist-bar-wrap">
+                <div class="dist-bar dist-bar--diamond" style="width:100%"><span>18 cartes</span></div>
+              </div>
+            </div>
+            <div class="dist-row">
+              <div class="dist-label">Saphir</div>
+              <div class="dist-bar-wrap">
+                <div class="dist-bar dist-bar--sapphire" style="width:100%"><span>18 cartes</span></div>
+              </div>
+            </div>
+            <div class="dist-row">
+              <div class="dist-label">Émeraude</div>
+              <div class="dist-bar-wrap">
+                <div class="dist-bar dist-bar--emerald" style="width:100%"><span>18 cartes</span></div>
+              </div>
+            </div>
+            <div class="dist-row">
+              <div class="dist-label">Rubis</div>
+              <div class="dist-bar-wrap">
+                <div class="dist-bar dist-bar--ruby" style="width:100%"><span>18 cartes</span></div>
+              </div>
+            </div>
+            <div class="dist-row">
+              <div class="dist-label">Onyx</div>
+              <div class="dist-bar-wrap">
+                <div class="dist-bar dist-bar--onyx" style="width:100%"><span>18 cartes</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Cartes Niveau 1 -->
+        <section>
+          <h2 class="project-section__heading">Cartes de développement</h2>
+          <div class="project-section__text" style="margin-bottom: 28px;">
+            <p>
+              Aperçu d'un échantillon de cartes par niveau. Chaque carte affiche son type (gemme produite),
+              son coût en gemmes, et ses points de prestige. Les coûts nuls sont estompés pour faciliter la lecture.
+            </p>
+          </div>
+
+          <!-- Tier 1 -->
+          <div class="tier-section" style="margin-bottom: 32px;">
+            <div class="tier-header">
+              <span class="tier-badge tier-badge--1">Niveau I</span>
+              <span class="tier-desc">40 cartes — coûts modérés, peu ou pas de points</span>
+            </div>
+            <div class="cards-table-wrapper">
+              <table class="cards-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th class="gem-col">♦ Diamon.</th>
+                    <th class="gem-col">◆ Saphir</th>
+                    <th class="gem-col">◆ Émer.</th>
+                    <th class="gem-col">◆ Rubis</th>
+                    <th class="gem-col">◆ Onyx</th>
+                    <th class="gem-col">Points</th>
+                  </tr>
+                </thead>
+                <tbody id="tier1-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tier 2 -->
+          <div class="tier-section" style="margin-bottom: 32px;">
+            <div class="tier-header">
+              <span class="tier-badge tier-badge--2">Niveau II</span>
+              <span class="tier-desc">30 cartes — coûts élevés, 1 à 3 points de prestige</span>
+            </div>
+            <div class="cards-table-wrapper">
+              <table class="cards-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th class="gem-col">♦ Diamon.</th>
+                    <th class="gem-col">◆ Saphir</th>
+                    <th class="gem-col">◆ Émer.</th>
+                    <th class="gem-col">◆ Rubis</th>
+                    <th class="gem-col">◆ Onyx</th>
+                    <th class="gem-col">Points</th>
+                  </tr>
+                </thead>
+                <tbody id="tier2-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tier 3 -->
+          <div class="tier-section">
+            <div class="tier-header">
+              <span class="tier-badge tier-badge--3">Niveau III</span>
+              <span class="tier-desc">20 cartes — coûts très élevés, 3 à 5 points de prestige</span>
+            </div>
+            <div class="cards-table-wrapper">
+              <table class="cards-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th class="gem-col">♦ Diamon.</th>
+                    <th class="gem-col">◆ Saphir</th>
+                    <th class="gem-col">◆ Émer.</th>
+                    <th class="gem-col">◆ Rubis</th>
+                    <th class="gem-col">◆ Onyx</th>
+                    <th class="gem-col">Points</th>
+                  </tr>
+                </thead>
+                <tbody id="tier3-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Architecture -->
+        <section>
+          <h2 class="project-section__heading">Architecture du projet</h2>
+          <div class="project-steps">
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Modèle de domaine</div>
+                <p class="project-step__desc">Classes <code>Card</code>, <code>Noble</code>, <code>Player</code>, <code>Board</code>, <code>Deck</code>. La carte encapsule son tier, ses coûts par gemme, son type de production et ses points. Le plateau gère les 3 decks, la rivière de 4 cartes visibles par niveau, et le stock de 10 types de jetons.</p>
+              </div>
+            </div>
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Moteur de règles</div>
+                <p class="project-step__desc">Classe <code>GameEngine</code> orchestrant le déroulement des tours : prise de jetons, achat, réservation, visite des nobles. Validation des actions selon l'état courant, calcul des réductions via les gemmes permanentes, détection du déclenchement de fin de partie.</p>
+              </div>
+            </div>
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Intelligence artificielle</div>
+                <p class="project-step__desc">Interface <code>AIStrategy</code> implémentée par plusieurs agents : <em>GreedyAI</em> (maximise les points immédiats), <em>GemAI</em> (accumule les réductions avant d'acheter), <em>RandomAI</em> (baseline). Les IA sélectionnent et jouent des actions via la même interface que les joueurs humains.</p>
+              </div>
+            </div>
+            <div class="project-step">
+              <div class="project-step__indicator"><div class="project-step__dot"></div><div class="project-step__line"></div></div>
+              <div class="project-step__content">
+                <div class="project-step__title">Chargement des données</div>
+                <p class="project-step__desc">Le fichier <code>stats.csv</code> contient les 90 cartes avec leurs attributs (tier, coûts par gemme, points, type). Un parser CSV initialise les objets <code>Card</code> au démarrage et permet une modification facile du jeu sans recompilation.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Utilisation -->
+        <section>
+          <h2 class="project-section__heading">Utilisation</h2>
+          <div class="project-usage-steps">
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">01</span>
+              <p class="project-usage-step__text">Cloner le dépôt et compiler : <strong>javac -cp src src/Main.java</strong></p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">02</span>
+              <p class="project-usage-step__text">Lancer une partie : <strong>java -cp src Main</strong> — choisir le nombre de joueurs humains et d'IA au démarrage.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">03</span>
+              <p class="project-usage-step__text">En cours de partie : suivre les instructions CLI. À chaque tour, choisir parmi <strong>prendre des jetons</strong>, <strong>acheter une carte</strong> ou <strong>réserver une carte</strong>.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">04</span>
+              <p class="project-usage-step__text">Lancer les tests unitaires avec <strong>mvn test</strong> ou <strong>./gradlew test</strong> pour valider la logique de règles.</p>
+            </div>
+          </div>
+        </section>
+
+        <return-project></return-project>
+      </div><!-- /.project-body -->
+    </div><!-- /.section -->
+  </main>
+
+  <footer>
+    <span class="brand">Denis ROBERT</span>
+    <span>Projet académique — Implémentation de Splendor · ENSIBS ICE</span>
+  </footer>
+
+  <script>
+    // ─── Données CSV embarquées ───
+    const csvRaw = `tier,coutDIAMOND,coutSAPPHIRE,coutEMERALD,coutRUBY,coutONYX,points,type
+1,0,0,0,2,1,0,EMERALD
+1,0,0,1,1,1,0,EMERALD
+1,0,0,2,0,2,0,EMERALD
+1,0,0,2,2,0,0,EMERALD
+1,0,1,1,1,1,0,EMERALD
+1,0,0,0,3,0,0,EMERALD
+1,0,0,0,0,3,0,EMERALD
+1,1,1,1,1,0,0,EMERALD
+1,0,0,3,0,0,0,RUBY
+1,0,2,0,1,2,0,RUBY
+1,0,1,1,2,1,0,RUBY
+1,0,2,1,0,0,0,RUBY
+1,0,0,2,1,0,0,RUBY
+1,1,0,0,2,2,0,RUBY
+1,0,0,0,0,4,1,RUBY
+1,1,1,0,1,2,0,RUBY
+1,0,2,0,2,0,0,SAPPHIRE
+1,1,1,2,0,1,0,SAPPHIRE
+1,0,0,1,0,2,0,SAPPHIRE
+1,0,0,0,2,2,0,SAPPHIRE
+1,1,2,0,1,1,0,SAPPHIRE
+1,3,0,0,0,0,0,SAPPHIRE
+1,0,1,0,0,2,0,SAPPHIRE
+1,0,4,0,0,0,1,SAPPHIRE
+1,0,2,2,0,1,0,DIAMOND
+1,2,0,2,1,0,0,DIAMOND
+1,2,0,0,2,1,0,DIAMOND
+1,2,2,0,0,0,0,DIAMOND
+1,0,3,0,0,0,0,DIAMOND
+1,1,0,0,1,3,0,DIAMOND
+1,0,0,0,4,0,1,DIAMOND
+1,1,2,1,1,0,0,DIAMOND
+1,2,1,0,0,2,0,ONYX
+1,0,1,0,2,2,0,ONYX
+1,1,0,1,0,1,0,ONYX
+1,0,1,3,1,0,0,ONYX
+1,3,1,0,0,1,0,ONYX
+1,0,0,1,1,1,0,ONYX
+1,0,0,2,0,0,0,ONYX
+1,0,0,4,0,0,1,ONYX
+2,3,0,0,0,5,3,ONYX
+2,0,0,0,5,3,2,ONYX
+2,0,0,3,0,6,3,ONYX
+2,0,2,2,3,0,1,ONYX
+2,0,3,0,3,3,2,ONYX
+2,5,0,0,0,0,2,ONYX
+2,0,0,2,5,0,2,ONYX
+2,0,2,2,0,3,2,ONYX
+2,0,0,0,5,0,2,RUBY
+2,3,0,0,3,3,2,RUBY
+2,0,3,0,5,0,3,RUBY
+2,3,5,0,0,0,2,RUBY
+2,0,3,3,2,0,1,RUBY
+2,0,0,5,3,0,2,RUBY
+2,0,0,5,0,0,2,RUBY
+2,4,2,0,0,1,2,RUBY
+2,0,5,0,0,0,2,EMERALD
+2,3,0,3,0,3,2,EMERALD
+2,0,0,6,0,0,3,EMERALD
+2,0,2,0,2,3,1,EMERALD
+2,4,2,2,0,0,2,EMERALD
+2,0,5,3,0,0,2,EMERALD
+2,0,2,3,0,3,2,EMERALD
+2,2,0,0,3,2,1,EMERALD
+2,5,3,0,0,0,2,SAPPHIRE
+2,0,6,0,0,0,3,SAPPHIRE
+2,0,0,0,3,5,2,SAPPHIRE
+2,0,3,2,3,0,1,SAPPHIRE
+2,2,3,0,0,2,1,SAPPHIRE
+2,2,2,0,3,0,2,SAPPHIRE
+2,5,0,0,3,0,2,SAPPHIRE
+2,0,5,0,0,3,2,SAPPHIRE
+2,0,0,0,0,5,2,DIAMOND
+2,0,0,3,3,3,2,DIAMOND
+2,6,0,0,0,0,3,DIAMOND
+2,3,3,0,3,0,1,DIAMOND
+2,0,2,2,3,0,1,DIAMOND
+2,3,0,3,3,0,2,DIAMOND
+2,0,3,0,0,5,2,DIAMOND
+2,0,4,0,2,0,1,DIAMOND
+3,3,0,0,0,7,5,ONYX
+3,0,0,0,3,7,4,ONYX
+3,0,3,3,5,3,4,ONYX
+3,0,0,3,3,6,4,ONYX
+3,3,3,5,3,0,4,RUBY
+3,7,0,0,0,0,4,RUBY
+3,0,0,7,0,0,4,RUBY
+3,3,0,3,6,3,5,RUBY
+3,0,3,0,3,7,5,EMERALD
+3,0,7,0,0,0,4,EMERALD
+3,3,6,3,0,3,4,EMERALD
+3,3,3,6,3,0,4,EMERALD
+3,0,0,0,7,3,5,SAPPHIRE
+3,7,3,0,0,0,5,SAPPHIRE
+3,3,0,3,0,6,4,SAPPHIRE
+3,0,6,3,0,3,4,SAPPHIRE
+3,7,0,3,0,0,5,DIAMOND
+3,0,0,0,0,7,4,DIAMOND
+3,6,3,0,3,3,4,DIAMOND
+3,0,3,3,6,3,5,DIAMOND`;
+
+    function parseCSV(raw) {
+      const lines = raw.trim().split('\n');
+      const headers = lines[0].split(',');
+      return lines.slice(1).map(line => {
+        const vals = line.split(',');
+        const obj = {};
+        headers.forEach((h, i) => {
+          obj[h.trim()] = isNaN(vals[i]) ? vals[i].trim() : parseInt(vals[i]);
+        });
+        return obj;
+      });
+    }
+
+    function gemCostCell(val, type) {
+      if (val === 0) return `<td class="gem-col"><span class="gem-cost gem-cost--zero">—</span></td>`;
+      return `<td class="gem-col"><span class="gem-cost gem-cost--${type.toLowerCase()}">${val}</span></td>`;
+    }
+
+    function typeCell(t) {
+      const labels = { DIAMOND:'DIA', SAPPHIRE:'SAP', EMERALD:'EME', RUBY:'RUB', ONYX:'ONX' };
+      return `<td><span class="type-gem type-gem--${t}" title="${t}">${labels[t]||t}</span></td>`;
+    }
+
+    function ptsCell(pts) {
+      if (pts === 0) return `<td class="gem-col"><span class="pts-badge pts-badge--zero">0</span></td>`;
+      return `<td class="gem-col"><span class="pts-badge">${pts}</span></td>`;
+    }
+
+    function renderTier(cards, bodyId) {
+      const tbody = document.getElementById(bodyId);
+      if (!tbody) return;
+      tbody.innerHTML = cards.map(c => `
+        <tr>
+          ${typeCell(c.type)}
+          ${gemCostCell(c.coutDIAMOND, 'diamond')}
+          ${gemCostCell(c.coutSAPPHIRE, 'sapphire')}
+          ${gemCostCell(c.coutEMERALD, 'emerald')}
+          ${gemCostCell(c.coutRUBY, 'ruby')}
+          ${gemCostCell(c.coutONYX, 'onyx')}
+          ${ptsCell(c.points)}
+        </tr>
+      `).join('');
+    }
+
+    const cards = parseCSV(csvRaw);
+    renderTier(cards.filter(c => c.tier === 1), 'tier1-body');
+    renderTier(cards.filter(c => c.tier === 2), 'tier2-body');
+    renderTier(cards.filter(c => c.tier === 3), 'tier3-body');
+  </script>
+
+</body>
+</html>
