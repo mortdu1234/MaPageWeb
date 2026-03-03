@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — Maze Runner — Algorithme Génétique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/projet.css"/>
+</head>
+<body>
+
+  <nav-bar root="../"></nav-bar>
+
+  <main>
+    <div class="section">
+
+      <!-- ══════ HERO ══════ -->
+      <div class="project-hero">
+        <return-project></return-project>
+        <div class="project-hero__category">Projet académique</div>
+        <h1 class="project-hero__title">Maze Runner — Algorithme Génétique</h1>
+        <p class="project-hero__tagline">
+          Génération procédurale de labyrinthes et résolution par algorithme génétique :
+          une population d'individus évolue génération après génération pour trouver
+          le chemin optimal entre un point de départ et une sortie.
+        </p>
+        <div class="project-hero__meta">
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Langage</span>
+            <span class="project-meta-item__value">Python</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Contexte</span>
+            <span class="project-meta-item__value">Projet de cours</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Statut</span>
+            <span class="project-meta-item__value">Terminé</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <a class="project-github-link" href="https://github.com/mortdu1234/algoEtProgProjet.git" target="_blank" rel="noopener">
+            <svg class="project-github-link__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            Voir sur GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- ══════ CORPS ══════ -->
+      <div class="project-body">
+
+        <!-- ── Galerie carrousel ── -->
+        <section>
+          <h2 class="project-section__heading">Aperçu</h2>
+          <div class="project-carousel" id="gallery-carousel">
+            <button class="project-carousel__btn project-carousel__btn--prev" aria-label="Image précédente">&#8592;</button>
+            <div class="project-carousel__track-wrapper">
+              <div class="project-carousel__track" id="carousel-track">
+
+                <div class="project-carousel__slide">
+                  <img src="../img/maze-algo-genetique.png" alt="Diagramme de l'algorithme génétique">
+                </div>
+
+                <div class="project-carousel__slide">
+                  <img src="../img/maze-generation.png" alt="Diagramme de génération du labyrinthe">
+                </div>
+
+              </div>
+            </div>
+            <button class="project-carousel__btn project-carousel__btn--next" aria-label="Image suivante">&#8594;</button>
+            <div class="project-carousel__dots" id="carousel-dots"></div>
+          </div>
+        </section>
+
+        <!-- Présentation -->
+        <section>
+          <h2 class="project-section__heading">Présentation</h2>
+          <div class="project-section__text">
+            <p>
+              Ce projet académique avait pour objectif de résoudre un labyrinthe généré procéduralement
+              à l'aide d'un algorithme génétique. Le sujet posait un problème classique d'optimisation :
+              comment trouver un chemin entre un point de départ et une sortie lorsque le labyrinthe
+              n'est pas connu à l'avance, en s'inspirant des mécanismes de la théorie de l'évolution ?
+            </p>
+            <p>
+              Le projet se décompose en trois sous-parties : la <strong>génération procédurale</strong>
+              du labyrinthe par parcours en profondeur (DFS), l'application de l'<strong>algorithme
+              de Dijkstra</strong> pour calculer les distances optimales depuis la sortie, et enfin
+              la <strong>résolution par algorithme génétique</strong> où une population d'individus
+              — chacun représentant une séquence de mouvements — évolue sur plusieurs générations
+              pour converger vers le chemin optimal. Un mécanisme de <strong>phéromones</strong>
+              permet en plus de fermer dynamiquement les impasses découvertes.
+            </p>
+          </div>
+        </section>
+
+        <!-- Fonctionnalités -->
+        <section>
+          <h2 class="project-section__heading">Fonctionnalités</h2>
+          <div class="project-features">
+            <div class="project-feature">
+              <div class="project-feature__title">Génération procédurale (DFS)</div>
+              <p class="project-feature__desc">Création de labyrinthes NxN aléatoires via un parcours en profondeur. Seed contrôlable pour reproductibilité. Testé de 5×5 à 500×500.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Carte de Dijkstra</div>
+              <p class="project-feature__desc">Calcul pour chaque case de sa distance optimale à la sortie. Génère également une carte directionnelle indiquant le meilleur mouvement à effectuer depuis chaque case.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Algorithme génétique complet</div>
+              <p class="project-feature__desc">Sélection, reproduction par crossover et mutation sur une population de 200 à 500 individus sur jusqu'à 5000 générations.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Fonction de fitness</div>
+              <p class="project-feature__desc">Score basé sur la distance finale à la sortie (au cube), les collisions avec les murs, les sorties de terrain et les retours en arrière.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Système de phéromones</div>
+              <p class="project-feature__desc">Les impasses découvertes sont fermées dynamiquement en posant un mur virtuel, empêchant les générations suivantes de s'y engager.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Visualisations & logs</div>
+              <p class="project-feature__desc">Courbes d'évolution (min/max/moyenne), cartes d'exploration générées toutes les N générations, logs détaillés par phase avec compression du chemin parcouru.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Tests des hyperparamètres</div>
+              <p class="project-feature__desc">Script dédié pour comparer empiriquement l'impact de chaque paramètre (taux de sélection, mutation, taille de population, longueur max des chemins...).</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Profiling des performances</div>
+              <p class="project-feature__desc">Mesure automatique des 40 fonctions les plus coûteuses via <code>cProfile</code> pour identifier les goulots d'étranglement.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stack technique -->
+        <section>
+          <h2 class="project-section__heading">Stack technique</h2>
+          <div class="project-section__text">
+            <p>
+              Le projet est entièrement en Python. Les visualisations (labyrinthes, cartes de Dijkstra,
+              cartes d'exploration, courbes d'évolution) sont générées avec <strong>matplotlib</strong>.
+              Les opérations matricielles sur les cartes d'exploration utilisent <strong>NumPy</strong>.
+              Les dépendances sont volontairement légères : <strong>Pillow</strong>, <strong>NumPy</strong>
+              et <strong>matplotlib</strong>.
+            </p>
+          </div>
+          <div class="project-stack">
+            <span class="project-stack__tag">Python</span>
+            <span class="project-stack__tag">matplotlib</span>
+            <span class="project-stack__tag">NumPy</span>
+            <span class="project-stack__tag">Pillow</span>
+            <span class="project-stack__tag">cProfile</span>
+            <span class="project-stack__tag">DFS</span>
+            <span class="project-stack__tag">Dijkstra</span>
+            <span class="project-stack__tag">Algorithme Génétique</span>
+          </div>
+        </section>
+
+        <!-- Démarche -->
+        <section>
+          <h2 class="project-section__heading">Démarche</h2>
+          <div class="project-steps">
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Génération du labyrinthe par DFS</div>
+                <p class="project-step__desc">
+                  Le labyrinthe est généré par un parcours en profondeur (Depth-First Search) aléatoire.
+                  On part d'une case aléatoire, et on creuse des chemins en choisissant à chaque étape
+                  un voisin éligible (un mur n'ayant qu'un seul voisin déjà creusé). Quand on atteint
+                  une impasse, on remonte dans la pile. Ce processus produit des labyrinthes avec de longs
+                  couloirs et peu de ramifications. Le départ et l'arrivée sont définis automatiquement
+                  dans les coins opposés de la grille.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Carte de Dijkstra et carte directionnelle</div>
+                <p class="project-step__desc">
+                  Après la génération, l'algorithme de Dijkstra calcule pour chaque case sa distance
+                  à la sortie. Cela sert deux objectifs : guider la fonction de fitness de l'algorithme
+                  génétique (la distance finale d'un individu est lue directement dans cette carte),
+                  et construire une carte directionnelle indiquant le mouvement optimal à effectuer
+                  depuis chaque case pour atteindre la sortie par le chemin le plus court.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Représentation des individus</div>
+                <p class="project-step__desc">
+                  Chaque individu est une liste de mouvements encodés de 0 à 7 (8 directions possibles
+                  dans un voisinage à 8 cases). À chaque génération, l'individu « joue » ses mouvements
+                  dans le labyrinthe depuis le point de départ. Les tentatives de sortir du terrain ou de
+                  traverser un mur sont ignorées (l'individu reste sur place) mais pénalisées dans le
+                  calcul du score.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Fonction de fitness et sélection</div>
+                <p class="project-step__desc">
+                  Le score d'un individu est calculé comme <code>distance_finale³ + murs_heurtés + sorties_terrain + retours_arrière</code>.
+                  Un score faible est meilleur. La distance finale est mise au cube pour pénaliser
+                  fortement l'éloignement de la sortie, ce qui force la population à progresser vers
+                  le but. Seuls les 2 % meilleurs individus sont conservés à chaque génération.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Reproduction, mutation et phéromones</div>
+                <p class="project-step__desc">
+                  Les enfants sont créés par crossover : on coupe chaque parent autour de son milieu
+                  (avec un offset de 10 %) et on assemble les deux moitiés. Un taux de mutation de 90 %
+                  applique ensuite des changements aléatoires de direction sur les individus issus de
+                  la reproduction. Parallèlement, un mécanisme de phéromones détecte les impasses
+                  (cases n'ayant qu'un seul voisin accessible) et les transforme en murs virtuels,
+                  forçant les générations suivantes à explorer d'autres chemins.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Tests des hyperparamètres</div>
+                <p class="project-step__desc">
+                  Un script dédié (<code>tests_hyperparametres.py</code>) fait varier systématiquement
+                  chaque paramètre (taux de sélection, nombre de générations, taille de population,
+                  longueur maximale des chemins, taux de mutation, offset du crossover) sur un labyrinthe
+                  100×100 avec 3 répétitions par configuration, en comparant les courbes de loss obtenues.
+                  Cela a permis de déterminer les paramètres optimaux utilisés dans la simulation finale.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Utilisation -->
+        <section>
+          <h2 class="project-section__heading">Utilisation</h2>
+          <div class="project-usage-steps">
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">01</span>
+              <p class="project-usage-step__text">Installer les dépendances : <code>pip install -r requirement.txt</code></p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">02</span>
+              <p class="project-usage-step__text">Lancer la simulation : <strong><code>python tests_genetique.py</code></strong>. Un labyrinthe 50×50 est généré et la simulation démarre avec les paramètres par défaut. Les résultats sont sauvegardés dans <code>tests/genetique/</code>.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">03</span>
+              <p class="project-usage-step__text">Pour tester différents hyperparamètres : <strong><code>python tests_hyperparametres.py</code></strong>. Les courbes comparatives sont générées dans <code>tests/hyperparametres/</code>.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">04</span>
+              <p class="project-usage-step__text">Pour visualiser uniquement la génération de labyrinthes et les cartes de Dijkstra sur différentes tailles (20×20, 100×100, 500×500) : <strong><code>python tests_MazeMaker.py</code></strong>.</p>
+            </div>
+          </div>
+        </section>
+
+        <return-project></return-project>
+      </div>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+  <script src="../js/components.js"></script>
+
+  <script>
+    (function () {
+      const track         = document.getElementById('carousel-track');
+      const dotsContainer = document.getElementById('carousel-dots');
+      const slides        = Array.from(track.querySelectorAll('.project-carousel__slide'));
+      const total         = slides.length;
+      let current         = 0;
+
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'project-carousel__dot' + (i === 0 ? ' project-carousel__dot--active' : '');
+        dot.setAttribute('aria-label', `Aller à l'image ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dotsContainer.appendChild(dot);
+      });
+
+      function updateUI() {
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dotsContainer.querySelectorAll('.project-carousel__dot').forEach((d, i) => {
+          d.classList.toggle('project-carousel__dot--active', i === current);
+        });
+      }
+
+      function goTo(index) {
+        current = (index + total) % total;
+        updateUI();
+      }
+
+      document.querySelector('.project-carousel__btn--prev')
+        .addEventListener('click', () => goTo(current - 1));
+      document.querySelector('.project-carousel__btn--next')
+        .addEventListener('click', () => goTo(current + 1));
+
+      document.getElementById('gallery-carousel').addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft')  goTo(current - 1);
+        if (e.key === 'ArrowRight') goTo(current + 1);
+      });
+
+      let startX = 0;
+      track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchend',   e => {
+        const delta = startX - e.changedTouches[0].clientX;
+        if (Math.abs(delta) > 40) goTo(current + (delta > 0 ? 1 : -1));
+      });
+
+      updateUI();
+    })();
+  </script>
+
+</body>
+</html>
