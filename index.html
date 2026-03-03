@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — Accueil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    .hero {
+      min-height: calc(100vh - var(--nav-h));
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: flex-start;
+      padding: 80px 48px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: 'DR';
+      position: absolute; right: -20px; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(200px, 30vw, 380px);
+      font-weight: 300;
+      color: rgba(184,154,106,0.07);
+      pointer-events: none; line-height: 1; letter-spacing: -0.05em;
+    }
+    .hero-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(56px, 8vw, 96px); font-weight: 300; line-height: 1.05; color: var(--accent); margin-bottom: 28px; max-width: 700px; }
+    .hero h1 em { font-style: italic; color: var(--gold); }
+    .hero-desc { font-size: 1.05rem; color: var(--muted); max-width: 480px; margin-bottom: 48px; font-weight: 300; line-height: 1.8; }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    @media (max-width: 768px) { .hero { padding: 60px 24px; } }
+  </style>
+</head>
+<body>
+
+  <nav-bar root="./"></nav-bar>
+
+  <main>
+    <section class="hero">
+      <p class="hero-label">Bienvenue sur mon espace</p>
+      <h1>Denis<br/><em>ROBERT</em></h1>
+      <p class="hero-desc">Passionné d'informatique, je vous partage mon espace personnel</p>
+      <div class="hero-actions">
+        <a class="btn btn-outline" href="jeux.html">Découvrir les jeux</a>
+        <a class="btn btn-outline" href="apropos.html">En savoir plus</a>
+        <a class="btn btn-outline" href="mesprojets.html">Mes projets</a>
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="js/components.js"></script>
+</body>
+</html>

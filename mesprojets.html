@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — Jeux de société</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+    .game-card { background: var(--surface); border: 1px solid var(--line); padding: 32px 28px; text-decoration: none; display: block; transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .game-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--gold); transition: height 0.35s ease; }
+    .game-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+    .game-card:hover::before { height: 100%; }
+    .game-icon { font-size: 2.2rem; margin-bottom: 16px; display: block; }
+    .game-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
+    .game-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+    .game-link { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+    .game-link::after { content: '→'; transition: transform 0.2s; }
+    .game-card:hover .game-link::after { transform: translateX(4px); }
+  </style>
+</head>
+<body>
+
+  <nav-bar root="./"></nav-bar>
+
+  <main>
+    <div class="section">
+      <p class="section-tag">Ma ludothèque</p>
+      <h2 class="section-title">Jeux de société</h2>
+      <p class="section-lead">Voici la liste des jeux de société dont j'ai effectué une activités</p>
+      <div class="games-grid">
+
+        <a class="game-card" href="jeux/smilelife.html">
+          <span class="game-icon">🏝️</span>
+          <div class="game-title">Smile Life</div>
+          <p class="game-desc">description du jeu</p>
+          <span class="game-link">Voir la fiche</span>
+        </a>
+        
+        
+
+        
+
+
+      </div>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="js/components.js"></script>
+</body>
+</html>
