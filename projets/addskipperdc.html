@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — Launcher Rocket League</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/projet.css"/>
+</head>
+<body>
+
+  <nav-bar root="../"></nav-bar>
+
+  <main>
+    <div class="section">
+
+      <!-- ══════ HERO ══════ -->
+      <div class="project-hero">
+        <return-project></return-project>
+        <div class="project-hero__category">Projet personnel</div>
+        <h1 class="project-hero__title">Launcher<br>Add Skipper Dragon City</h1>
+        <p class="project-hero__tagline">
+          Il s'agit d'un programme qui permet de passer automatiquement les pubs dans le jeu Dragon City.
+        </p>
+        <div class="project-hero__meta">
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Langage</span>
+            <span class="project-meta-item__value">Python</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Interface</span>
+            <span class="project-meta-item__value">Terminale</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Statut</span>
+            <span class="project-meta-item__value">Terminé</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <a class="project-github-link" href="https://github.com/mortdu1234/Ad-skipper-DC.git" target="_blank" rel="noopener">
+            <svg class="project-github-link__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            Voir sur GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- ══════ CORPS ══════ -->
+      <div class="project-body">
+
+        <!-- ── Galerie carrousel ── -->
+        <section>
+          <h2 class="project-section__heading">Aperçu</h2>
+
+          <div class="project-carousel" id="gallery-carousel">
+
+            <!-- Flèche précédente -->
+            <button class="project-carousel__btn project-carousel__btn--prev" aria-label="Image précédente">&#8592;</button>
+
+            <!-- Piste des slides -->
+            <div class="project-carousel__track-wrapper">
+              <div class="project-carousel__track" id="carousel-track">
+
+                <div class="project-carousel__slide">
+                  <img src="../img/rl-launcher-main.png" alt="Interface principale">
+                </div>
+                
+                <div class="project-carousel__slide">
+                  <img src="../img/rl-launcher-main.png" alt="image secondaire">
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Flèche suivante -->
+            <button class="project-carousel__btn project-carousel__btn--next" aria-label="Image suivante">&#8594;</button>
+
+            <!-- Points de navigation -->
+            <div class="project-carousel__dots" id="carousel-dots"></div>
+          </div>
+        </section>
+
+        <!-- Présentation -->
+        <section>
+          <h2 class="project-section__heading">Présentation</h2>
+          <div class="project-section__text">
+            <p>
+              Ce projet est né d'une volonté d'automatiser des taches répétitives dans le jeu mobile Dragon City.
+              En effet ce jeu propose de regarder 30 pubs toutes les heures afin de gagner des récompenses.
+            </p>
+            <p>
+              Pour créer ce script j'ai utiliser ADB et BlueStack afin de pouvoir interragir avec l'appareil android.
+              Ce script vas rechercher sur l'ecran des patterns prédéfinis et quand il les trouve, vas simuler un clic
+              dessus.
+            </p>
+          </div>
+        </section>
+
+        <!-- Fonctionnalités -->
+        <section>
+          <h2 class="project-section__heading">Fonctionnalités</h2>
+          <div class="project-features">
+            <div class="project-feature">
+              <div class="project-feature__title">Creation d'un nouveau template</div>
+              <p class="project-feature__desc">Permet de créer des nouveau patterns de recherche.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Fermeture d'une pub</div>
+              <p class="project-feature__desc">Effectue la fermeture d'une seule et unique pub</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Lancement d'un cycle</div>
+              <p class="project-feature__desc">Le programme vas effectuer un cycle de recherche de pub</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stack technique -->
+        <section>
+          <h2 class="project-section__heading">Stack technique</h2>
+          <div class="project-section__text">
+            <p>
+              Le projet est entièrement écrit en Python avec des dépendance importante avec ADB et un emulateur
+              compatible avec ADB. Il propose une interface Terminale pour gerer ce programme et s'auto alimente
+              de nouveau template avec les patterns assez fiable.
+            </p>
+          </div>
+          <div class="project-stack">
+            <span class="project-stack__tag">Python</span>
+            <span class="project-stack__tag">ADB</span>
+            <span class="project-stack__tag">Pillow</span>
+            <span class="project-stack__tag">subprocess</span>
+            <span class="project-stack__tag">shutil</span>
+            <span class="project-stack__tag">JSON</span>
+          </div>
+        </section>
+
+        <!-- Démarche -->
+        <section>
+          <h2 class="project-section__heading">Démarche</h2>
+          <div class="project-steps">
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Identification de la solution de base</div>
+                <p class="project-step__desc">
+                  Le point de départ repose sur les travaux de <strong>jun-eau</strong> et
+                  <strong>LittleScripterBoy</strong>, qui ont développé
+                  <a href="https://github.com/jun-eau/Slipstream" target="_blank" rel="noopener">Slipstream</a>,
+                  un exécutable permettant de lancer Rocket League sans Epic Games. L'étude de leur approche
+                  a permis de comprendre le mécanisme de lancement et ce qui était nécessaire pour le reproduire.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Conception du système multi-comptes</div>
+                <p class="project-step__desc">
+                  L'idée centrale est d'isoler chaque compte dans son propre sous-dossier contenant
+                  une copie de <code>Slipstream.exe</code>. Lors de la création d'un compte,
+                  l'exécutable source est dupliqué via <code>shutil.copy</code> dans
+                  <code>accounts/&lt;nom&gt;/</code>. Chaque instance conserve ainsi ses données
+                  de session sans conflit entre les comptes.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Interface dessinée sur Canvas</div>
+                <p class="project-step__desc">
+                  Plutôt que d'utiliser les widgets Tkinter classiques, l'interface est dessinée
+                  directement sur un <code>Canvas</code> de 800×600 px. Cela permet de superposer
+                  les éléments sur l'image de fond avec un contrôle total sur le positionnement.
+                  Chaque bouton est un rectangle Canvas avec un binding <code>&lt;Button-1&gt;</code>
+                  attaché à la fois au rectangle et au texte.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Gestion du dropdown et des clics extérieurs</div>
+                <p class="project-step__desc">
+                  Le menu de sélection de compte est un dropdown entièrement custom dessiné sur le Canvas.
+                  Les coordonnées des zones interactives sont stockées dans des variables globales et
+                  comparées à chaque clic via un binding <code>add="+"</code>, ce qui permet de fermer
+                  le menu lors d'un clic extérieur sans interférer avec les autres bindings déjà enregistrés.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Lancement du jeu et fermeture propre</div>
+                <p class="project-step__desc">
+                  Le lancement s'effectue via <code>subprocess.Popen</code> en passant le répertoire
+                  du compte comme <code>cwd</code>, avec le flag <code>CREATE_NO_WINDOW</code> sur
+                  Windows pour éviter l'apparition d'une fenêtre console. La fenêtre du launcher
+                  se ferme ensuite automatiquement via <code>root.destroy()</code>.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Utilisation -->
+        <section>
+          <h2 class="project-section__heading">Utilisation</h2>
+          <div class="project-usage-steps">
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">01</span>
+              <p class="project-usage-step__text">Placer <strong>Slipstream.exe</strong> et <strong>launcher.py</strong> dans le même dossier. Ajouter un fichier <strong>background.png</strong> pour personnaliser l'arrière-plan (optionnel).</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">02</span>
+              <p class="project-usage-step__text">Lancer <strong>launcher.py</strong> avec Python. Cliquer sur <strong>New Account</strong> et saisir un nom pour créer le premier compte.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">03</span>
+              <p class="project-usage-step__text">Pour changer de compte, cliquer sur le <strong>nom du compte affiché</strong> pour ouvrir le dropdown et sélectionner un autre compte enregistré.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">04</span>
+              <p class="project-usage-step__text">Cliquer sur <strong>Start</strong> pour lancer Rocket League avec le compte actif. Le launcher se ferme automatiquement.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">05</span>
+              <p class="project-usage-step__text">Pour supprimer un compte, s'assurer qu'il est sélectionné puis cliquer sur <strong>🗑️</strong> et confirmer. Le dossier associé est supprimé proprement.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Remerciements -->
+        <section>
+          <h2 class="project-section__heading">Remerciements</h2>
+          <p class="project-section__text" style="margin-bottom: 20px;">
+            Ce projet s'appuie sur le travail open source de deux développeurs ayant rendu possible
+            le lancement de Rocket League sans Epic Games.
+          </p>
+          <div class="project-credits">
+            <a class="project-credit-item" href="https://github.com/jun-eau/Slipstream" target="_blank" rel="noopener">
+              <span class="project-credit-item__icon">⚙️</span>
+              <div class="project-credit-item__info">
+                <span class="project-credit-item__name">jun-eau — Slipstream</span>
+                <span class="project-credit-item__role">Exécutable de lancement alternatif pour Rocket League</span>
+              </div>
+              <span class="project-credit-item__arrow">→</span>
+            </a>
+            <a class="project-credit-item" href="https://github.com/LittleScripterBoy/RocketLeagueLauncher" target="_blank" rel="noopener">
+              <span class="project-credit-item__icon">🚀</span>
+              <div class="project-credit-item__info">
+                <span class="project-credit-item__name">LittleScripterBoy — RocketLeagueLauncher</span>
+                <span class="project-credit-item__role">Launcher de référence dont ce projet s'est inspiré</span>
+              </div>
+              <span class="project-credit-item__arrow">→</span>
+            </a>
+          </div>
+        </section>
+        
+        <return-project></return-project>
+      </div>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+  <script src="../js/components.js"></script>
+
+  <script>
+    (function () {
+      const track   = document.getElementById('carousel-track');
+      const counter = document.getElementById('carousel-counter');
+      const dotsContainer = document.getElementById('carousel-dots');
+      const slides  = Array.from(track.querySelectorAll('.project-carousel__slide'));
+      const total   = slides.length;
+      let current   = 0;
+
+      // Créer les points
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'project-carousel__dot' + (i === 0 ? ' project-carousel__dot--active' : '');
+        dot.setAttribute('aria-label', `Aller à l'image ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dotsContainer.appendChild(dot);
+      });
+
+      function updateUI() {
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dotsContainer.querySelectorAll('.project-carousel__dot').forEach((d, i) => {
+          d.classList.toggle('project-carousel__dot--active', i === current);
+        });
+      }
+
+      function goTo(index) {
+        current = (index + total) % total;
+        updateUI();
+      }
+
+      document.querySelector('.project-carousel__btn--prev')
+        .addEventListener('click', () => goTo(current - 1));
+      document.querySelector('.project-carousel__btn--next')
+        .addEventListener('click', () => goTo(current + 1));
+
+      // Navigation clavier
+      document.getElementById('gallery-carousel').addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft')  goTo(current - 1);
+        if (e.key === 'ArrowRight') goTo(current + 1);
+      });
+
+      // Swipe tactile
+      let startX = 0;
+      track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchend',   e => {
+        const delta = startX - e.changedTouches[0].clientX;
+        if (Math.abs(delta) > 40) goTo(current + (delta > 0 ? 1 : -1));
+      });
+
+      updateUI();
+    })();
+  </script>
+  
+</body>
+</html>

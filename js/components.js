@@ -43,9 +43,22 @@ class SiteFooter extends HTMLElement {
   }
 }
 
+
+// ─────────────────────────────────────────────
+//  <return-project></return-project>
+// ─────────────────────────────────────────────
+ class ReturnProject extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = `
+      <a class="project-hero__back" href="../mesprojets.html">Retour aux projets</a>
+    `;
+  } 
+ }
+
 // Enregistrement des composants
 customElements.define('nav-bar', NavBar);
 customElements.define('site-footer', SiteFooter);
+customElements.define('return-project', ReturnProject);
 
 // ─────────────────────────────────────────────
 //  Formulaire de contact (utilisé sur contact.html)

@@ -1,0 +1,110 @@
+/* ═══════════════════════════════════════════
+   Styles communs aux pages de projets
+   Chemin : css/projet.css
+   Usage  : <link rel="stylesheet" href="../css/projet.css"/>
+   ═══════════════════════════════════════════ */
+
+/* ── Hero ── */
+.project-hero { padding: 64px 0 48px; border-bottom: 1px solid var(--line); margin-bottom: 56px; }
+
+.project-hero__back { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; margin-bottom: 32px; transition: color 0.2s; }
+.project-hero__back::before { content: '←'; transition: transform 0.2s; }
+.project-hero__back:hover { color: var(--gold); }
+.project-hero__back:hover::before { transform: translateX(-4px); }
+
+.project-hero__category { display: inline-block; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 9px; border-radius: 2px; margin-bottom: 20px; background: color-mix(in srgb, var(--gold) 15%, transparent); color: var(--gold); border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent); }
+
+.project-hero__title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 600; color: var(--accent); line-height: 1.1; margin-bottom: 20px; }
+
+.project-hero__tagline { font-size: 1.05rem; color: var(--muted); line-height: 1.7; max-width: 620px; margin-bottom: 32px; }
+
+.project-hero__meta { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; }
+
+/* ── Meta ── */
+.project-meta-item { display: flex; flex-direction: column; gap: 2px; }
+.project-meta-item__label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.project-meta-item__value { font-size: 0.9rem; color: var(--accent); font-weight: 500; }
+.project-meta-divider { width: 1px; height: 32px; background: var(--line); }
+
+/* ── Lien GitHub ── */
+.project-github-link { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border: 1px solid var(--line); background: var(--surface); text-decoration: none; font-size: 0.82rem; font-weight: 500; color: var(--accent); letter-spacing: 0.05em; transition: all 0.25s ease; }
+.project-github-link:hover { border-color: var(--gold); color: var(--gold); }
+.project-github-link__icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* ── Corps ── */
+.project-body { display: grid; grid-template-columns: 1fr; gap: 64px; max-width: 820px; }
+
+/* ── Titres de section ── */
+.project-section__heading { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 600; color: var(--accent); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; }
+.project-section__heading::before { content: ''; display: inline-block; width: 3px; height: 1.4rem; background: var(--gold); flex-shrink: 0; }
+
+.project-section__text { font-size: 0.95rem; color: var(--muted); line-height: 1.85; }
+.project-section__text p + p { margin-top: 16px; }
+
+/* ── Carrousel ── */
+.project-carousel { position: relative; width: 100%; user-select: none; }
+
+.project-carousel__track-wrapper { overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
+
+.project-carousel__track { display: flex; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform; }
+
+.project-carousel__slide { flex: 0 0 100%; aspect-ratio: 16 / 9; position: relative; overflow: hidden; }
+.project-carousel__slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.project-carousel__placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.project-carousel__placeholder-icon { font-size: 2rem; opacity: 0.4; }
+
+.project-carousel__btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--surface, #111); border: 1px solid var(--line, #333); color: var(--accent, #eee); cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; font-size: 1rem; line-height: 1; padding: 0; }
+.project-carousel__btn:hover { border-color: var(--gold); color: var(--gold); }
+.project-carousel__btn--prev { left: -20px; }
+.project-carousel__btn--next { right: -20px; }
+
+.project-carousel__dots { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+.project-carousel__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line, #333); cursor: pointer; transition: background 0.2s, transform 0.2s; border: none; padding: 0; }
+.project-carousel__dot--active { background: var(--gold); transform: scale(1.35); }
+
+.project-carousel__counter { position: absolute; bottom: 10px; right: 14px; font-size: 0.7rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); pointer-events: none; }
+
+/* ── Stack ── */
+.project-stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.project-stack__tag { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border: 1px solid var(--line); color: var(--muted); background: var(--surface); }
+
+/* ── Étapes (démarche) ── */
+.project-steps { display: flex; flex-direction: column; }
+.project-step { display: grid; grid-template-columns: 40px 1fr; gap: 0 20px; }
+.project-step__indicator { display: flex; flex-direction: column; align-items: center; }
+.project-step__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); margin-top: 6px; flex-shrink: 0; }
+.project-step__line { width: 1px; flex: 1; background: var(--line); margin-top: 6px; }
+.project-step:last-child .project-step__line { display: none; }
+.project-step__content { padding-bottom: 36px; }
+.project-step__title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
+.project-step__desc { font-size: 0.88rem; color: var(--muted); line-height: 1.75; }
+.project-step__desc a { color: var(--gold); text-decoration: none; }
+.project-step__desc a:hover { text-decoration: underline; }
+
+/* ── Fonctionnalités ── */
+.project-features { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 4px; }
+.project-feature { background: var(--surface); border: 1px solid var(--line); padding: 22px 20px; position: relative; overflow: hidden; }
+.project-feature::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold); opacity: 0.5; }
+.project-feature__icon { font-size: 1.4rem; margin-bottom: 10px; display: block; }
+.project-feature__title { font-size: 0.82rem; font-weight: 500; color: var(--accent); margin-bottom: 6px; letter-spacing: 0.03em; }
+.project-feature__desc { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
+
+/* ── Étapes d'utilisation ── */
+.project-usage-steps { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.project-usage-step { display: flex; align-items: flex-start; gap: 16px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--line); }
+.project-usage-step__number { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--gold); opacity: 0.6; line-height: 1; flex-shrink: 0; min-width: 24px; }
+.project-usage-step__text { font-size: 0.88rem; color: var(--muted); line-height: 1.65; padding-top: 2px; }
+.project-usage-step__text strong { color: var(--accent); font-weight: 500; }
+
+/* ── Crédits ── */
+.project-credits { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
+.project-credit-item { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--line); text-decoration: none; transition: border-color 0.2s; }
+.project-credit-item:hover { border-color: var(--gold); }
+.project-credit-item__icon { font-size: 1.2rem; flex-shrink: 0; }
+.project-credit-item__info { display: flex; flex-direction: column; gap: 2px; }
+.project-credit-item__name { font-size: 0.88rem; font-weight: 500; color: var(--accent); }
+.project-credit-item:hover .project-credit-item__name { color: var(--gold); }
+.project-credit-item__role { font-size: 0.78rem; color: var(--muted); }
+.project-credit-item__arrow { margin-left: auto; color: var(--muted); font-size: 0.9rem; transition: transform 0.2s, color 0.2s; }
+.project-credit-item:hover .project-credit-item__arrow { transform: translateX(4px); color: var(--gold); }

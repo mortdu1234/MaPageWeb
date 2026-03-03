@@ -3,21 +3,144 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Denis ROBERT — Jeux de société</title>
+  <title>Denis ROBERT — Mes Projets</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/style.css"/>
   <style>
-    .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
-    .game-card { background: var(--surface); border: 1px solid var(--line); padding: 32px 28px; text-decoration: none; display: block; transition: all 0.3s ease; position: relative; overflow: hidden; }
-    .game-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--gold); transition: height 0.35s ease; }
-    .game-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
-    .game-card:hover::before { height: 100%; }
-    .game-icon { font-size: 2.2rem; margin-bottom: 16px; display: block; }
-    .game-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
-    .game-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
-    .game-link { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); font-weight: 500; display: flex; align-items: center; gap: 6px; }
-    .game-link::after { content: '→'; transition: transform 0.2s; }
-    .game-card:hover .game-link::after { transform: translateX(4px); }
+
+    /* ─── Layout de la grille de projets ─── */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    /* ─── Séparateur de catégorie ─── */
+    .project-category-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 48px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .project-category-title:first-of-type {
+      margin-top: 0;
+    }
+
+    /* ─── Carte de projet ─── */
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 32px 28px;
+      text-decoration: none;
+      display: block;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 0;
+      transition: height 0.35s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .project-card:hover::before {
+      height: 100%;
+    }
+
+    /* ─── Variante personnelle ─── */
+    .project-card--personal::before {
+      background: var(--gold);
+    }
+
+    /* ─── Variante académique ─── */
+    .project-card--academic {
+      background: color-mix(in srgb, var(--surface) 95%, #4a7fc1 5%);
+    }
+
+    .project-card--academic::before {
+      background: #4a7fc1;
+    }
+
+    /* ─── Badge de catégorie ─── */
+    .project-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 2px;
+      margin-bottom: 14px;
+    }
+
+    .project-badge--personal {
+      background: color-mix(in srgb, var(--gold) 15%, transparent);
+      color: var(--gold);
+      border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+    }
+
+    .project-badge--academic {
+      background: color-mix(in srgb, #4a7fc1 15%, transparent);
+      color: #4a7fc1;
+      border: 1px solid color-mix(in srgb, #4a7fc1 40%, transparent);
+    }
+
+    /* ─── Contenu de la carte ─── */
+    .project-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .project-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .project-description {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .project-cta {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .project-cta::after {
+      content: '→';
+      transition: transform 0.2s;
+    }
+
+    .project-card:hover .project-cta::after {
+      transform: translateX(4px);
+    }
+
   </style>
 </head>
 <body>
@@ -26,22 +149,109 @@
 
   <main>
     <div class="section">
-      <p class="section-tag">Ma ludothèque</p>
-      <h2 class="section-title">Jeux de société</h2>
-      <p class="section-lead">Voici la liste des jeux de société dont j'ai effectué une activités</p>
-      <div class="games-grid">
+      <p class="section-tag">Mes projets</p>
+      <h2 class="section-title">Mes Projets</h2>
+      <p class="section-lead">Voici l'ensemble de mes projets réalisés</p>
 
-        <a class="game-card" href="jeux/smilelife.html">
-          <span class="game-icon">🏝️</span>
-          <div class="game-title">Smile Life</div>
-          <p class="game-desc">description du jeu</p>
-          <span class="game-link">Voir la fiche</span>
+      <!-- ══════════════════════════════════════
+           PROJETS PERSONNELS
+      ══════════════════════════════════════ -->
+      <h3 class="project-category-title">Projets personnels</h3>
+      <div class="project-grid">
+
+        <a class="project-card project-card--personal" href="projets/launcherrocketleague.html">
+          <span class="project-badge project-badge--personal">Personnel</span>
+          <div class="project-name">Launcher Rocket League</div>
+          <p class="project-description">Réalisation d'un nouveau launcher pour le jeu Rocket League sans lancer Epic Games.</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
+
+        <a class="project-card project-card--personal" href="projets/addskipperdc.html">
+          <span class="project-badge project-badge--personal">Personnel</span>
+          <div class="project-name">Add Skipper Dragon City</div>
+          <p class="project-description">Programme qui permet de quitter automatiquement les pubs dans le jeu mobile Dragon City.</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
+
+        <a class="project-card project-card--personal" href="projets/vpn.html">
+          <span class="project-badge project-badge--personal">Personnel</span>
+          <div class="project-name">VPN</div>
+          <p class="project-description">Mise en place d'un VPN pour mon domicile avec Wireguard.</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
+
+        <a class="project-card project-card--personal" href="projets/server.html">
+          <span class="project-badge project-badge--personal">Personnel</span>
+          <div class="project-name">Serveur auto-hébergé</div>
+          <p class="project-description">Mise en place d'un serveur Proxmox qui permet de gérer l'ensemble de cette page et de mon homelab.</p>
+          <span class="project-cta">Voir la fiche</span>
         </a>
         
-        
+        <a class="project-card project-card--personal" href="projets/smilelife.html">
+          <span class="project-badge project-badge--personal">Personnel</span>
+          <div class="project-name">Smile Life</div>
+          <p class="project-description">Réalisation d'une version en ligne de Smile Life en Python.</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
+
+        <a class="project-card project-card--personal" href="projets/resolution2048.html">
+          <span class="project-badge project-badge--personal">Personnel</span>
+          <div class="project-name">Résolution du jeu 2048</div>
+          <p class="project-description">Programmation d'un script de résolution du jeu 2048.</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
+
+        <a class="project-card project-card--personal" href="projets/générateurUML.html">
+          <span class="project-badge project-badge--personal">Personnel</span>
+          <div class="project-name">Générateur de Diagramme UML</div>
+          <p class="project-description">Programme qui permet de générer un diagramme de classe à partir du code Java.</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
+
+        <a class="project-card project-card--personal" href="projets/serverminecraft.html">
+          <span class="project-badge project-badge--personal">Personnel</span>
+          <div class="project-name">Hebergement server Minecraft</div>
+          <p class="project-description">Mise en place d'un server minecraft auto-héberger</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
+
+
+      </div>
+
+      <!-- ══════════════════════════════════════
+           PROJETS ACADÉMIQUES
+      ══════════════════════════════════════ -->
+      <h3 class="project-category-title">Projets académiques</h3>
+      <div class="project-grid">
 
         
+        <a class="project-card project-card--academic" href="projets/generationnombrealeatoire.html">
+          <span class="project-badge project-badge--academic">Études</span>
+          <div class="project-name">Génération de Nombre Aléatoire</div>
+          <p class="project-description">Implémentation en Python d'algorithmes de génération de nombre aléatoire ainsi que de tests statistiques.</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
 
+        <a class="project-card project-card--academic" href="projets/algorithmegenetique.html">
+          <span class="project-badge project-badge--academic">Études</span>
+          <div class="project-name">Algorithme Génétique</div>
+          <p class="project-description">Création d'un algorithme génétique de résolution de labyrinthe.</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
+
+        <a class="project-card project-card--academic" href="projets/jeuloupgarou.html">
+          <span class="project-badge project-badge--academic">Études</span>
+          <div class="project-name">Jeu Loup-Garou</div>
+          <p class="project-description">Implémentation du jeu de loup-garou en Python avec une interface terminale.</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
+
+        <a class="project-card project-card--academic" href="projets/jeusplendor.html">
+          <span class="project-badge project-badge--academic">Études</span>
+          <div class="project-name">Jeu Splendor</div>
+          <p class="project-description">Implémentation du jeu Splendor en Java en groupe.</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
 
       </div>
     </div>
