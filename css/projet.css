@@ -49,7 +49,7 @@
 .project-carousel__track { display: flex; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform; }
 
 .project-carousel__slide { flex: 0 0 100%; aspect-ratio: 16 / 9; position: relative; overflow: hidden; }
-.project-carousel__slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.project-carousel__slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
 .project-carousel__placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
 .project-carousel__placeholder-icon { font-size: 2rem; opacity: 0.4; }
