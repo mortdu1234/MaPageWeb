@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Denis ROBERT — Launcher Rocket League</title>
+  <title>Denis ROBERT — Add Skipper Dragon City</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="../css/style.css"/>
   <link rel="stylesheet" href="../css/projet.css"/>
@@ -19,7 +19,7 @@
       <div class="project-hero">
         <return-project></return-project>
         <div class="project-hero__category">Projet personnel</div>
-        <h1 class="project-hero__title">Launcher<br>Add Skipper Dragon City</h1>
+        <h1 class="project-hero__title">Add Skipper Dragon City</h1>
         <p class="project-hero__tagline">
           Il s'agit d'un programme qui permet de passer automatiquement les pubs dans le jeu Dragon City.
         </p>
@@ -36,7 +36,7 @@
           <div class="project-meta-divider"></div>
           <div class="project-meta-item">
             <span class="project-meta-item__label">Statut</span>
-            <span class="project-meta-item__value">Terminé</span>
+            <span class="project-meta-item__value">En Pause</span>
           </div>
           <div class="project-meta-divider"></div>
           <a class="project-github-link" href="https://github.com/mortdu1234/Ad-skipper-DC.git" target="_blank" rel="noopener">
@@ -65,13 +65,9 @@
               <div class="project-carousel__track" id="carousel-track">
 
                 <div class="project-carousel__slide">
-                  <img src="../img/rl-launcher-main.png" alt="Interface principale">
+                  <img src="../img/dc-home.png" alt="Page de démarrage du script">
                 </div>
-                
-                <div class="project-carousel__slide">
-                  <img src="../img/rl-launcher-main.png" alt="image secondaire">
-                </div>
-
+              
               </div>
             </div>
 
@@ -95,7 +91,6 @@
               Pour créer ce script j'ai utiliser ADB et BlueStack afin de pouvoir interragir avec l'appareil android.
               Ce script vas rechercher sur l'ecran des patterns prédéfinis et quand il les trouve, vas simuler un clic
               dessus.
-
             </p>
           </div>
         </section>
@@ -146,13 +141,12 @@
                 <div class="project-step__line"></div>
               </div>
               <div class="project-step__content">
-                <div class="project-step__title">Identification de la solution de base</div>
+                <div class="project-step__title">Première approche</div>
                 <p class="project-step__desc">
-                  Le point de départ repose sur les travaux de <strong>jun-eau</strong> et
-                  <strong>LittleScripterBoy</strong>, qui ont développé
-                  <a href="https://github.com/jun-eau/Slipstream" target="_blank" rel="noopener">Slipstream</a>,
-                  un exécutable permettant de lancer Rocket League sans Epic Games. L'étude de leur approche
-                  a permis de comprendre le mécanisme de lancement et ce qui était nécessaire pour le reproduire.
+                  Ma première idée à été de réaliser un script qui vas scanner l'ecran à la 
+                  recherche de pattern de pub et qui vas simuler un clic dessus. 
+                  J'ai utiliser Tesseract-OCR pour faire la reconnaissance, mais ce n'était pas très fiables
+                  puisqu'il trouvais en plus d'autre croix sur l'écran ce qui réduisait énormément l'efficacité du script.
                 </p>
               </div>
             </div>
@@ -163,13 +157,12 @@
                 <div class="project-step__line"></div>
               </div>
               <div class="project-step__content">
-                <div class="project-step__title">Conception du système multi-comptes</div>
+                <div class="project-step__title">Deuxième approche</div>
                 <p class="project-step__desc">
-                  L'idée centrale est d'isoler chaque compte dans son propre sous-dossier contenant
-                  une copie de <code>Slipstream.exe</code>. Lors de la création d'un compte,
-                  l'exécutable source est dupliqué via <code>shutil.copy</code> dans
-                  <code>accounts/&lt;nom&gt;/</code>. Chaque instance conserve ainsi ses données
-                  de session sans conflit entre les comptes.
+                  Par hazard j'ai découvert Android Debug Bridge (ADB) qui permet d'interagir avec un appareil Android. 
+                  Ainsi je pouvais récupérer une capture d'écran de l'appareil et faire ma recherche dessus. J'ai également
+                  choisit de changer de méthode de reconnaissance en utilisant OpenCV pour faire du template matching, 
+                  ce qui s'est avéré beaucoup plus fiable que Tesseract.
                 </p>
               </div>
             </div>
@@ -180,49 +173,14 @@
                 <div class="project-step__line"></div>
               </div>
               <div class="project-step__content">
-                <div class="project-step__title">Interface dessinée sur Canvas</div>
+                <div class="project-step__title">Application fonctionnelle théoriquement</div>
                 <p class="project-step__desc">
-                  Plutôt que d'utiliser les widgets Tkinter classiques, l'interface est dessinée
-                  directement sur un <code>Canvas</code> de 800×600 px. Cela permet de superposer
-                  les éléments sur l'image de fond avec un contrôle total sur le positionnement.
-                  Chaque bouton est un rectangle Canvas avec un binding <code>&lt;Button-1&gt;</code>
-                  attaché à la fois au rectangle et au texte.
+                  Mon application fonctionne correctement mais après quelques minutes force un redémarge de l'ordinateur qui l'héberge.
+                  Aucune solutions n'est encore trouvée à ce problème, c'est pourquoi le projet est actuellement en pause. Il me faudrait
+                  certainement changer d'émulateur qui pourrait etre lié a ce problème.
                 </p>
               </div>
             </div>
-
-            <div class="project-step">
-              <div class="project-step__indicator">
-                <div class="project-step__dot"></div>
-                <div class="project-step__line"></div>
-              </div>
-              <div class="project-step__content">
-                <div class="project-step__title">Gestion du dropdown et des clics extérieurs</div>
-                <p class="project-step__desc">
-                  Le menu de sélection de compte est un dropdown entièrement custom dessiné sur le Canvas.
-                  Les coordonnées des zones interactives sont stockées dans des variables globales et
-                  comparées à chaque clic via un binding <code>add="+"</code>, ce qui permet de fermer
-                  le menu lors d'un clic extérieur sans interférer avec les autres bindings déjà enregistrés.
-                </p>
-              </div>
-            </div>
-
-            <div class="project-step">
-              <div class="project-step__indicator">
-                <div class="project-step__dot"></div>
-                <div class="project-step__line"></div>
-              </div>
-              <div class="project-step__content">
-                <div class="project-step__title">Lancement du jeu et fermeture propre</div>
-                <p class="project-step__desc">
-                  Le lancement s'effectue via <code>subprocess.Popen</code> en passant le répertoire
-                  du compte comme <code>cwd</code>, avec le flag <code>CREATE_NO_WINDOW</code> sur
-                  Windows pour éviter l'apparition d'une fenêtre console. La fenêtre du launcher
-                  se ferme ensuite automatiquement via <code>root.destroy()</code>.
-                </p>
-              </div>
-            </div>
-
           </div>
         </section>
 
@@ -232,23 +190,7 @@
           <div class="project-usage-steps">
             <div class="project-usage-step">
               <span class="project-usage-step__number">01</span>
-              <p class="project-usage-step__text">Placer <strong>Slipstream.exe</strong> et <strong>launcher.py</strong> dans le même dossier. Ajouter un fichier <strong>background.png</strong> pour personnaliser l'arrière-plan (optionnel).</p>
-            </div>
-            <div class="project-usage-step">
-              <span class="project-usage-step__number">02</span>
-              <p class="project-usage-step__text">Lancer <strong>launcher.py</strong> avec Python. Cliquer sur <strong>New Account</strong> et saisir un nom pour créer le premier compte.</p>
-            </div>
-            <div class="project-usage-step">
-              <span class="project-usage-step__number">03</span>
-              <p class="project-usage-step__text">Pour changer de compte, cliquer sur le <strong>nom du compte affiché</strong> pour ouvrir le dropdown et sélectionner un autre compte enregistré.</p>
-            </div>
-            <div class="project-usage-step">
-              <span class="project-usage-step__number">04</span>
-              <p class="project-usage-step__text">Cliquer sur <strong>Start</strong> pour lancer Rocket League avec le compte actif. Le launcher se ferme automatiquement.</p>
-            </div>
-            <div class="project-usage-step">
-              <span class="project-usage-step__number">05</span>
-              <p class="project-usage-step__text">Pour supprimer un compte, s'assurer qu'il est sélectionné puis cliquer sur <strong>🗑️</strong> et confirmer. Le dossier associé est supprimé proprement.</p>
+              <p class="project-usage-step__text">lancer le script et suivre les instructions</p>
             </div>
           </div>
         </section>
@@ -257,27 +199,8 @@
         <section>
           <h2 class="project-section__heading">Remerciements</h2>
           <p class="project-section__text" style="margin-bottom: 20px;">
-            Ce projet s'appuie sur le travail open source de deux développeurs ayant rendu possible
-            le lancement de Rocket League sans Epic Games.
+            Ce projet s'appuie sur mon propre travail.
           </p>
-          <div class="project-credits">
-            <a class="project-credit-item" href="https://github.com/jun-eau/Slipstream" target="_blank" rel="noopener">
-              <span class="project-credit-item__icon">⚙️</span>
-              <div class="project-credit-item__info">
-                <span class="project-credit-item__name">jun-eau — Slipstream</span>
-                <span class="project-credit-item__role">Exécutable de lancement alternatif pour Rocket League</span>
-              </div>
-              <span class="project-credit-item__arrow">→</span>
-            </a>
-            <a class="project-credit-item" href="https://github.com/LittleScripterBoy/RocketLeagueLauncher" target="_blank" rel="noopener">
-              <span class="project-credit-item__icon">🚀</span>
-              <div class="project-credit-item__info">
-                <span class="project-credit-item__name">LittleScripterBoy — RocketLeagueLauncher</span>
-                <span class="project-credit-item__role">Launcher de référence dont ce projet s'est inspiré</span>
-              </div>
-              <span class="project-credit-item__arrow">→</span>
-            </a>
-          </div>
         </section>
         
         <return-project></return-project>
