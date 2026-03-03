@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — VPN WireGuard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/projet.css"/>
+</head>
+<body>
+
+  <nav-bar root="../"></nav-bar>
+
+  <main>
+    <div class="section">
+
+      <!-- ══════ HERO ══════ -->
+      <div class="project-hero">
+        <return-project></return-project>
+        <div class="project-hero__category">Infrastructure personnelle</div>
+        <h1 class="project-hero__title">VPN WireGuard</h1>
+        <p class="project-hero__tagline">
+          Mise en place d'un VPN WireGuard hébergé dans un conteneur LXC sous Proxmox,
+          permettant d'accéder à mon réseau local depuis n'importe où.
+        </p>
+        <div class="project-hero__meta">
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Technologie</span>
+            <span class="project-meta-item__value">WireGuard</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Hébergement</span>
+            <span class="project-meta-item__value">Proxmox LXC</span>
+          </div>
+          <div class="project-meta-divider"></div>
+          <div class="project-meta-item">
+            <span class="project-meta-item__label">Statut</span>
+            <span class="project-meta-item__value">Terminé</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ CORPS ══════ -->
+      <div class="project-body">
+
+        <!-- Présentation -->
+        <section>
+          <h2 class="project-section__heading">Présentation</h2>
+          <div class="project-section__text">
+            <p>
+              Ce projet fait suite à la mise en place de mon
+              <a href="server.html" style="color: var(--gold); text-decoration: none;">serveur auto-hébergé</a>.
+              Disposant déjà d'une infrastructure Proxmox, j'ai voulu pouvoir accéder à mon réseau local
+              à distance de façon sécurisée, sans exposer directement mes services sur Internet.
+            </p>
+            <p>
+              J'ai opté pour <strong>WireGuard</strong>, un protocole VPN moderne reconnu pour sa simplicité
+              de configuration, ses performances élevées et sa sécurité. Le serveur VPN tourne dans un
+              <strong>conteneur LXC dédié</strong> sous Proxmox, ce qui l'isole du reste de l'infrastructure
+              tout en le gardant léger. La connexion côté client se fait en important un fichier de
+              configuration généré par le serveur dans l'application WireGuard.
+            </p>
+          </div>
+        </section>
+
+        <!-- Fonctionnalités -->
+        <section>
+          <h2 class="project-section__heading">Fonctionnalités</h2>
+          <div class="project-features">
+            <div class="project-feature">
+              <div class="project-feature__title">Accès au réseau local à distance</div>
+              <p class="project-feature__desc">Une fois connecté au VPN, le client fait partie du réseau local et peut atteindre toutes les machines comme s'il était sur place.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Isolation via LXC</div>
+              <p class="project-feature__desc">Le serveur WireGuard est isolé dans son propre conteneur Proxmox, séparé des autres services de l'infrastructure.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Configuration par fichier</div>
+              <p class="project-feature__desc">Chaque client reçoit un fichier de configuration à importer dans l'application WireGuard, sans installation complexe.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Chiffrement moderne</div>
+              <p class="project-feature__desc">WireGuard utilise des algorithmes cryptographiques récents (Curve25519, ChaCha20, Poly1305) pour sécuriser toutes les communications.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stack technique -->
+        <section>
+          <h2 class="project-section__heading">Stack technique</h2>
+          <div class="project-section__text">
+            <p>
+              Le serveur VPN repose sur <strong>WireGuard</strong> installé dans un conteneur
+              <strong>LXC sous Proxmox</strong>. Le routage réseau est configuré pour permettre
+              aux clients connectés d'accéder à l'ensemble du réseau local. Côté client, un simple
+              fichier <code>.conf</code> suffit à établir la connexion depuis n'importe quel appareil
+              supportant WireGuard (PC, mobile).
+            </p>
+          </div>
+          <div class="project-stack">
+            <span class="project-stack__tag">WireGuard</span>
+            <span class="project-stack__tag">Proxmox</span>
+            <span class="project-stack__tag">LXC</span>
+            <span class="project-stack__tag">Linux</span>
+          </div>
+        </section>
+
+        <!-- Démarche -->
+        <section>
+          <h2 class="project-section__heading">Démarche</h2>
+          <div class="project-steps">
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Création du conteneur LXC</div>
+                <p class="project-step__desc">
+                  Plutôt que d'installer WireGuard directement sur l'hôte Proxmox ou sur une VM complète,
+                  j'ai créé un conteneur LXC dédié. Plus léger qu'une VM, il offre une isolation suffisante
+                  pour ce type de service tout en consommant peu de ressources.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Installation et configuration de WireGuard</div>
+                <p class="project-step__desc">
+                  Installation de WireGuard dans le conteneur, génération des clés publique et privée
+                  du serveur, puis configuration de l'interface réseau WireGuard avec l'adresse IP du
+                  tunnel et les règles de routage pour rediriger le trafic vers le réseau local.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Ajout des clients (peers)</div>
+                <p class="project-step__desc">
+                  Pour chaque appareil client, une paire de clés est générée et un fichier
+                  <code>.conf</code> est produit avec les informations du serveur (adresse, port, clé publique)
+                  et les paramètres du client. Ce fichier est ensuite importé dans l'application WireGuard
+                  pour établir la connexion en un clic.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Ouverture du port et test</div>
+                <p class="project-step__desc">
+                  Le port UDP de WireGuard a été ouvert sur le routeur et redirigé vers le conteneur LXC.
+                  Après vérification du routage et des règles de pare-feu, la connexion depuis l'extérieur
+                  du réseau a été testée avec succès pour confirmer l'accès à l'ensemble du réseau local.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Utilisation -->
+        <section>
+          <h2 class="project-section__heading">Utilisation</h2>
+          <div class="project-usage-steps">
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">01</span>
+              <p class="project-usage-step__text">Installer l'application <strong>WireGuard</strong> sur l'appareil client (PC, Android, iOS).</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">02</span>
+              <p class="project-usage-step__text">Importer le fichier <strong>.conf</strong> fourni dans l'application via « Ajouter un tunnel ».</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">03</span>
+              <p class="project-usage-step__text">Activer le tunnel — le client est alors connecté au réseau local et peut accéder à tous les services internes.</p>
+            </div>
+          </div>
+        </section>
+
+        <return-project></return-project>
+      </div>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+  <script src="../js/components.js"></script>
+
+</body>
+</html>
