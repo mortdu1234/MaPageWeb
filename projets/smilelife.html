@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — Smile Life</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/projet.css"/>
+  <script src="../js/components.js"></script>
+</head>
+<body>
+
+  <nav-bar root="../"></nav-bar>
+
+  <main>
+    <div class="section">
+
+      <!-- ══════ HERO BANNER ══════ -->
+      <project-hero-banner 
+        type="personnel"
+        name="Smile Life"
+        tagline="Implémentation du jeu de cartes familial « Smile Life » en ligne, avec support multijoueur temps réel, cartes spéciales et extension"
+        language="Python"
+        interface="Web"
+        status="Terminé">
+      </project-hero-banner>
+
+      <!-- ══════ CORPS ══════ -->
+      <div class="project-body">
+
+        <!-- Présentation -->
+        <section>
+          <h2 class="project-section__heading">Présentation</h2>
+          <div class="project-section__text">
+            <p>
+              Smile Life est une adaptation en ligne d'un jeu de cartes physique joué en famille.
+              L'objectif est de recréer fidèlement l'expérience du jeu original tout en le rendant
+              accessible à distance, sans matériel. Chaque joueur construit sa vie — métier,
+              famille, maison — tout en essayant de perturber celle de ses adversaires via des
+              cartes « coups durs ».
+            </p>
+            <p>
+              Le projet repose sur <strong>Flask</strong> côté serveur et <strong>Socket.IO</strong>
+              pour la communication en temps réel entre les joueurs. L'interface, entièrement dans le
+              navigateur, est construite avec du HTML/CSS/JS vanilla et <strong>Tailwind CSS</strong>.
+              Le jeu supporte de 2 à 5 joueurs simultanés, avec un système de lobby, de configuration
+              du deck et des règles complètes intégrées pour chaque carte.
+            </p>
+          </div>
+        </section>
+
+        <!-- Fonctionnalités -->
+        <section>
+          <h2 class="project-section__heading">Fonctionnalités</h2>
+          <div class="project-features">
+            <div class="project-feature">
+              <div class="project-feature__title">Multijoueur en temps réel</div>
+              <p class="project-feature__desc">Jusqu'à 5 joueurs connectés simultanément via WebSocket. Chaque action est synchronisée instantanément sur toutes les sessions.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Deck entièrement configurable</div>
+              <p class="project-feature__desc">L'hôte peut ajuster la quantité de chaque carte avant la partie, avec des presets prédéfinis et un aperçu des règles intégré.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Cartes spéciales & pouvoirs</div>
+              <p class="project-feature__desc">Casino, Arc-en-ciel, Vengeance, Piston… chaque carte spéciale déclenche une mécanique interactive propre, gérée côté serveur.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Extension Girl Power</div>
+              <p class="project-feature__desc">Extension complète avec versions féminines des métiers, nouvelles cartes spéciales et mécaniques inédites (Girl Power, Redistribution des tâches…).</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Règles in-game</div>
+              <p class="project-feature__desc">Un clic sur n'importe quelle carte affiche ses règles complètes et son illustration, même depuis l'écran de configuration du deck.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Gestion des déconnexions</div>
+              <p class="project-feature__desc">Les sessions joueurs sont maintenues côté serveur. Les autres joueurs sont notifiés en cas de déconnexion et la partie peut continuer.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stack technique -->
+        <section>
+          <h2 class="project-section__heading">Stack technique</h2>
+          <div class="project-section__text">
+            <p>
+              Le serveur est construit avec <strong>Flask</strong> et <strong>Flask-SocketIO</strong>,
+              qui gèrent respectivement les routes HTTP et la communication WebSocket en temps réel.
+              La logique de jeu est entièrement côté serveur en Python, avec un système de classes
+              (<code>Game</code>, <code>Player</code>, <code>Card</code>) qui encapsule les règles
+              et l'état de chaque partie. Côté client, l'interface est en HTML/JS vanilla avec
+              <strong>Tailwind CSS</strong> pour le style, sans framework frontend.
+            </p>
+          </div>
+          <div class="project-stack">
+            <span class="project-stack__tag">Python</span>
+            <span class="project-stack__tag">Flask</span>
+            <span class="project-stack__tag">Flask-SocketIO</span>
+            <span class="project-stack__tag">JavaScript</span>
+            <span class="project-stack__tag">Tailwind CSS</span>
+            <span class="project-stack__tag">WebSocket</span>
+            <span class="project-stack__tag">HTML / CSS</span>
+          </div>
+        </section>
+
+        <!-- Démarche -->
+        <section>
+          <h2 class="project-section__heading">Démarche</h2>
+          <div class="project-steps">
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Modélisation du jeu en Python</div>
+                <p class="project-step__desc">
+                  La première étape a été de modéliser toutes les entités du jeu : cartes (métiers, études,
+                  salaires, coups durs, spéciales…), joueurs et parties. Chaque type de carte hérite
+                  d'une classe de base et implémente ses propres méthodes <code>can_be_played()</code>
+                  et <code>play_card()</code>, ce qui permet d'ajouter de nouvelles cartes sans modifier
+                  la logique centrale.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Mise en place du serveur WebSocket</div>
+                <p class="project-step__desc">
+                  Flask-SocketIO gère la communication bidirectionnelle en temps réel. Chaque action
+                  de jeu (piocher, jouer, défausser, passer) correspond à un événement Socket.IO.
+                  Le serveur valide les actions, met à jour l'état de la partie, puis émet un
+                  événement <code>game_updated</code> à tous les joueurs de la room avec leur
+                  vue personnalisée de l'état du jeu.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Interface et cartes spéciales</div>
+                <p class="project-step__desc">
+                  L'interface affiche les cartes avec leurs illustrations et un fallback textuel
+                  en cas d'image manquante. Chaque carte spéciale déclenche une modale interactive
+                  côté client (sélection de cible, choix d'échange, pari au casino…) qui dialogue
+                  avec le serveur via des événements Socket.IO dédiés.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Système de deck configurable</div>
+                <p class="project-step__desc">
+                  Une interface de configuration permet à l'hôte d'ajuster le nombre de chaque carte
+                  dans le deck avant la partie, organisée par catégories (métiers, coups durs, extensions…).
+                  Des presets prédéfinis sont disponibles et la configuration peut être modifiée
+                  depuis le lobby sans recharger la page.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Extension Girl Power et déploiement</div>
+                <p class="project-step__desc">
+                  L'extension Girl Power a été intégrée dans un module séparé
+                  (<code>girl_power_extention.py</code>) pour ne pas alourdir le cœur du jeu.
+                  Le serveur est déployé via un tunnel Serveo, accessible publiquement à
+                  l'adresse <a href="https://smile-life.serveo.net/">smile-life.serveo.net</a>
+                  sans configuration réseau complexe.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Utilisation -->
+        <section>
+          <h2 class="project-section__heading">Utilisation</h2>
+          <div class="project-usage-steps">
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">01</span>
+              <p class="project-usage-step__text">Se rendre sur <strong><a href="XXXX">pas de lien pour l'instant</a></strong> depuis n'importe quel navigateur, sans installation.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">02</span>
+              <p class="project-usage-step__text">Créer une partie en choisissant le nombre de joueurs et en personnalisant le deck si souhaité, puis partager le <strong>code de partie</strong> aux autres joueurs.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">03</span>
+              <p class="project-usage-step__text">Une fois tous les joueurs connectés dans le lobby, l'hôte démarre la partie. Chaque joueur joue à son tour : <strong>piocher</strong>, puis <strong>jouer ou défausser</strong> une carte.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">04</span>
+              <p class="project-usage-step__text">Quand la pioche est épuisée, le joueur ayant accumulé le plus de <strong>sourires</strong> remporte la partie.</p>
+            </div>
+          </div>
+        </section>
+        <return-project></return-project>
+      </div>
+    </div>
+  </main>
+
+
+  <site-footer></site-footer>
+
+</body>
+</html>
