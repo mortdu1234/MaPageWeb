@@ -14,33 +14,14 @@
 
   <main>
     <div class="section">
-
-      <!-- ══════ HERO ══════ -->
-      <div class="project-hero">
-        <return-project></return-project>
-        <div class="project-hero__category">Infrastructure personnelle</div>
-        <h1 class="project-hero__title">VPN WireGuard</h1>
-        <p class="project-hero__tagline">
-          Mise en place d'un VPN WireGuard hébergé dans un conteneur LXC sous Proxmox,
-          permettant d'accéder à mon réseau local depuis n'importe où.
-        </p>
-        <div class="project-hero__meta">
-          <div class="project-meta-item">
-            <span class="project-meta-item__label">Technologie</span>
-            <span class="project-meta-item__value">WireGuard</span>
-          </div>
-          <div class="project-meta-divider"></div>
-          <div class="project-meta-item">
-            <span class="project-meta-item__label">Hébergement</span>
-            <span class="project-meta-item__value">Proxmox LXC</span>
-          </div>
-          <div class="project-meta-divider"></div>
-          <div class="project-meta-item">
-            <span class="project-meta-item__label">Statut</span>
-            <span class="project-meta-item__value">Terminé</span>
-          </div>
-        </div>
-      </div>
+      <project-hero-banner 
+        type="personnel"
+        name="VPN WireGuard"
+        tagline="Mise en place d'un VPN WireGuard hébergé dans un conteneur LXC sous Proxmox,
+          permettant d'accéder à mon réseau local depuis n'importe où."
+        interface="Proxmox LXC"
+        status="Terminé">
+      </project-hero-banner>
 
       <!-- ══════ CORPS ══════ -->
       <div class="project-body">

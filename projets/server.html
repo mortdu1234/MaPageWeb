@@ -14,39 +14,14 @@
 
   <main>
     <div class="section">
-
-      <!-- ══════ HERO ══════ -->
-      <div class="project-hero">
-        <return-project></return-project>
-        <div class="project-hero__category">Infrastructure personnelle</div>
-        <h1 class="project-hero__title">Serveur auto-hébergé</h1>
-        <p class="project-hero__tagline">
-          Mise en place d'un serveur maison sous Proxmox à partir d'un vieux PC de bureau,
-          point de départ de toute mon infrastructure personnelle.
-        </p>
-        <div class="project-hero__meta">
-          <div class="project-meta-item">
-            <span class="project-meta-item__label">Hyperviseur</span>
-            <span class="project-meta-item__value">Proxmox</span>
-          </div>
-          <div class="project-meta-divider"></div>
-          <div class="project-meta-item">
-            <span class="project-meta-item__label">Matériel</span>
-            <span class="project-meta-item__value">PC de bureau</span>
-          </div>
-          <div class="project-meta-divider"></div>
-          <div class="project-meta-item">
-            <span class="project-meta-item__label">Disponibilité</span>
-            <span class="project-meta-item__value">24h/24</span>
-          </div>
-          <div class="project-meta-divider"></div>
-          <div class="project-meta-item">
-            <span class="project-meta-item__label">Statut</span>
-            <span class="project-meta-item__value">Terminé</span>
-          </div>
-        </div>
-      </div>
-
+      <project-hero-banner 
+        type="personnel"
+        name="Serveur auto-hébergé"
+        tagline="Mise en place d'un serveur maison sous Proxmox à partir d'un vieux PC de bureau,
+          point de départ de toute mon infrastructure personnelle."
+        interface="Proxmox"
+        status="Terminé">
+      </project-hero-banner>
       <!-- ══════ CORPS ══════ -->
       <div class="project-body">
 
