@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis ROBERT — Jeu du Loup Garou</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/projet.css"/>
+  <script src="../js/components.js"></script>
+</head>
+<body>
+
+  <nav-bar root="../"></nav-bar>
+
+  <main>
+    <div class="section">
+        <project-hero-banner 
+            type="académique"
+            name="Jeu du Loup Garou"
+            tagline="Adaptation terminal du jeu de société Loup Garou de Thiercelieux"
+            language="Python"
+            interface="Terminal"
+            context="Projet de cours"
+            status="Terminé"
+            gitHubPage="https://github.com/Julien3556/Projet_Loups_Garous.git">
+        </project-hero-banner>
+      
+        <!-- Présentation -->
+        <section>
+          <h2 class="project-section__heading">Présentation</h2>
+          <div class="project-section__text">
+            <p>
+              Ce projet académique réalisé en équipe de quatre à l'ENSIBS a pour objectif de produire
+              une adaptation logicielle du jeu de société <em>Loups-Garous de Thiercelieux</em>, sans extension,
+              entièrement jouable dans un terminal. L'objectif pédagogique principal était d'apprendre à
+              travailler en groupe avec les outils GIT dans un contexte de développement réel.
+            </p>
+            <p>
+              L'interface repose sur la bibliothèque <strong>curses</strong> pour structurer l'affichage en plusieurs
+              fenêtres (titre, narration, informations, ASCII art), tandis que <strong>pygame</strong> gère une
+              bande-son d'ambiance et des effets sonores contextuels pour immerger les joueurs dans l'atmosphère
+              du jeu de société. Entre 6 et 18 joueurs peuvent participer à chaque partie.
+            </p>
+          </div>
+        </section>
+
+        <!-- Fonctionnalités -->
+        <section>
+          <h2 class="project-section__heading">Fonctionnalités</h2>
+          <div class="project-features">
+            <div class="project-feature">
+              <div class="project-feature__title">8 rôles du jeu de base</div>
+              <p class="project-feature__desc">Tous les rôles originaux sont implémentés : Loup-Garou, Voyante, Simple Villageois, Chasseur, Petite Fille, Cupidon, Sorcière et Voleur. Chaque rôle dispose de sa propre logique d'action nocturne ou événementielle.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Mode simplifié et mode complet</div>
+              <p class="project-feature__desc">Deux modes de jeu disponibles : le mode normal inclut tous les rôles spéciaux (Voleur, Cupidon, etc.) avec un premier tour dédié, tandis que le mode simplifié réduit la diversité des rôles pour des parties plus accessibles et rapides.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Sauvegarde et chargement de partie</div>
+              <p class="project-feature__desc">L'état complet du jeu (joueurs vivants, morts, tour actuel, rôles restants, statut jour/nuit) est sérialisé en JSON à chaque étape. Une partie interrompue peut être reprise à tout moment depuis le menu d'accueil.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Ambiance sonore avec pygame</div>
+              <p class="project-feature__desc">Une musique d'ambiance tourne en boucle tout au long de la partie. Des effets sonores spécifiques accompagnent les moments clés : élection du maire, révélation des amoureux, vote du village, etc.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Interface terminal multi-fenêtres</div>
+              <p class="project-feature__desc">L'affichage est découpé en quatre zones distinctes via curses : une fenêtre de titre, une fenêtre de narration avec défilement et saisie clavier, une zone d'ASCII art et un panneau d'informations affichant le tour et l'heure (jour/nuit).</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Système de vote et gestion du maire</div>
+              <p class="project-feature__desc">Chaque journée, tous les joueurs votent à tour de rôle pour éliminer un suspect. Le maire est élu au premier tour et son vote compte double. En cas d'égalité, un second vote est organisé entre les joueurs ex-æquo.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">ASCII art contextuel</div>
+              <p class="project-feature__desc">Des illustrations en ASCII art accompagnent chaque phase du jeu : nuit du village, lever du soleil, mort d'un joueur, utilisation des potions, vote, victoire par camp, etc.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Attribution aléatoire des rôles</div>
+              <p class="project-feature__desc">Les rôles sont distribués aléatoirement selon des tables de répartition équilibrées indexées sur le nombre de joueurs (de 6 à 18). Le Voleur dispose de deux rôles supplémentaires non attribués parmi lesquels choisir.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stack technique -->
+        <section>
+          <h2 class="project-section__heading">Stack technique</h2>
+          <div class="project-section__text">
+            <p>
+              Le projet est entièrement écrit en <strong>Python 3.12</strong>. L'interface terminal s'appuie sur
+              <strong>curses</strong> (via <code>windows-curses</code> sous Windows) pour le rendu multi-fenêtres
+              et la gestion des entrées clavier en temps réel. La couche audio utilise <strong>pygame</strong>
+              pour la lecture de la musique d'ambiance et des effets sonores. <strong>PyAutoGUI</strong> est utilisé
+              au démarrage pour passer automatiquement le terminal en plein écran et améliorer l'immersion.
+              La persistance des parties est assurée par des fichiers <strong>JSON</strong> natifs, sans base de
+              données externe. Les conventions de code retenues sont le <em>CamelCase</em> pour les classes, 
+              le <em>snake_case</em> pour les fonctions et variables, et le français pour tous les identifiants.
+            </p>
+          </div>
+          <div class="project-stack">
+            <span class="project-stack__tag">Python 3.12</span>
+            <span class="project-stack__tag">curses</span>
+            <span class="project-stack__tag">pygame</span>
+            <span class="project-stack__tag">PyAutoGUI</span>
+            <span class="project-stack__tag">JSON</span>
+            <span class="project-stack__tag">Git</span>
+          </div>
+        </section>
+
+        <!-- Démarche -->
+        <section>
+          <h2 class="project-section__heading">Démarche</h2>
+          <div class="project-steps">
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Rédaction du cahier des charges</div>
+                <p class="project-step__desc">
+                  Avant d'écrire la moindre ligne de code, l'équipe a formalisé un cahier des charges complet
+                  décrivant les spécifications fonctionnelles par cas d'usage (accueil, rôles, village, victoire),
+                  les contraintes techniques, les conventions de nommage et le diagramme UML de l'architecture.
+                  Ce document a servi de référence tout au long du développement.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Architecture orientée objet</div>
+                <p class="project-step__desc">
+                  Le projet est structuré autour de plusieurs classes aux responsabilités clairement séparées :
+                  <code>Jeu</code> gère la boucle principale et les phases jour/nuit, <code>Joueur</code> encapsule
+                  les données d'un joueur, <code>Interface</code> centralise toutes les interactions avec l'utilisateur,
+                  <code>Terminal</code> gère le rendu curses, <code>Audio</code> pilote pygame, et <code>Sauvegarde</code>
+                  s'occupe de la persistance JSON. Chaque rôle du jeu est une classe indépendante dans <code>Roles.py</code>.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Implémentation des rôles et de la logique de jeu</div>
+                <p class="project-step__desc">
+                  Chaque rôle spécial dispose d'une méthode <code>action()</code> appelée au bon moment par la
+                  boucle de jeu. La Sorcière gère ses deux potions à usage unique, la Voyante mémorise les joueurs
+                  déjà observés, le Chasseur tire en mourant, Cupidon lie deux joueurs dont la mort est solidaire,
+                  et le Voleur choisit parmi les rôles non attribués lors du premier tour.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Interface terminal et expérience utilisateur</div>
+                <p class="project-step__desc">
+                  L'interface multi-fenêtres curses a été conçue pour guider les joueurs à tour de rôle devant
+                  l'écran. La fenêtre de narration conserve un historique des messages scrollable, la saisie
+                  clavier est gérée en temps réel (avec suppression, validation par Entrée), et l'ASCII art
+                  contextuel renforce l'atmosphère à chaque moment clé.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Sauvegarde et reprise de partie</div>
+                <p class="project-step__desc">
+                  À chaque transition (fin de nuit, fin de journée), l'état complet de la partie est sérialisé
+                  dans un fichier JSON nommé par le joueur : joueurs vivants et morts avec leur rôle et statuts
+                  (maire, couple), morts du tour en cours, numéro de tour et phase. Au chargement, tous les
+                  objets Python sont reconstruits fidèlement depuis ce fichier.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Conditions de victoire</div>
+                <p class="project-step__desc">
+                  Trois fins de partie sont possibles : victoire du village si tous les loups-garous sont éliminés,
+                  victoire des loups-garous s'ils sont majoritaires parmi les survivants, et victoire du couple
+                  amoureux s'ils sont les deux derniers joueurs en vie, quelle que soit leur appartenance de camp.
+                  La vérification est effectuée après chaque élimination.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Utilisation -->
+        <section>
+          <h2 class="project-section__heading">Utilisation</h2>
+          <div class="project-usage-steps">
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">01</span>
+              <p class="project-usage-step__text">S'assurer d'avoir <strong>Python 3.12</strong> installé, puis installer les dépendances : <code>pip install -r requirements.txt</code> (installe <code>windows-curses</code>, <code>pygame</code> et <code>pyautogui</code>).</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">02</span>
+              <p class="project-usage-step__text">Ouvrir un terminal externe (important : ne pas utiliser le terminal intégré d'un IDE) et lancer le point d'entrée : <strong><code>python Accueil.py</code></strong>. Le terminal passe automatiquement en plein écran.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">03</span>
+              <p class="project-usage-step__text">Au menu d'accueil, choisir <strong>1</strong> pour une nouvelle partie complète, <strong>2</strong> pour une partie simplifiée (moins de rôles spéciaux), ou <strong>3</strong> pour reprendre une sauvegarde existante.</p>
+            </div>
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">04</span>
+              <p class="project-usage-step__text">Chaque joueur entre son nom à tour de rôle (6 minimum, 18 maximum). Les rôles sont distribués aléatoirement, puis chaque joueur s'approche de l'écran pour découvrir le sien en privé avant que la partie commence.</p>
+            </div>
+          </div>
+        </section>
+
+        <return-project></return-project>
+      </div>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
