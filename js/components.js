@@ -121,16 +121,80 @@ class ProjectHeroBanner extends HTMLElement {
   }
 }
 
+class ProjectCard extends HTMLElement {
+  connectedCallback() {
+    const href = this.getAttribute('href') || null;
+    const type = this.getAttribute("type") || null;
+    const name = this.getAttribute("name") || null;
+    const description = this.getAttribute("description") || null;
+    
+    if (type == "personnel") {
+      this.innerHTML = `
+        <a class="project-card project-card--personal" href="${href}">
+          <span class="project-badge project-badge--personal">${type}</span>
+          <div class="project-name">${name}</div>
+          <p class="project-description">${description}</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
+      `
+    } else {
+      this.innerHTML = `
+        <a class="project-card project-card--academic" href="${href}">
+          <span class="project-badge project-badge--academic">${type}</span>
+          <div class="project-name">${name}</div>
+          <p class="project-description">${description}</p>
+          <span class="project-cta">Voir la fiche</span>
+        </a>
+      `
+    }
+  }
+}
+
 // ─────────────────────────────────────────────
 //  <site-footer></site-footer>
 // ─────────────────────────────────────────────
 class SiteFooter extends HTMLElement {
   connectedCallback() {
+    this.innerHTML = `<footer><span class="brand">Denis ROBERT</span></footer>`;
+  }
+}
+
+class GameCard extends HTMLElement {
+  connectedCallback() {
+    const href = this.getAttribute('href') || null;
+    const name = this.getAttribute("name") || null;
+    const description = this.getAttribute("description") || "description du jeu";
+    
     this.innerHTML = `
-      <footer>
-        <span class="brand">Denis ROBERT</span>
-      </footer>
-    `;
+      <a class="game-card" href="${href}">
+        <div class="game-title">${name}</div>
+        <p class="game-desc">${description}</p>
+        <span class="game-link">Voir la fiche</span>
+      </a>
+    `
+  }
+}
+
+class GameHeroBanner extends HTMLElement {
+  connectedCallback() {
+    const name = this.getAttribute("name") || null;
+    const players = this.getAttribute("player") || null;
+    const duree = this.getAttribute("duree") || null;
+    const age = this.getAttribute("age") || null;
+    
+    this.innerHTML = `
+    <a class="back-btn" href="../jeux.html">Retour aux jeux</a>
+    <h2>${name}</h2>
+    <div class="game-meta">
+      <strong>${players} joueurs</strong>
+      <div class="project-meta-divider"></div>
+      <strong>${duree} min</strong>
+      <div class="project-meta-divider"></div>
+      <strong>age : ${age}+</strong>
+    </div>
+    <div class="divider"></div>
+    `
+    
   }
 }
 
@@ -151,6 +215,9 @@ customElements.define('nav-bar', NavBar);
 customElements.define('site-footer', SiteFooter);
 customElements.define('return-project', ReturnProject);
 customElements.define('project-hero-banner', ProjectHeroBanner);
+customElements.define('project-card', ProjectCard);
+customElements.define('game-card', GameCard)
+customElements.define('game-hero-banner', GameHeroBanner)
 
 // ─────────────────────────────────────────────
 //  Formulaire de contact (utilisé sur contact.html)
