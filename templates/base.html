@@ -5,16 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{% block title %}Denis ROBERT{% endblock %}</title>
 
+  <script type="module" src="{{ url_for('static', filename='js/balises/NavBar.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/balises/SiteFooter.js') }}"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}"/>
+  
 
   {% block styles %}{% endblock %}
   {% block head_scripts %}{% endblock %}
 </head>
 <body>
-
-  <nav-bar root="/" username="{{ session.get('username', '') }}"></nav-bar>
+  <nav-bar
+    root="/"
+    username="{{ current_user.username }}"
+    permissions="{{ current_user.permissions | tojson | forceescape }}">
+  </nav-bar>
 
   <main>
     {% block content %}{% endblock %}
@@ -22,7 +26,6 @@
 
   <site-footer></site-footer>
 
-  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
   {% block scripts %}{% endblock %}
 
 </body>

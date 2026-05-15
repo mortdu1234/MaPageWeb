@@ -34,7 +34,7 @@ class SessionUser:
 
     @staticmethod
     def username():
-        return session.get("username")
+        return session.get("username", '')
 
     @staticmethod
     def is_admin():
