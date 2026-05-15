@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Denis ROBERT — Add Skipper Dragon City</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/projet.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/section.css') }}"/>
+  <script type="module" src="{{ url_for('static', filename='js/balises/bundles/projectsBundle.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/balises/ImageCarousel.js') }}"></script>
 </head>
 <body>
 
@@ -31,29 +34,10 @@
         <!-- ── Galerie carrousel ── -->
         <section>
           <h2 class="project-section__heading">Aperçu</h2>
+          <images-carousel 
+            src1="{{ url_for('static', filename='images/dc-home.png') }}" alt1="interface utilisateur du programme"
+          ></images-carousel>
 
-          <div class="project-carousel" id="gallery-carousel">
-
-            <!-- Flèche précédente -->
-            <button class="project-carousel__btn project-carousel__btn--prev" aria-label="Image précédente">&#8592;</button>
-
-            <!-- Piste des slides -->
-            <div class="project-carousel__track-wrapper">
-              <div class="project-carousel__track" id="carousel-track">
-
-                <div class="project-carousel__slide">
-                  <img src="{{ url_for(\'static\', filename=\'img/dc-home.png\') }}" alt="Page de démarrage du script">
-                </div>
-              
-              </div>
-            </div>
-
-            <!-- Flèche suivante -->
-            <button class="project-carousel__btn project-carousel__btn--next" aria-label="Image suivante">&#8594;</button>
-
-            <!-- Points de navigation -->
-            <div class="project-carousel__dots" id="carousel-dots"></div>
-          </div>
         </section>
 
         <!-- Présentation -->
@@ -186,60 +170,7 @@
   </main>
 
   <site-footer></site-footer>
-  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
 
-  <script>
-    (function () {
-      const track   = document.getElementById('carousel-track');
-      const counter = document.getElementById('carousel-counter');
-      const dotsContainer = document.getElementById('carousel-dots');
-      const slides  = Array.from(track.querySelectorAll('.project-carousel__slide'));
-      const total   = slides.length;
-      let current   = 0;
-
-      // Créer les points
-      slides.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = 'project-carousel__dot' + (i === 0 ? ' project-carousel__dot--active' : '');
-        dot.setAttribute('aria-label', `Aller à l'image ${i + 1}`);
-        dot.addEventListener('click', () => goTo(i));
-        dotsContainer.appendChild(dot);
-      });
-
-      function updateUI() {
-        track.style.transform = `translateX(-${current * 100}%)`;
-        dotsContainer.querySelectorAll('.project-carousel__dot').forEach((d, i) => {
-          d.classList.toggle('project-carousel__dot--active', i === current);
-        });
-      }
-
-      function goTo(index) {
-        current = (index + total) % total;
-        updateUI();
-      }
-
-      document.querySelector('.project-carousel__btn--prev')
-        .addEventListener('click', () => goTo(current - 1));
-      document.querySelector('.project-carousel__btn--next')
-        .addEventListener('click', () => goTo(current + 1));
-
-      // Navigation clavier
-      document.getElementById('gallery-carousel').addEventListener('keydown', e => {
-        if (e.key === 'ArrowLeft')  goTo(current - 1);
-        if (e.key === 'ArrowRight') goTo(current + 1);
-      });
-
-      // Swipe tactile
-      let startX = 0;
-      track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-      track.addEventListener('touchend',   e => {
-        const delta = startX - e.changedTouches[0].clientX;
-        if (Math.abs(delta) > 40) goTo(current + (delta > 0 ? 1 : -1));
-      });
-
-      updateUI();
-    })();
-  </script>
   
 </body>
 </html>

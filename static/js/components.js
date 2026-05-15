@@ -1,12 +1,41 @@
+function getComponentsDir() {
+  const scripts = document.querySelectorAll('script[src]');
+  for (const script of scripts) {
+    if (script.src.includes('components.js')) {
+      const jsDir = script.src.substring(0, script.src.lastIndexOf('/'));
+      const staticDir = jsDir.substring(0, jsDir.lastIndexOf('/'));
+      return `${staticDir}/css`;
+    }
+  }
+  return '';
+}
+
+function injectCSS(componentName, cssFile) {
+  if (!document.querySelector(`link[data-component="${componentName}"]`)) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `${getComponentsDir()}/${cssFile}`;
+    link.dataset.component = componentName;
+    document.head.appendChild(link);
+  }
+}
+
 // ─────────────────────────────────────────────
 //  <nav-bar></nav-bar>
-//  Attribut "root" : chemin vers la racine du site
-//  ex: <nav-bar root="./"></nav-bar>        (pages racine)
-//      <nav-bar root="../"></nav-bar>       (pages dans sous-dossiers)
 // ─────────────────────────────────────────────
 class NavBar extends HTMLElement {
   connectedCallback() {
+    injectCSS('nav-bar', 'navbar.css');
+
     const root = this.getAttribute('root') || '/';
+    const username = this.getAttribute('username') || null;
+
+    const authLink = username
+      ? `<li class="nav-user">
+          <span class="nav-username">${username}</span>
+          <a href="/logout">Déconnexion</a>
+        </li>`
+      : `<li><a href="/login">Connexion</a></li>`;
 
     this.innerHTML = `
       <nav>
@@ -17,11 +46,11 @@ class NavBar extends HTMLElement {
           <li><a href="/apropos">À propos</a></li>
           <li><a href="/contact">Contact</a></li>
           <li><a href="/projets">Mes projets</a></li>
+          ${authLink}
         </ul>
       </nav>
     `;
 
-    // Lien actif : compare l'URL courante avec chaque lien
     const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
     this.querySelectorAll('.nav-links a').forEach(link => {
       const href = link.getAttribute('href').replace(/\/$/, '') || '/';
@@ -30,8 +59,13 @@ class NavBar extends HTMLElement {
   }
 }
 
+// ─────────────────────────────────────────────
+//  <project-hero-banner></project-hero-banner>
+// ─────────────────────────────────────────────
 class ProjectHeroBanner extends HTMLElement {
   connectedCallback() {
+    injectCSS('project-hero-banner', 'projet.css');
+
     const projectType = this.getAttribute("type") || null
     const name = this.getAttribute("name") || null;
     const context = this.getAttribute("context") || null;
@@ -49,10 +83,7 @@ class ProjectHeroBanner extends HTMLElement {
         <h1 class="project-hero__title">${name}</h1>
     `
     if (tagLine != null) {html += `<p class="project-hero__tagline">${tagLine}</p>`}
-    
-    // #######################################################
-    // GESTION DES META DATA
-    // #######################################################
+
     html += `<div class="project-hero__meta">`
 
     if (language != null) {
@@ -88,7 +119,6 @@ class ProjectHeroBanner extends HTMLElement {
       nbData += 1;
     }
 
-
     if (status != null) {
       if (nbData > 0) {html += `<div class="project-meta-divider"></div>`}
       html += `
@@ -121,13 +151,18 @@ class ProjectHeroBanner extends HTMLElement {
   }
 }
 
+// ─────────────────────────────────────────────
+//  <project-card></project-card>
+// ─────────────────────────────────────────────
 class ProjectCard extends HTMLElement {
   connectedCallback() {
+    injectCSS('project-card', 'projet.css');
+
     const href = this.getAttribute('href') || null;
     const type = this.getAttribute("type") || null;
     const name = this.getAttribute("name") || null;
     const description = this.getAttribute("description") || null;
-    
+
     if (type == "personnel") {
       this.innerHTML = `
         <a class="project-card project-card--personal" href="${href}">
@@ -155,16 +190,22 @@ class ProjectCard extends HTMLElement {
 // ─────────────────────────────────────────────
 class SiteFooter extends HTMLElement {
   connectedCallback() {
+    injectCSS('site-footer', 'footer.css');
     this.innerHTML = `<footer><span class="brand">Denis ROBERT</span></footer>`;
   }
 }
 
+// ─────────────────────────────────────────────
+//  <game-card></game-card>
+// ─────────────────────────────────────────────
 class GameCard extends HTMLElement {
   connectedCallback() {
+    injectCSS('game-card', 'jeux.css');
+
     const href = this.getAttribute('href') || null;
     const name = this.getAttribute("name") || null;
     const description = this.getAttribute("description") || "description du jeu";
-    
+
     this.innerHTML = `
       <a class="game-card" href="${href}">
         <div class="game-title">${name}</div>
@@ -175,14 +216,19 @@ class GameCard extends HTMLElement {
   }
 }
 
+// ─────────────────────────────────────────────
+//  <game-hero-banner></game-hero-banner>
+// ─────────────────────────────────────────────
 class GameHeroBanner extends HTMLElement {
   connectedCallback() {
+    injectCSS('game-hero-banner', 'jeux.css');
+
     const name = this.getAttribute("name") || null;
     const players = this.getAttribute("player") || null;
     const duree = this.getAttribute("duree") || null;
     const age = this.getAttribute("age") || null;
     const gamelink = this.getAttribute("gamelink") || null;
-    
+
     this.innerHTML = `
     <a class="back-btn" href="/jeux">Retour aux jeux</a>
     <h2>${name}</h2>
@@ -202,30 +248,31 @@ class GameHeroBanner extends HTMLElement {
       `
     }
     this.innerHTML += '<div class="divider"></div>';
-    
   }
 }
-
 
 // ─────────────────────────────────────────────
 //  <return-project></return-project>
 // ─────────────────────────────────────────────
- class ReturnProject extends HTMLElement {
+class ReturnProject extends HTMLElement {
   connectedCallback() {
+    // Pas de CSS dédié : styles inclus dans projet.css
     this.innerHTML = `
       <a class="project-hero__back" href="/projets">Retour aux projets</a>
     `;
-  } 
- }
+  }
+}
 
-// Enregistrement des composants
+// ─────────────────────────────────────────────
+//  Enregistrement des composants
+// ─────────────────────────────────────────────
 customElements.define('nav-bar', NavBar);
 customElements.define('site-footer', SiteFooter);
 customElements.define('return-project', ReturnProject);
 customElements.define('project-hero-banner', ProjectHeroBanner);
 customElements.define('project-card', ProjectCard);
-customElements.define('game-card', GameCard)
-customElements.define('game-hero-banner', GameHeroBanner)
+customElements.define('game-card', GameCard);
+customElements.define('game-hero-banner', GameHeroBanner);
 
 // ─────────────────────────────────────────────
 //  Formulaire de contact (utilisé sur contact.html)

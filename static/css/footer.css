@@ -1,0 +1,16 @@
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 32px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+footer .brand { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--gold); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  footer { flex-direction: column; gap: 12px; text-align: center; }
+}

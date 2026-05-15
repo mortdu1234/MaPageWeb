@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Denis ROBERT — 2048 AI Castle Clash</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/projet.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/section.css') }}"/>
+  <script type="module" src="{{ url_for('static', filename='js/balises/bundles/projectsBundle.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/balises/ImageCarousel.js') }}"></script>
 </head>
 <body>
 
-  <nav-bar root="{{ url_for('static', filename='') }}"></nav-bar>
+  <nav-bar root="{{ url_for('static', filename='') }}" username="{{ session.get('username', '') }}"></nav-bar>
 
   <main>
     <div class="section">
@@ -30,23 +33,17 @@
       <!-- ══════ CORPS ══════ -->
       <div class="project-body">
 
-        <!-- ── Galerie carrousel ── -->
+        <!-- Présentation -->
         <section>
           <h2 class="project-section__heading">Aperçu</h2>
-          <div class="project-carousel" id="gallery-carousel">
-            <button class="project-carousel__btn project-carousel__btn--prev" aria-label="Image précédente">&#8592;</button>
-            <div class="project-carousel__track-wrapper">
-              <div class="project-carousel__track" id="carousel-track">
-                <div class="project-carousel__slide"><img src="{{ url_for(\'static\', filename=\'img/2048-ai-game1.png\') }}" alt="Aperçu du bot 2048 Castle Clash"></div>
-                <div class="project-carousel__slide"><img src="{{ url_for(\'static\', filename=\'img/2048-ai-game2.png\') }}" alt="Aperçu du bot 2048 Castle Clash"></div>
-                <div class="project-carousel__slide"><img src="{{ url_for(\'static\', filename=\'img/2048-ai-main.png\') }}" alt="Aperçu du bot 2048 Castle Clash"></div>
-              </div>
-            </div>
-            <button class="project-carousel__btn project-carousel__btn--next" aria-label="Image suivante">&#8594;</button>
-            <div class="project-carousel__dots" id="carousel-dots"></div>
-          </div>
+          <images-carousel 
+            src1="{{ url_for('static', filename='img/2048-ai-game1.png') }}" alt1="Aperçu du bot 2048 Castle Clash"
+            src2="{{ url_for('static', filename='img/2048-ai-game2.png') }}" alt2="Aperçu du bot 2048 Castle Clash"
+            src3="{{ url_for('static', filename='img/2048-ai-main.png') }}" alt3="Aperçu du bot 2048 Castle Clash">
+          </images-carousel>
         </section>
 
+        
         <!-- Présentation -->
         <section>
           <h2 class="project-section__heading">Présentation</h2>
@@ -251,56 +248,7 @@
   </main>
 
   <site-footer></site-footer>
-  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
 
-  <script>
-    (function () {
-      const track         = document.getElementById('carousel-track');
-      const dotsContainer = document.getElementById('carousel-dots');
-      const slides        = Array.from(track.querySelectorAll('.project-carousel__slide'));
-      const total         = slides.length;
-      let current         = 0;
-
-      slides.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = 'project-carousel__dot' + (i === 0 ? ' project-carousel__dot--active' : '');
-        dot.setAttribute('aria-label', `Aller à l'image ${i + 1}`);
-        dot.addEventListener('click', () => goTo(i));
-        dotsContainer.appendChild(dot);
-      });
-
-      function updateUI() {
-        track.style.transform = `translateX(-${current * 100}%)`;
-        dotsContainer.querySelectorAll('.project-carousel__dot').forEach((d, i) => {
-          d.classList.toggle('project-carousel__dot--active', i === current);
-        });
-      }
-
-      function goTo(index) {
-        current = (index + total) % total;
-        updateUI();
-      }
-
-      document.querySelector('.project-carousel__btn--prev')
-        .addEventListener('click', () => goTo(current - 1));
-      document.querySelector('.project-carousel__btn--next')
-        .addEventListener('click', () => goTo(current + 1));
-
-      document.getElementById('gallery-carousel').addEventListener('keydown', e => {
-        if (e.key === 'ArrowLeft')  goTo(current - 1);
-        if (e.key === 'ArrowRight') goTo(current + 1);
-      });
-
-      let startX = 0;
-      track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-      track.addEventListener('touchend',   e => {
-        const delta = startX - e.changedTouches[0].clientX;
-        if (Math.abs(delta) > 40) goTo(current + (delta > 0 ? 1 : -1));
-      });
-
-      updateUI();
-    })();
-  </script>
 
 </body>
 </html>
