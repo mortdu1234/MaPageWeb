@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/projet.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/section.css') }}"/>
+  {% block projet_styles %}{% endblock %}
+{% endblock %}
+
+{% block head_scripts %}
+  <script type="module" src="{{ url_for('static', filename='js/balises/bundles/projectsBundle.js') }}"></script>
+  {% block projet_head_scripts %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div class="section">
+
+  {% block hero %}{% endblock %}
+
+  <div class="project-body">
+    {% block project_content %}{% endblock %}
+    <return-project></return-project>
+  </div>
+
+</div>
+{% endblock %}

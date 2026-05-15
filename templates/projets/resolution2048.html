@@ -1,24 +1,11 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Denis ROBERT — 2048 AI Castle Clash</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/projet.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/section.css') }}"/>
-  <script type="module" src="{{ url_for('static', filename='js/balises/bundles/projectsBundle.js') }}"></script>
+{% extends "projets/baseProjects.html" %}
+{% block title %}Denis ROBERT — 2048 AI Castle Clash{% endblock %}
+{% block projet_head_scripts %}
   <script type="module" src="{{ url_for('static', filename='js/balises/ImageCarousel.js') }}"></script>
-</head>
-<body>
+{% endblock %}
 
-  <nav-bar root="{{ url_for('static', filename='') }}" username="{{ session.get('username', '') }}"></nav-bar>
-
-  <main>
-    <div class="section">
-
-      <project-hero-banner 
+{% block hero %}
+  <project-hero-banner 
         type="personnel"
         name="2048 AI — Castle Clash"
         tagline="Un bot qui joue automatiquement au mini-jeu 2048 de Castle Clash : il capture l'écran,
@@ -29,11 +16,10 @@
         status="Terminé"
         gitHubPage="https://github.com/mortdu1234/2048-AI.git">
       </project-hero-banner>
+{% endblock %}
 
-      <!-- ══════ CORPS ══════ -->
-      <div class="project-body">
-
-        <!-- Présentation -->
+{% block project_content %}
+<!-- Présentation -->
         <section>
           <h2 class="project-section__heading">Aperçu</h2>
           <images-carousel 
@@ -241,14 +227,4 @@
             </a>
           </div>
         </section>
-
-        <return-project></return-project>
-      </div>
-    </div>
-  </main>
-
-  <site-footer></site-footer>
-
-
-</body>
-</html>
+{% endblock %}

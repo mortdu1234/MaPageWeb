@@ -1,10 +1,12 @@
-from flask import Flask
+from flask import Flask, render_template
 from config import Config
-
+from sessionUser import SessionUser
+from db import init_pool
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    init_pool() 
 
     # Enregistrement des blueprints
     from routes.main import main_bp
@@ -16,6 +18,27 @@ def create_app(config_class=Config):
     app.register_blueprint(jeux_bp, url_prefix="/jeux")
     app.register_blueprint(projets_bp, url_prefix="/projets")
     app.register_blueprint(auth_bp)
+    
+    @app.context_processor
+    def inject_user():
+        return {
+            "current_user": {
+                "is_logged_in": SessionUser.is_logged_in(),
+                "username":     SessionUser.username(),
+                "is_admin":     SessionUser.is_admin(),
+                "permissions":  SessionUser.permissions(),
+            }
+        }
+    
+    # ─── Gestionnaires d'erreurs ──────────────────────────────────────────────
+
+    @app.errorhandler(403)
+    def forbidden(e):
+        return render_template("403.html"), 403
+
+    @app.errorhandler(404)
+    def not_found(e):
+        return render_template("404.html"), 404
 
     return app
 

@@ -1,24 +1,11 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Denis ROBERT — Add Skipper Dragon City</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/projet.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/section.css') }}"/>
-  <script type="module" src="{{ url_for('static', filename='js/balises/bundles/projectsBundle.js') }}"></script>
+{% extends "projets/baseProjects.html" %}
+{% block title %}Denis ROBERT — Add Skipper Dragon City{% endblock %}
+{% block projet_head_scripts %}
   <script type="module" src="{{ url_for('static', filename='js/balises/ImageCarousel.js') }}"></script>
-</head>
-<body>
+{% endblock %}
 
-  <nav-bar root="{{ url_for('static', filename='') }}"></nav-bar>
-
-  <main>
-    <div class="section">
-
-      <project-hero-banner 
+{% block hero %}
+  <project-hero-banner 
         type="Personnel"
         name="Add Skipper Dragon City"
         tagline="Il s'agit d'un programme qui permet de passer automatiquement les pubs dans le jeu Dragon City."
@@ -27,11 +14,10 @@
         status="En Pause"
         gitHubPage="https://github.com/mortdu1234/Ad-skipper-DC.git">
       </project-hero-banner>
-      
-      <!-- ══════ CORPS ══════ -->
-      <div class="project-body">
+{% endblock %}
 
-        <!-- ── Galerie carrousel ── -->
+{% block project_content %}
+<!-- ── Galerie carrousel ── -->
         <section>
           <h2 class="project-section__heading">Aperçu</h2>
           <images-carousel 
@@ -163,14 +149,4 @@
             Ce projet s'appuie sur mon propre travail.
           </p>
         </section>
-        
-        <return-project></return-project>
-      </div>
-    </div>
-  </main>
-
-  <site-footer></site-footer>
-
-  
-</body>
-</html>
+{% endblock %}

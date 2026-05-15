@@ -1,37 +1,25 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Denis ROBERT — Jeux de société</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
+{% extends "base.html" %}
+
+{% block title %}Denis ROBERT — Jeux de société{% endblock %}
+
+{% block styles %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/components/section.css') }}"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/jeux.css') }}"/>
-</head>
-<body>
+{% endblock %}
 
-  <nav-bar root="/" username="{{ session.get('username', '') }}"></nav-bar>
-
-  <main>
-    <div class="section">
-      <p class="section-tag">Ma ludothèque</p>
-      <h2 class="section-title">Jeux de société</h2>
-      <p class="section-lead">Voici la liste des jeux de société dont j'ai effectué une activités</p>
-      <div class="games-grid">
-        <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='oanami') }}" name="Oanami"></game-card>
-        <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='ptitbac') }}" name="p'tit bac"></game-card>
-        <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='qwirkle') }}" name="Qwirkle"></game-card>
-        <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='smilelife') }}" name="Smile Life"></game-card>
-        <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='trainmexicain') }}" name="Train Mexicain"></game-card>
-        <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='tresfute') }}" name="Très Futé"></game-card>
-        <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='triomino') }}" name="Triomino"></game-card>
-      </div>
-    </div>
-  </main>
-
-  <site-footer></site-footer>
-
-  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
-</body>
-</html>
+{% block content %}
+<div class="section">
+  <p class="section-tag">Ma ludothèque</p>
+  <h2 class="section-title">Jeux de société</h2>
+  <p class="section-lead">Voici la liste des jeux de société dont j'ai effectué une activité</p>
+  <div class="games-grid">
+    <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='oanami') }}" name="Oanami"></game-card>
+    <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='ptitbac') }}" name="p'tit bac"></game-card>
+    <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='qwirkle') }}" name="Qwirkle"></game-card>
+    <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='smilelife') }}" name="Smile Life"></game-card>
+    <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='trainmexicain') }}" name="Train Mexicain"></game-card>
+    <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='tresfute') }}" name="Très Futé"></game-card>
+    <game-card href="{{ url_for('jeux.detail_jeu', nom_jeu='triomino') }}" name="Triomino"></game-card>
+  </div>
+</div>
+{% endblock %}

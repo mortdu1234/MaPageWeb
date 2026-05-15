@@ -1,52 +1,36 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Denis ROBERT — Connexion</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
+{% extends "base.html" %}
+
+{% block title %}Denis ROBERT — Connexion{% endblock %}
+
+{% block styles %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons.css') }}"/> 
-</head>
-<body>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons.css') }}"/>
+{% endblock %}
 
-  <nav-bar root="/" username="{{ session.get('username', '') }}"></nav-bar>
+{% block content %}
+<section class="login-wrap">
+  <div class="login-card">
+    <p class="login-label">Espace privé</p>
+    <h1>Connexion<br/><em>sécurisée</em></h1>
 
-  <main>
-    <section class="login-wrap">
-      <div class="login-card">
-        <p class="login-label">Espace privé</p>
-        <h1>Connexion<br/><em>sécurisée</em></h1>
+    {% if error %}
+      <p class="error-msg">{{ error }}</p>
+    {% endif %}
 
-        {% if error %}
-          <p class="error-msg">{{ error }}</p>
-        {% endif %}
-
-        <form method="POST" action="{{ url_for('auth.login') }}">
-          <div class="field">
-            <label for="username">Identifiant</label>
-            <input type="text" id="username" name="username"
-                   placeholder="Votre nom d'utilisateur"
-                   required autofocus autocomplete="username"/>
-          </div>
-          <div class="field">
-            <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password"
-                   placeholder="••••••••"
-                   required autocomplete="current-password"/>
-          </div>
-          <button type="submit" class="btn btn-outline">Se connecter</button>
-        </form>
-        <p class="login-footer">
-          Créer un compte ? <a href="{{ url_for('auth.register') }}">S'inscrire</a>
-        </p>
+    <form method="POST" action="{{ url_for('auth.login') }}">
+      <div class="field">
+        <label for="username">Identifiant</label>
+        <input type="text" id="username" name="username" placeholder="Votre nom d'utilisateur" required autofocus autocomplete="username"/>
       </div>
-    </section>
-  </main>
-
-  <site-footer></site-footer>
-
-  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
-</body>
-</html>
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password"/>
+      </div>
+      <button type="submit" class="btn btn-outline">Se connecter</button>
+    </form>
+    <p class="login-footer">
+      Créer un compte ? <a href="{{ url_for('auth.register') }}">S'inscrire</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

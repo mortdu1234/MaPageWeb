@@ -1,24 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Denis ROBERT — Maze Runner — Algorithme Génétique</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/projet.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/section.css') }}"/>
-  <script type="module" src="{{ url_for('static', filename='js/balises/bundles/projectsBundle.js') }}"></script>
-</head>
-<body>
+{% extends "projets/baseProjects.html" %}
+{% block title %}Denis ROBERT — Maze Runner — Algorithme Génétique{% endblock %}
 
-  <nav-bar root="{{ url_for('static', filename='') }}"></nav-bar>
-
-  <main>
-    <div class="section">
-
-      <!-- ══════ HERO ══════ -->
-      <project-hero-banner 
+{% block hero %}
+  <project-hero-banner 
         type="académique"
         name="Maze Runner — Algorithme Génétique"
         tagline="Génération procédurale de labyrinthes et résolution par algorithme génétique :
@@ -29,11 +13,10 @@
         status="Terminé"
         gitHubPage="https://github.com/mortdu1234/algoEtProgProjet.git">
       </project-hero-banner>
-      
-      <!-- ══════ CORPS ══════ -->
-      <div class="project-body">
+{% endblock %}
 
-        <!-- ── Galerie carrousel ── -->
+{% block project_content %}
+<!-- ── Galerie carrousel ── -->
         <section>
           <h2 class="project-section__heading">Aperçu</h2>
           <div class="project-carousel" id="gallery-carousel">
@@ -274,16 +257,10 @@
             </div>
           </div>
         </section>
-
-        <return-project></return-project>
-      </div>
-    </div>
-  </main>
-
-  <site-footer></site-footer>
-
-  <script>
-    (function () {
+{% endblock %}
+{% block scripts %}
+  {{ super() }}
+  <script>(function () {
       const track         = document.getElementById('carousel-track');
       const dotsContainer = document.getElementById('carousel-dots');
       const slides        = Array.from(track.querySelectorAll('.project-carousel__slide'));
@@ -328,8 +305,5 @@
       });
 
       updateUI();
-    })();
-  </script>
-
-</body>
-</html>
+    })();</script>
+{% endblock %}

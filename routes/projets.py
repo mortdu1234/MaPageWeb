@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, abort
 
 projets_bp = Blueprint("projets", __name__)
 
@@ -26,6 +26,5 @@ def mesprojets():
 @projets_bp.route("/<string:nom_projet>")
 def detail_projet(nom_projet):
     if nom_projet not in PROJETS:
-        from flask import abort
         abort(404)
     return render_template(f"projets/{nom_projet}.html")

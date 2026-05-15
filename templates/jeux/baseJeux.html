@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/jeux.css') }}"/>
+  {% block jeux_styles %}{% endblock %}
+{% endblock %}
+
+{% block head_scripts %}
+  <script type="module" src="{{ url_for('static', filename='js/balises/bundles/jeuxBundle.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+  <div class="game-detail">
+    <game-hero-banner
+      name="{{ game_name }}"
+      player="{{ game_players }}"
+      duree="{{ game_duree }}"
+      age="{{ game_age }}">
+    </game-hero-banner>
+
+    <div class="game-body">
+      {% block game_body %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Denis ROBERT{% endblock %}</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}"/>
+
+  {% block styles %}{% endblock %}
+  {% block head_scripts %}{% endblock %}
+</head>
+<body>
+
+  <nav-bar root="/" username="{{ session.get('username', '') }}"></nav-bar>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
+  {% block scripts %}{% endblock %}
+
+</body>
+</html>

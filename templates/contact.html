@@ -1,45 +1,33 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Denis ROBERT — Contact</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
+{% extends "base.html" %}
+
+{% block title %}Denis ROBERT — Contact{% endblock %}
+
+{% block styles %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/components/section.css') }}"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons.css') }}"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/contact.css') }}"/>
-</head>
-<body>
+{% endblock %}
 
-  <nav-bar root="/" username="{{ session.get('username', '') }}"></nav-bar>
-
-  <main>
-    <div class="section">
-      <p class="section-tag">Restons en contact</p>
-      <h2 class="section-title">Contact</h2>
-      <div class="contact-grid">
-        <div class="contact-info">
-          <h3>Écrivez-moi</h3>
-          <p>Une question sur un jeu, une proposition de collaboration ou simplement l'envie d'échanger ? Je lis tous les messages avec plaisir.</p>
-          <div class="contact-detail">
-            <div class="contact-item"><span class="contact-item-icon">✉</span><span>dr05@orange.fr</span></div>
-            <div class="contact-item"><span class="contact-item-icon">📍</span><span>France</span></div>
-            <div class="contact-item"><span class="contact-item-icon">🕐</span><span>Réponse sous 48h</span></div>
-          </div>
-        </div>
-        <form class="contact-form" onsubmit="handleSubmit(event)">
-          <div class="form-group"><label>Nom</label><input type="text" placeholder="Votre nom complet" required/></div>
-          <div class="form-group"><label>Email</label><input type="email" placeholder="votre@email.com" required/></div>
-          <div class="form-group"><label>Message</label><textarea placeholder="Votre message…" required></textarea></div>
-          <button type="submit" class="btn btn-primary">Envoyer le message</button>
-        </form>
+{% block content %}
+<div class="section">
+  <p class="section-tag">Restons en contact</p>
+  <h2 class="section-title">Contact</h2>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3>Écrivez-moi</h3>
+      <p>Une question sur un jeu, une proposition de collaboration ou simplement l'envie d'échanger ? Je lis tous les messages avec plaisir.</p>
+      <div class="contact-detail">
+        <div class="contact-item"><span class="contact-item-icon">✉</span><span>dr05@orange.fr</span></div>
+        <div class="contact-item"><span class="contact-item-icon">📍</span><span>France</span></div>
+        <div class="contact-item"><span class="contact-item-icon">🕐</span><span>Réponse sous 48h</span></div>
       </div>
     </div>
-  </main>
-
-  <site-footer></site-footer>
-
-  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
-</body>
-</html>
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-group"><label>Nom</label><input type="text" placeholder="Votre nom complet" required/></div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="votre@email.com" required/></div>
+      <div class="form-group"><label>Message</label><textarea placeholder="Votre message…" required></textarea></div>
+      <button type="submit" class="btn btn-primary">Envoyer le message</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

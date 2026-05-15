@@ -1,34 +1,16 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Triomino</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/jeux.css') }}"/>
-  <script type="module" src="{{ url_for('static', filename='js/balises/bundles/jeuxBundle.js') }}"></script>
-</head>
-<body>
+{% extends "jeux/baseJeux.html" %}
 
-  <nav-bar root="/" username="{{ session.get('username', '') }}"></nav-bar>
+{% block title %}Triomino{% endblock %}
 
-  <main>
-    <div class="game-detail">
-        <game-hero-banner name="Triomino" player="2-5" duree="60-180" age="10"></game-hero-banner>
-        
-        
-        <div class="game-body">
-          <p>XXXXX</p>
-          <h3>XXXXX</h3>
-          <p>XXXXX</p>
-          <h3>XXXXX</h3>
-          <p>XXXXX</p>
-        </div>
-        
-    </div>
-  </main>
+{% set game_name = "Triomino" %}
+{% set game_players = "2-5" %}
+{% set game_duree = "60-180" %}
+{% set game_age = "10" %}
 
-  <site-footer></site-footer>
-</body>
-</html>
+{% block game_body %}
+  <p>XXXXX</p>
+  <h3>XXXXX</h3>
+  <p>XXXXX</p>
+  <h3>XXXXX</h3>
+  <p>XXXXX</p>
+{% endblock %}
