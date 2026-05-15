@@ -6,26 +6,26 @@
 // ─────────────────────────────────────────────
 class NavBar extends HTMLElement {
   connectedCallback() {
-    const root = this.getAttribute('root') || './';
+    const root = this.getAttribute('root') || '/';
 
     this.innerHTML = `
       <nav>
-        <a class="nav-brand" href="${root}index.html">Denis ROBERT</a>
+        <a class="nav-brand" href="/">Denis ROBERT</a>
         <ul class="nav-links">
-          <li><a href="${root}index.html">Accueil</a></li>
-          <li><a href="${root}jeux.html">Jeux de société</a></li>
-          <li><a href="${root}apropos.html">À propos</a></li>
-          <li><a href="${root}contact.html">Contact</a></li>
-          <li><a href="${root}mesprojets.html">Mes projets</a></li>
+          <li><a href="/">Accueil</a></li>
+          <li><a href="/jeux">Jeux de société</a></li>
+          <li><a href="/apropos">À propos</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/projets">Mes projets</a></li>
         </ul>
       </nav>
     `;
 
     // Lien actif : compare l'URL courante avec chaque lien
-    const currentFile = window.location.pathname.split('/').pop() || 'index.html';
+    const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
     this.querySelectorAll('.nav-links a').forEach(link => {
-      const linkFile = link.getAttribute('href').split('/').pop();
-      if (linkFile === currentFile) link.classList.add('active');
+      const href = link.getAttribute('href').replace(/\/$/, '') || '/';
+      if (href === currentPath) link.classList.add('active');
     });
   }
 }
@@ -181,9 +181,10 @@ class GameHeroBanner extends HTMLElement {
     const players = this.getAttribute("player") || null;
     const duree = this.getAttribute("duree") || null;
     const age = this.getAttribute("age") || null;
+    const gamelink = this.getAttribute("gamelink") || null;
     
     this.innerHTML = `
-    <a class="back-btn" href="../jeux.html">Retour aux jeux</a>
+    <a class="back-btn" href="/jeux">Retour aux jeux</a>
     <h2>${name}</h2>
     <div class="game-meta">
       <strong>${players} joueurs</strong>
@@ -192,8 +193,15 @@ class GameHeroBanner extends HTMLElement {
       <div class="project-meta-divider"></div>
       <strong>age : ${age}+</strong>
     </div>
-    <div class="divider"></div>
-    `
+    `;
+    if (gamelink != null) {
+      this.innerHTML += `
+        <a class="game-link" href="${gamelink}" target="_blank" rel="noopener">
+          Accéder au site de stockage du jeu
+        </a>
+      `
+    }
+    this.innerHTML += '<div class="divider"></div>';
     
   }
 }
@@ -205,7 +213,7 @@ class GameHeroBanner extends HTMLElement {
  class ReturnProject extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
-      <a class="project-hero__back" href="../mesprojets.html">Retour aux projets</a>
+      <a class="project-hero__back" href="/projets">Retour aux projets</a>
     `;
   } 
  }

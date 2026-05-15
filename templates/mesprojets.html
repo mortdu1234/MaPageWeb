@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Denis ROBERT — Mes Projets</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
   <style>
 
     /* ─── Layout de la grille de projets ─── */
@@ -145,7 +145,7 @@
 </head>
 <body>
 
-  <nav-bar root="./"></nav-bar>
+  <nav-bar root="/"></nav-bar>
 
   <main>
     <div class="section">
@@ -160,49 +160,49 @@
       <div class="project-grid">
 
         <project-card
-          href="projets/launcherrocketleague.html"
+          href="{{ url_for('projets.detail_projet', nom_projet='launcherrocketleague') }}"
           type="Personnel"
           name="Launcher Rocket League"
           description="Réalisation d'un nouveau launcher pour le jeu Rocket League sans lancer Epic Games.">
         </project-card>
         
         <project-card
-          href="projets/addskipperdc.html"
+          href="{{ url_for('projets.detail_projet', nom_projet='addskipperdc') }}"
           type="Personnel"
           name="Add Skipper Dragon City"
           description="Programme qui permet de quitter automatiquement les pubs dans le jeu mobile Dragon City.">
         </project-card>
 
         <project-card
-          href="projets/vpn.html"
+          href="{{ url_for('projets.detail_projet', nom_projet='vpn') }}"
           type="Personnel"
           name="VPN"
           description="Mise en place d'un VPN pour mon domicile avec Wireguard.">
         </project-card>
 
         <project-card
-          href="projets/server.html"
+          href="{{ url_for('projets.detail_projet', nom_projet='server') }}"
           type="Personnel"
           name="Serveur auto-hébergé"
           description="Mise en place d'un serveur Proxmox qui permet de gérer l'ensemble de cette page et de mon homelab.">
         </project-card>
 
         <project-card
-          href="projets/smilelife.html"
+          href="{{ url_for('projets.detail_projet', nom_projet='smilelife') }}"
           type="Personnel"
           name="Smile Life"
           description="Réalisation d'une version en ligne de Smile Life en Python.">
         </project-card>
 
         <project-card
-          href="projets/resolution2048.html"
+          href="{{ url_for('projets.detail_projet', nom_projet='resolution2048') }}"
           type="Personnel"
           name="Résolution du jeu 2048"
           description="Programmation d'un script de résolution du jeu 2048.">
         </project-card>
 
         <project-card
-          href="projets/serverminecraft.html"
+          href="{{ url_for('projets.detail_projet', nom_projet='serverminecraft') }}"
           type="Personnel"
           name="Hebergement server Minecraft"
           description="Mise en place d'un server minecraft auto-héberger">
@@ -218,28 +218,28 @@
       <div class="project-grid">
 
         <project-card
-          href="projets/generationnombrealeatoire.html"
+          href="{{ url_for('projets.detail_projet', nom_projet='generationnombrealeatoire') }}"
           type="Etudes"
           name="Génération de Nombre Aléatoire"
           description="Implémentation en Python d'algorithmes de génération de nombre aléatoire ainsi que de tests statistiques.">
         </project-card>
 
         <project-card
-          href="projets/algorithmegenetique.html"
+          href="{{ url_for('projets.detail_projet', nom_projet='algorithmegenetique') }}"
           type="Etudes"
           name="Algorithme Génétique"
           description="Création d'un algorithme génétique de résolution de labyrinthe.">
         </project-card>
 
         <project-card
-          href="projets/jeuloupgarou.html"
+          href="{{ url_for('projets.detail_projet', nom_projet='jeuloupgarou') }}"
           type="Etudes"
           name="Jeu Loup-Garou"
           description="Implémentation du jeu de loup-garou en Python avec une interface terminale.">
         </project-card>
 
         <project-card
-          href="projets/jeusplendor.html"
+          href="{{ url_for('projets.detail_projet', nom_projet='jeusplendor') }}"
           type="Etudes"
           name="Jeu Splendor"
           description="Implémentation du jeu Splendor en Java en groupe.">
@@ -251,6 +251,6 @@
 
   <site-footer></site-footer>
 
-  <script src="js/components.js"></script>
+  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
 </body>
 </html>

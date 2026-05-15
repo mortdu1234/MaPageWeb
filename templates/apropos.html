@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Denis ROBERT — À propos</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
   <style>
     .about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; align-items: start; }
     .about-photo { aspect-ratio: 3/4; background: var(--line); position: relative; overflow: hidden; }
@@ -19,7 +19,7 @@
 </head>
 <body>
 
-  <nav-bar root="./"></nav-bar>
+  <nav-bar root="/"></nav-bar>
 
   <main>
     <div class="section">
@@ -41,6 +41,6 @@
 
   <site-footer></site-footer>
 
-  <script src="js/components.js"></script>
+  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
 </body>
 </html>

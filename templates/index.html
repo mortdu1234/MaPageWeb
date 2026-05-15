@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Denis ROBERT — Accueil</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
   <style>
     .hero {
       min-height: calc(100vh - var(--nav-h));
@@ -34,7 +34,7 @@
 </head>
 <body>
 
-  <nav-bar root="./"></nav-bar>
+  <nav-bar root="/"></nav-bar>
 
   <main>
     <section class="hero">
@@ -42,15 +42,15 @@
       <h1>Denis<br/><em>ROBERT</em></h1>
       <p class="hero-desc">Passionné d'informatique, je vous partage mon espace personnel</p>
       <div class="hero-actions">
-        <a class="btn btn-outline" href="jeux.html">Découvrir les jeux</a>
-        <a class="btn btn-outline" href="apropos.html">En savoir plus</a>
-        <a class="btn btn-outline" href="mesprojets.html">Mes projets</a>
+        <a class="btn btn-outline" href="{{ url_for('jeux.jeux') }}">Découvrir les jeux</a>
+        <a class="btn btn-outline" href="{{ url_for('main.apropos') }}">En savoir plus</a>
+        <a class="btn btn-outline" href="{{ url_for('projets.mesprojets') }}">Mes projets</a>
       </div>
     </section>
   </main>
 
   <site-footer></site-footer>
 
-  <script src="js/components.js"></script>
+  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
 </body>
 </html>

@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Denis ROBERT — Launcher Rocket League</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="../css/style.css"/>
-  <link rel="stylesheet" href="../css/projet.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/projet.css') }}"/>
 </head>
 <body>
 
-  <nav-bar root="../"></nav-bar>
+  <nav-bar root="{{ url_for('static', filename='') }}"></nav-bar>
 
   <main>
     <div class="section">
@@ -43,7 +43,7 @@
               <div class="project-carousel__track" id="carousel-track">
 
                 <div class="project-carousel__slide">
-                  <img src="../img/rl-launcher-main.png" alt="Image Launcher Rocket League">
+                  <img src="{{ url_for(\'static\', filename=\'img/rl-launcher-main.png\') }}" alt="Image Launcher Rocket League">
                 </div>
 
               </div>
@@ -285,7 +285,7 @@
   </main>
 
   <site-footer></site-footer>
-  <script src="../js/components.js"></script>
+  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
 
   <script>
     (function () {

@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Denis ROBERT — VPN WireGuard</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="../css/style.css"/>
-  <link rel="stylesheet" href="../css/projet.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/projet.css') }}"/>
 </head>
 <body>
 
-  <nav-bar root="../"></nav-bar>
+  <nav-bar root="{{ url_for('static', filename='') }}"></nav-bar>
 
   <main>
     <div class="section">
@@ -32,7 +32,7 @@
           <div class="project-section__text">
             <p>
               Ce projet fait suite à la mise en place de mon
-              <a href="server.html" style="color: var(--gold); text-decoration: none;">serveur auto-hébergé</a>.
+              <a href="{{ url_for('projets.detail_projet', nom_projet='server') }}" style="color: var(--gold); text-decoration: none;">serveur auto-hébergé</a>.
               Disposant déjà d'une infrastructure Proxmox, j'ai voulu pouvoir accéder à mon réseau local
               à distance de façon sécurisée, sans exposer directement mes services sur Internet.
             </p>
@@ -183,7 +183,7 @@
   </main>
 
   <site-footer></site-footer>
-  <script src="../js/components.js"></script>
+  <script src="{{ url_for('static', filename='js/components.js') }}"></script>
 
 </body>
 </html>
