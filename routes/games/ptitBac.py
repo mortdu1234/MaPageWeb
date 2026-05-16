@@ -2,7 +2,17 @@ from flask import render_template
 from routes.auth import require_permission
 from routes.games import jeux_bp
 
-@jeux_bp.route("/ptitbac")
+@jeux_bp.route("/ptitBac")
 @require_permission("showGame")
-def ptitbac():
-    return render_template("jeux/ptitbac.html")
+def ptitBac():
+    return render_template("jeux/ptitBac.html")
+
+@jeux_bp.route("/ptitBac/game")
+@require_permission("showGame")
+def ptitBac_game():
+    return render_template("jeux/ptitBacGame.html")
+
+@jeux_bp.route("/ptitBac/submit", methods=["POST"])
+@require_permission("showGame")
+def ptitBac_submit():
+    return render_template("jeux/ptitBacSubmit.html")

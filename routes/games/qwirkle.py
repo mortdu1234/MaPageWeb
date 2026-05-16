@@ -6,3 +6,13 @@ from routes.games import jeux_bp
 @require_permission("showGame")
 def qwirkle():
     return render_template("jeux/qwirkle.html")
+
+@jeux_bp.route("/qwirkle/game")
+@require_permission("showGame")
+def qwirkle_game():
+    return render_template("jeux/qwirkleGame.html")
+
+@jeux_bp.route("/qwirkle/submit", methods=["POST"])
+@require_permission("showGame")
+def qwirkle_submit():
+    return render_template("jeux/qwirkleSubmit.html")

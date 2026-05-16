@@ -3,6 +3,8 @@
  *
  * config = {
  *   maxPlayers         : number   — nombre max de joueurs pour ce jeu (défaut : 6)
+ *   showSaison         : boolean  — affiche la colonne Saison (défaut : true)
+ *   showType           : boolean  — affiche la colonne Type (défaut : true)
  *   rows               : Array<{
  *     saison           : string,
  *     type             : string,
@@ -10,8 +12,8 @@
  *     icon             : string,
  *     extra?           : Array<{ label, key, type, placeholder?, min? }>
  *   }>
- *   computeScore(joueur, rows, nb) : number   — calcul du score total d'un joueur
- *   buildPayload(nb, rows, players) : any
+ *   computeScore(joueur, rows, nb, gs) : number
+ *   buildPayload(nb, rows, players)    : any
  * }
  *
  * PLAYERS_URL, SUBMIT_URL et NEW_PLAYER_URL sont injectés globalement par Jinja2.
@@ -23,6 +25,11 @@ export class GameScore {
     this.players    = [];
     this.nbJoueurs  = 2;
     this.maxPlayers = config.maxPlayers ?? 6;
+    this.showSaison = config.showSaison ?? true;
+    this.showType   = config.showType   ?? true;
+
+    // rows vide par défaut — chaque jeu fournit les siennes
+    this.config.rows = config.rows ?? [];
 
     this.select   = document.getElementById("nb-joueurs");
     this.theadRow = document.getElementById("thead-row");
@@ -82,7 +89,7 @@ export class GameScore {
     this.players.forEach(p => {
       const opt       = document.createElement("option");
       opt.value       = p.id;
-      opt.textContent = `${p.prenom} ${p.nom}`;
+      opt.textContent = `${p.prenom}\n${p.nom}`;
       sel.appendChild(opt);
     });
 
@@ -96,10 +103,56 @@ export class GameScore {
         const next = encodeURIComponent(window.location.href);
         window.location.href = `${NEW_PLAYER_URL}?next=${next}`;
       }
+      this._updatePlayerHeader(j);
       this._updateScores();
     });
 
     return sel;
+  }
+
+  _updatePlayerHeader(j) {
+    const sel = document.getElementById(`player_j${j}`);
+    const th  = sel?.closest("th");
+    if (!th) return;
+
+    const prenom = document.createElement("span");
+    prenom.className = "player-prenom";
+    const nom = document.createElement("span");
+    nom.className = "player-nom";
+
+    if (sel.value && sel.value !== "__new__") {
+      const player = this.players.find(p => p.id === parseInt(sel.value));
+      prenom.textContent = player?.prenom ?? "";
+      nom.textContent    = player?.nom    ?? "";
+    } else {
+      prenom.textContent = `— J${j} —`;
+      nom.textContent    = "";
+    }
+
+    th.innerHTML = "";
+    th.appendChild(sel);
+    th.appendChild(prenom);
+    th.appendChild(nom);
+
+    this._adjustPlayerColWidths();
+  }
+
+  _adjustPlayerColWidths() {
+    let maxLen = 0;
+    for (let j = 1; j <= this.nbJoueurs; j++) {
+      const sel = document.getElementById(`player_j${j}`);
+      if (!sel?.value || sel.value === "__new__") continue;
+      const player = this.players.find(p => p.id === parseInt(sel.value));
+      if (!player) continue;
+      maxLen = Math.max(maxLen, player.prenom.length, player.nom.length);
+    }
+
+    const width = Math.max(80, maxLen * 7.5 + 16);
+
+    document.querySelectorAll(".th-player").forEach(th => {
+      th.style.width    = `${width}px`;
+      th.style.minWidth = `${width}px`;
+    });
   }
 
   // ─── Récupère la valeur d'un input de score ───────────────────────────────
@@ -112,11 +165,8 @@ export class GameScore {
   // ─── Zone de scores en temps réel (ligne thead) ───────────────────────────
 
   _renderScoreBoard() {
-    // Supprimer l'ancienne ligne de scores si elle existe
     const old = document.getElementById("thead-score-row");
     if (old) old.remove();
-
-    // Supprimer l'éventuel bloc flottant hérité
     const oldBoard = document.getElementById("score-board");
     if (oldBoard) oldBoard.remove();
 
@@ -125,9 +175,10 @@ export class GameScore {
     tr.id        = "thead-score-row";
     tr.className = "score-board-row";
 
-    // Cellule "Scores en cours" (couvre Saison + Type + éventuelles colonnes extra)
     const extraCols = this.config.rows[0]?.extra ?? [];
-    const labelSpan = 2 + extraCols.length;
+    let labelSpan = extraCols.length;
+    if (this.showSaison) labelSpan++;
+    if (this.showType)   labelSpan++;
 
     const tdLabel       = document.createElement("td");
     tdLabel.colSpan     = labelSpan;
@@ -136,14 +187,14 @@ export class GameScore {
     tr.appendChild(tdLabel);
 
     for (let j = 1; j <= this.nbJoueurs; j++) {
-      const td      = document.createElement("td");
-      td.className  = "score-card";
-      td.id         = `score-card-j${j}`;
+      const td     = document.createElement("td");
+      td.className = "score-card";
+      td.id        = `score-card-j${j}`;
 
-      const pts        = document.createElement("div");
-      pts.className    = "score-card-pts";
-      pts.id           = `score-card-pts-j${j}`;
-      pts.textContent  = "0";
+      const pts       = document.createElement("div");
+      pts.className   = "score-card-pts";
+      pts.id          = `score-card-pts-j${j}`;
+      pts.textContent = "0";
 
       td.appendChild(pts);
       tr.appendChild(td);
@@ -165,7 +216,6 @@ export class GameScore {
       const ptsEl = document.getElementById(`score-card-pts-j${j}`);
       if (ptsEl) ptsEl.textContent = score;
 
-      // Nom du joueur depuis le select
       const sel    = document.getElementById(`player_j${j}`);
       const nameEl = document.getElementById(`score-card-name-j${j}`);
       if (nameEl && sel) {
@@ -174,7 +224,6 @@ export class GameScore {
       }
     }
 
-    // Mettre en avant le meilleur score
     const max = Math.max(...scores);
     for (let j = 1; j <= nb; j++) {
       const card = document.getElementById(`score-card-j${j}`);
@@ -192,16 +241,28 @@ export class GameScore {
     this.nbLabel.textContent =
       `${nb} colonne${plural ? "s" : ""} joueur${plural ? "s" : ""} active${plural ? "s" : ""}`;
 
-    // Ajuste la largeur de main selon le nombre de joueurs
     const main = document.querySelector("main");
     if (main) {
       main.classList.remove(...Array.from(main.classList).filter(c => c.startsWith("players-")));
       main.classList.add(`players-${nb}`);
     }
 
-    // En-têtes
-    while (this.theadRow.children.length > 2) {
+    // ── En-têtes fixes (Saison / Type) ──
+    // Repart de zéro : on vide toutes les colonnes dynamiques
+    while (this.theadRow.children.length > 0) {
       this.theadRow.removeChild(this.theadRow.lastChild);
+    }
+
+    if (this.showSaison) {
+      const th       = document.createElement("th");
+      th.textContent = "Saison";
+      this.theadRow.appendChild(th);
+    }
+
+    if (this.showType) {
+      const th       = document.createElement("th");
+      th.textContent = "Type";
+      this.theadRow.appendChild(th);
     }
 
     const extraCols = this.config.rows[0]?.extra ?? [];
@@ -217,31 +278,37 @@ export class GameScore {
       th.className = "th-player";
       th.appendChild(this._makePlayerSelect(j));
       this.theadRow.appendChild(th);
+      this._updatePlayerHeader(j);
     }
+    this._adjustPlayerColWidths();
 
-    // Lignes
+    // ── Lignes ──
     this.tbody.innerHTML = "";
     let lastSaison = null;
 
     this.config.rows.forEach((row, ri) => {
       const tr = document.createElement("tr");
 
-      const tdSaison       = document.createElement("td");
-      tdSaison.className   = "td-saison";
-      tdSaison.textContent = row.saison !== lastSaison ? row.saison : "";
-      lastSaison           = row.saison;
-      tr.appendChild(tdSaison);
+      if (this.showSaison) {
+        const td       = document.createElement("td");
+        td.className   = "td-saison";
+        td.textContent = row.saison !== lastSaison ? row.saison : "";
+        lastSaison     = row.saison;
+        tr.appendChild(td);
+      }
 
-      const tdType = document.createElement("td");
-      const badge  = document.createElement("span");
-      badge.className   = `badge-type ${row.cls}`;
-      badge.textContent = `${row.icon} ${row.type.charAt(0).toUpperCase() + row.type.slice(1)}`;
-      tdType.appendChild(badge);
-      tr.appendChild(tdType);
+      if (this.showType) {
+        const td    = document.createElement("td");
+        const badge = document.createElement("span");
+        badge.className   = `badge-type ${row.cls}`;
+        badge.textContent = `${row.icon} ${row.type.charAt(0).toUpperCase() + row.type.slice(1)}`;
+        td.appendChild(badge);
+        tr.appendChild(td);
+      }
 
       (row.extra ?? []).forEach(col => {
-        const td        = document.createElement("td");
-        const inp       = document.createElement("input");
+        const td  = document.createElement("td");
+        const inp = document.createElement("input");
         inp.type        = col.type ?? "number";
         inp.className   = "score-input";
         inp.placeholder = col.placeholder ?? "";
@@ -253,8 +320,8 @@ export class GameScore {
       });
 
       for (let j = 1; j <= nb; j++) {
-        const td           = document.createElement("td");
-        const inp          = document.createElement("input");
+        const td  = document.createElement("td");
+        const inp = document.createElement("input");
         inp.type           = "number";
         inp.className      = "score-input";
         inp.placeholder    = "0";
@@ -271,7 +338,6 @@ export class GameScore {
       this.tbody.appendChild(tr);
     });
 
-    // Score board
     this._renderScoreBoard();
     this._updateScores();
   }

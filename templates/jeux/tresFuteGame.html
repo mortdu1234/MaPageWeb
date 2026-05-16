@@ -1,0 +1,481 @@
+{% extends "jeux/baseScore.html" %}
+
+{% block score_styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/games/tresFute.css') }}"/>
+{% endblock %}
+
+{% block score_title %}Très Futé{% endblock %}
+{% block score_subtitle %}Fiche de score interactive{% endblock %}
+
+{% block submit_url %}{{ url_for('jeux.tresFute_submit') }}{% endblock %}
+
+{% block extra_controls %}
+<div class="control-group">
+  <button class="btn-reset" id="btn-reset" type="button">🔄 Réinitialiser</button>
+</div>
+{% endblock %}
+
+{% block content %}
+<main class="tf-main">
+
+  <div class="page-header">
+    <h1>🦊 Très Futé</h1>
+    <p>Fiche de score interactive — cochez et saisissez vos points</p>
+  </div>
+
+  <div class="tf-sheet" id="tf-sheet">
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION DES TOURS                           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="tf-section tf-tours-section">
+      <div class="tf-section-label">tours</div>
+        <div class="tf-tours-container">
+            <case-fute cochable>1</case-fute>
+            <case-fute cochable>2</case-fute>
+            <case-fute cochable>3</case-fute>
+            <case-fute cochable>4</case-fute>
+            <case-fute cochable>5</case-fute>
+            <case-fute cochable>6</case-fute>
+        </div>
+        <div class="tf-tours-container-bonus">
+            <case-fute cochable>🔄</case-fute>
+            <case-fute cochable>+1</case-fute>
+            <case-fute cochable>🔄</case-fute>
+            <case-fute cochable>X/6</case-fute>
+            <case-fute >3j</case-fute>
+            <case-fute >1|2j</case-fute>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION DES REFRESH                           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="tf-section tf-refresh-section">
+      <div class="tf-section-label">refresh</div>
+        <div class="tf-refresh-container">
+            <case-fute entourable></case-fute>
+            <case-fute entourable></case-fute>
+            <case-fute entourable></case-fute>
+            <case-fute entourable></case-fute>
+            <case-fute entourable></case-fute>
+            <case-fute entourable></case-fute>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION DES +1                           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="tf-section tf-plusOne-section">
+      <div class="tf-section-label">+1</div>
+        <div class="tf-plusOne-container">
+            <case-fute entourable></case-fute>
+            <case-fute entourable></case-fute>
+            <case-fute entourable></case-fute>
+            <case-fute entourable></case-fute>
+            <case-fute entourable></case-fute>
+            <case-fute entourable></case-fute>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION JAUNE                           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="tf-section tf-yellow-section">
+      <div class="tf-section-label">yellow</div>
+        <div class="tf-yellow-container">
+            <div class="tf-yellow-grid">
+                <div class="tf-yellow-row">
+                    <case-fute cochable>3</case-fute>
+                    <case-fute cochable>6</case-fute>
+                    <case-fute cochable>5</case-fute>
+                    <case-fute cochee></case-fute>
+                    <case-fute cochable><img src="{{ url_for('static', filename='img/Xblue.svg') }}" class="case-img" alt="Xblue"></case-fute>
+                </div>
+                <div class="tf-yellow-row">
+                    <case-fute cochable>2</case-fute>
+                    <case-fute cochable>1</case-fute>
+                    <case-fute cochee></case-fute>
+                    <case-fute cochable>5</case-fute>
+                    <case-fute cochable><img src="{{ url_for('static', filename='img/4orange.svg') }}" class="case-img" alt="4orange"></case-fute>
+                </div>
+                <div class="tf-yellow-row">
+                    <case-fute cochable>1</case-fute>
+                    <case-fute cochee></case-fute>
+                    <case-fute cochable>2</case-fute>
+                    <case-fute cochable>4</case-fute>
+                    <case-fute cochable><img src="{{ url_for('static', filename='img/Xvert.svg') }}" class="case-img" alt="Xvert"></case-fute>
+                </div>
+                <div class="tf-yellow-row">
+                    <case-fute cochee></case-fute>
+                    <case-fute cochable>3</case-fute>
+                    <case-fute cochable>4</case-fute>
+                    <case-fute cochable>6</case-fute>
+                    <case-fute cochable>🦊</case-fute>
+                </div>
+                <div class="tf-yellow-row">
+                    <case-fute cochable>10</case-fute>
+                    <case-fute cochable>14</case-fute>
+                    <case-fute cochable>16</case-fute>
+                    <case-fute cochable>20</case-fute>
+                    <case-fute cochable>+1</case-fute>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION BLEU                           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="tf-section tf-blue-section">
+      <div class="tf-section-label">blue</div>
+        <div class="tf-blue-container">
+            <div class="tf-blue-score-container">
+                <div class="tf-blue-container">
+                    <case-fute cochable>1</case-fute>
+                    <case-fute cochable>2</case-fute>
+                    <case-fute cochable>4</case-fute>
+                    <case-fute cochable>7</case-fute>
+                    <case-fute cochable>11</case-fute>
+                    <case-fute cochable>16</case-fute>
+                    <case-fute cochable>27</case-fute>
+                    <case-fute cochable>29</case-fute>
+                    <case-fute cochable>37</case-fute>
+                    <case-fute cochable>46</case-fute>
+                    <case-fute cochable>56</case-fute>
+                </div>
+                <div class="tf-blue-container-bonus">
+                    <case-fute >1</case-fute>
+                    <case-fute >2</case-fute>
+                    <case-fute >3</case-fute>
+                    <case-fute >4</case-fute>
+                    <case-fute >5</case-fute>
+                    <case-fute >6</case-fute>
+                    <case-fute >7</case-fute>
+                    <case-fute >8</case-fute>
+                    <case-fute >9</case-fute>
+                    <case-fute >10</case-fute>
+                    <case-fute >11</case-fute>
+                </div>
+            </div>
+
+            <div class="tf-blue-value-container">
+                <div class="tf-blue-grid">
+                    <div class="tf-blue-row">
+                        <case-fute></case-fute>
+                        <case-fute cochable>2</case-fute>
+                        <case-fute cochable>3</case-fute>
+                        <case-fute cochable>4</case-fute>
+                        <case-fute cochable><img src="{{ url_for('static', filename='img/5orange.svg') }}" class="case-img" alt="5orange"></case-fute>
+                    </div>
+                    <div class="tf-blue-row">
+                        <case-fute cochable>5</case-fute>
+                        <case-fute cochable>6</case-fute>
+                        <case-fute cochable>7</case-fute>
+                        <case-fute cochable>8</case-fute>
+                        <case-fute cochable><img src="{{ url_for('static', filename='img/Xjaune.svg') }}" class="case-img" alt="Xjaune"></case-fute>
+                    </div>
+                    <div class="tf-blue-row">
+                        <case-fute cochable>9</case-fute>
+                        <case-fute cochable>10</case-fute>
+                        <case-fute cochable>11</case-fute>
+                        <case-fute cochable>12</case-fute>
+                        <case-fute cochable>🦊</case-fute>
+                    </div>
+                    <div class="tf-blue-row">
+                        <case-fute cochable>🔄</case-fute>
+                        <case-fute cochable><img src="{{ url_for('static', filename='img/Xvert.svg') }}" class="case-img" alt="Xvert"></case-fute>
+                        <case-fute cochable><img src="{{ url_for('static', filename='img/6violet.svg') }}" class="case-img" alt="6violet"></case-fute>
+                        <case-fute cochable>+1</case-fute>
+                        <case-fute></case-fute>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION Verte                           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="tf-section tf-green-section">
+      <div class="tf-section-label">green</div>
+        <div class="tf-green-grid">
+        <div class="tf-green-score-container">
+            <case-fute cochable>1</case-fute>
+            <case-fute cochable>3</case-fute>
+            <case-fute cochable>6</case-fute>
+            <case-fute cochable>10</case-fute>
+            <case-fute cochable>15</case-fute>
+            <case-fute cochable>21</case-fute>
+            <case-fute cochable>28</case-fute>
+            <case-fute cochable>36</case-fute>
+            <case-fute cochable>45</case-fute>
+            <case-fute cochable>55</case-fute>
+            <case-fute cochable>66</case-fute>
+        </div>
+        <div class="tf-green-container">
+            <case-fute cochable>≥1</case-fute>
+            <case-fute cochable>≥2</case-fute>
+            <case-fute cochable>≥3</case-fute>
+            <case-fute cochable>≥4</case-fute>
+            <case-fute cochable>≥5</case-fute>
+            <case-fute cochable>≥1</case-fute>
+            <case-fute cochable>≥2</case-fute>
+            <case-fute cochable>≥3</case-fute>
+            <case-fute cochable>≥4</case-fute>
+            <case-fute cochable>≥5</case-fute>
+            <case-fute cochable>≥6</case-fute>
+        </div>
+        <div class="tf-green-bonus-container">
+            <case-fute></case-fute>
+            <case-fute></case-fute>
+            <case-fute></case-fute>
+            <case-fute cochable>+1</case-fute>
+            <case-fute></case-fute>
+            <case-fute cochable><img src="{{ url_for('static', filename='img/Xblue.svg') }}" class="case-img" alt="Xblue"></case-fute>
+            <case-fute cochable>🦊</case-fute>
+            <case-fute></case-fute>
+            <case-fute cochable><img src="{{ url_for('static', filename='img/6violet.svg') }}" class="case-img" alt="6violet"></case-fute>
+            <case-fute cochable>🔄</case-fute>
+            <case-fute></case-fute>
+        </div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION Orange                           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="tf-section tf-orange-section">
+      <div class="tf-section-label">orange</div>
+        <div class="tf-orange-container">
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+        </div>
+
+        <div class="tf-orange-bonus-container">
+            <case-fute></case-fute>
+            <case-fute></case-fute>
+            <case-fute cochable>🔄</case-fute>
+            <case-fute>x2</case-fute>
+            <case-fute cochable><img src="{{ url_for('static', filename='img/Xjaune.svg') }}" class="case-img" alt="Xjaune"></case-fute>
+            <case-fute cochable>+1</case-fute>
+            <case-fute>x2</case-fute>
+            <case-fute cochable>🦊</case-fute>
+            <case-fute>x2</case-fute>
+            <case-fute cochable><img src="{{ url_for('static', filename='img/6violet.svg') }}" class="case-img" alt="6violet"></case-fute>
+            <case-fute>x3</case-fute>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION Purple                           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="tf-section tf-purple-section">
+      <div class="tf-section-label">purple</div>
+        <div class="tf-purple-container">
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+            <case-fute modifiable></case-fute>
+        </div>
+
+        <div class="tf-purple-bonus-container">
+            <case-fute></case-fute>
+            <case-fute></case-fute>
+            <case-fute cochable>🔄</case-fute>
+            <case-fute cochable><img src="{{ url_for('static', filename='img/Xblue.svg') }}" class="case-img" alt="Xblue"></case-fute>
+            <case-fute cochable>+1</case-fute>
+            <case-fute cochable><img src="{{ url_for('static', filename='img/Xjaune.svg') }}" class="case-img" alt="Xjaune"></case-fute>
+            <case-fute cochable>🦊</case-fute>
+            <case-fute cochable>🔄</case-fute>
+            <case-fute cochable><img src="{{ url_for('static', filename='img/Xvert.svg') }}" class="case-img" alt="Xvert"></case-fute>
+            <case-fute cochable><img src="{{ url_for('static', filename='img/6orange.svg') }}" class="case-img" alt="6orange"></case-fute>
+            <case-fute cochable>+1</case-fute>
+        </div>
+    </section>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- ZONE DES DÉS                               -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="tf-dice-zone" id="tf-dice-zone">
+
+    <div class="tf-dice-header">
+      <h2 class="tf-dice-title">🎲 Dés</h2>
+      <div class="tf-dice-controls">
+        <button class="tf-dice-reroll-btn" id="btn-reroll" type="button">
+          🎲 Lancer les dés
+        </button>
+        <button class="tf-dice-reset-btn" id="btn-dice-reset" type="button">
+          🔁 Reset dés
+        </button>
+      </div>
+    </div>
+
+    <!-- Dé sélectionné -->
+    <div class="tf-dice-selected-wrapper" id="dice-selected-wrapper" hidden>
+      <div class="tf-dice-aside-label">Sélectionné</div>
+      <div class="tf-dice-selected" id="dice-selected"></div>
+    </div>
+
+    <!-- Dés actifs (pas encore mis de côté) -->
+    <div class="tf-dice-active" id="dice-active">
+      <jeu-dice size="6" color="blue"></jeu-dice>
+      <jeu-dice size="6" color="white"></jeu-dice>
+      <jeu-dice size="6" color="orange"></jeu-dice>
+      <jeu-dice size="6" color="gold"></jeu-dice>
+      <jeu-dice size="6" color="purple"></jeu-dice>
+      <jeu-dice size="6" color="green"></jeu-dice>
+    </div>
+
+    <!-- Dés mis de côté (valeur < dé sélectionné) -->
+    <div class="tf-dice-aside-wrapper" id="dice-aside-wrapper" hidden>
+      <div class="tf-dice-aside-label">Mis de côté</div>
+      <div class="tf-dice-aside" id="dice-aside"></div>
+    </div>
+
+  </section>
+</main>
+{% endblock %}
+
+{% block game_script %}
+<script type="module" src="{{ url_for('static', filename='js/balises/Dice.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/balises/Case.js') }}"></script>
+<script src="{{ url_for('static', filename='js/games/tresFute.js') }}"></script>
+<script>
+/* ── Logique dés : sélection + mise de côté automatique ─────── */
+(function () {
+  const active          = document.getElementById('dice-active');
+  const aside           = document.getElementById('dice-aside');
+  const asideWrapper    = document.getElementById('dice-aside-wrapper');
+  const selectedZone    = document.getElementById('dice-selected');
+  const selectedWrapper = document.getElementById('dice-selected-wrapper');
+  const btnReroll       = document.getElementById('btn-reroll');
+  const btnReset        = document.getElementById('btn-dice-reset');
+
+  // Valeur du dé via l'attribut (persisté par _roll dans Dice.js)
+  function getDiceValue(dice) {
+    const v = parseInt(dice.getAttribute('value'), 10);
+    return isNaN(v) ? null : v;
+  }
+
+  // Met à jour la visibilité des zones
+  function updateVisibility() {
+    asideWrapper.hidden    = aside.querySelectorAll('jeu-dice').length === 0;
+    selectedWrapper.hidden = selectedZone.querySelectorAll('jeu-dice').length === 0;
+  }
+
+  // Déplace vers "aside" les dés actifs dont la valeur < seuil
+  function moveInferiorToAside(seuil) {
+    [...active.querySelectorAll('jeu-dice')].forEach(dice => {
+      const v = getDiceValue(dice);
+      if (v !== null && v < seuil) aside.appendChild(dice);
+    });
+    updateVisibility();
+  }
+
+  // Relance tous les dés de la zone active
+  function rerollActive() {
+    [...active.querySelectorAll('jeu-dice')].forEach(dice => dice._roll?.());
+  }
+
+  // Attache le listener de clic sur chaque dé
+  function attachClickListener(dice) {
+    dice.addEventListener('click', () => {
+      // Ignorer si le dé n'est pas dans la zone active
+      if (!active.contains(dice)) return;
+
+      const selectedValue = getDiceValue(dice);
+      if (selectedValue === null) return; // dé pas encore lancé
+
+      // 1. Déplacer le dé cliqué dans "sélectionné" — les dés déjà sélectionnés restent
+      selectedZone.appendChild(dice);
+      updateVisibility();
+
+      // 2. Mettre de côté les dés actifs dont la valeur < selectedValue
+      moveInferiorToAside(selectedValue);
+    });
+  }
+
+  // Bouton "Lancer les dés"
+  btnReroll.addEventListener('click', rerollActive);
+
+  // Bouton "Reset dés"
+  btnReset.addEventListener('click', () => {
+    [...aside.querySelectorAll('jeu-dice')].forEach(d => active.appendChild(d));
+    [...selectedZone.querySelectorAll('jeu-dice')].forEach(d => active.appendChild(d));
+    updateVisibility();
+    [...active.querySelectorAll('jeu-dice')].forEach(dice => dice._reset?.());
+  });
+
+  // Initialisation
+  [...active.querySelectorAll('jeu-dice')].forEach(attachClickListener);
+
+  // Ajouter curseur pointer sur les dés actifs via CSS dynamique
+  const style = document.createElement('style');
+  style.textContent = `
+    #dice-active jeu-dice { cursor: pointer; }
+    #dice-active jeu-dice:hover { transform: scale(1.08); transition: transform 0.15s; }
+    .tf-dice-reset-btn {
+      padding: 0 14px;
+      height: 34px;
+      border-radius: 8px;
+      border: 2px solid #505090;
+      background: linear-gradient(135deg, #1e1e50, #111130);
+      color: #a0a0e0;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    }
+    .tf-dice-reset-btn:hover {
+      background: linear-gradient(135deg, #2a2a70, #181858);
+      border-color: #7070b0;
+      color: #c8c8ff;
+    }
+    .tf-dice-reset-btn:active { transform: scale(0.96); }
+    .tf-dice-selected-wrapper {
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed rgba(255,220,50,0.25);
+    }
+    .tf-dice-selected-wrapper .tf-dice-aside-label {
+      color: rgba(255, 220, 80, 0.7);
+    }
+    .tf-dice-selected {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    #dice-selected jeu-dice {
+      filter: drop-shadow(0 0 10px rgba(255, 200, 0, 0.6));
+    }
+  `;
+  document.head.appendChild(style);
+})();
+</script>
+{% endblock %}
