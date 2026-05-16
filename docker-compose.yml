@@ -2,7 +2,7 @@ services:
   web:
     build: .
     ports:
-      - "5000:5000"
+      - "25555:25555"
     restart: unless-stopped
     env_file:
       - .env
