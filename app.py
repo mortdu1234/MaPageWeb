@@ -10,14 +10,16 @@ def create_app(config_class=Config):
 
     # Enregistrement des blueprints
     from routes.main import main_bp
-    from routes.jeux import jeux_bp
+    from routes.games import jeux_bp
     from routes.projets import projets_bp
     from routes.auth import auth_bp
+    from routes.games.joueurs import joueurs_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(jeux_bp, url_prefix="/jeux")
     app.register_blueprint(projets_bp, url_prefix="/projets")
     app.register_blueprint(auth_bp)
+    app.register_blueprint(joueurs_bp)
     
     @app.context_processor
     def inject_user():

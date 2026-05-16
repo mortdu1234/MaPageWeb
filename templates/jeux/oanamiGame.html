@@ -1,0 +1,19 @@
+{% extends "jeux/baseScore.html" %}
+
+{% block title %}Oanami — Tableau des scores{% endblock %}
+
+{% block score_styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/games/oanami.css') }}"/>
+{% endblock %}
+
+{% block score_title %}Oanami — Tableau des scores{% endblock %}
+{% block score_subtitle %}Saisissez les scores par joueur pour chaque type de saison{% endblock %}
+
+{% block submit_url %}{{ url_for('jeux.oanami_submit') }}{% endblock %}
+
+{% block game_script %}
+  <script>
+    const NEW_PLAYER_URL = "{{ url_for('joueurs.nouveau_joueur') }}";
+  </script>
+  <script type="module" src="{{ url_for('static', filename='js/games/oanami.js') }}"></script>
+{% endblock %}
