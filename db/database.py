@@ -3,7 +3,7 @@ db/database.py
 Toutes les requêtes SQL liées avec la page "Database".
 """
 
-from db import get_db, permissions, release_db
+from db import get_db, joueurs, permissions, release_db
 
 
 # ─── Lecture ──────────────────────────────────────────────────────────────────
@@ -11,12 +11,15 @@ from db import get_db, permissions, release_db
 def get_all_tables() -> list[str]:
     """Retourne la liste des tables publiques de la base PostgreSQL."""
     return [
-        "users",
+        "jeux",
         "joueurs",
+        "joueurs_partie",
+        "parties",
         "permissions",
-        "user_permissions",
-        "tasks",
         "task_shares",
+        "tasks",
+        "user_permissions",
+        "users"
     ]
 
 def get_all_from_table(table: str) -> tuple[dict, None] | tuple[None, str]:

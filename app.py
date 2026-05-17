@@ -2,6 +2,8 @@ from flask import Flask, render_template
 from config import Config
 from sessionUser import SessionUser
 from db import init_pool
+from datetime import date
+
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -35,6 +37,11 @@ def create_app(config_class=Config):
                 "permissions":  SessionUser.permissions(),
             }
         }
+    
+    @app.context_processor
+    def inject_today():
+        return {"today": date.today().isoformat()}
+
     
     # ─── Gestionnaires d'erreurs ──────────────────────────────────────────────
 
