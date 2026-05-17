@@ -30,6 +30,7 @@ class NavBar extends HTMLElement {
       { label: 'Mes projets',     href: '/projets' },
       { label: 'Mes tâches',      href: '/tasks' },
       { label: 'Base de données', href: '/database' },
+      { label: 'Upload', href: '/upload' },
     ];
 
     const rawPages = this.getAttribute('pages');

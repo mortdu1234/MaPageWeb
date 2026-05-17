@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+
 def _require(key: str) -> str:
     value = os.environ.get(key)
     if not value:
@@ -21,6 +22,10 @@ class Config:
     DB_NAME     = _require("DB_NAME")
     DB_USER     = _require("DB_USER")
     DB_PASSWORD = _require("DB_PASSWORD")
+
+    RSA_PUBLIC_KEY_PATH  = _require("RSA_PUBLIC_KEY_PATH")
+    RSA_PRIVATE_KEY_PATH = _require("RSA_PRIVATE_KEY_PATH")
+
 
 
 class DevelopmentConfig(Config):

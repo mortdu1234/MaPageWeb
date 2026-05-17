@@ -18,6 +18,8 @@ def create_app(config_class=Config):
     from routes.games.joueurs import joueurs_bp
     from routes.database import api_db_bp
     from routes.tasks import tasks_bp
+    from routes.upload import upload_bp
+    from routes.rsaKeys import rsaKeys_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(jeux_bp, url_prefix="/jeux")
@@ -26,6 +28,8 @@ def create_app(config_class=Config):
     app.register_blueprint(joueurs_bp)
     app.register_blueprint(api_db_bp)
     app.register_blueprint(tasks_bp)
+    app.register_blueprint(upload_bp)
+    app.register_blueprint(rsaKeys_bp)
 
     @app.context_processor
     def inject_user():
