@@ -10,6 +10,7 @@ Routes :
 from flask import Blueprint, jsonify, render_template
 from db.database import get_all_from_table, get_all_tables
 from sessionUser import SessionUser
+from routes import require_permission
 
 api_db_bp = Blueprint('api_database', __name__)
 
@@ -17,6 +18,7 @@ api_db_bp = Blueprint('api_database', __name__)
 # ─── Page HTML ────────────────────────────────────────────────────────────────
 
 @api_db_bp.route('/database')
+@require_permission("showDatabase")
 def database_page():
     tables = get_all_tables()
     return render_template('database.html', tables=tables)
