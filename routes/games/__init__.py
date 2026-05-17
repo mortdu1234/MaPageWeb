@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, abort, jsonify
-from routes.auth import require_permission
+from routes import require_permission
 from db.joueurs import get_all_joueurs
 
 jeux_bp = Blueprint("jeux", __name__)

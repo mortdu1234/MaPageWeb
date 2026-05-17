@@ -1,6 +1,8 @@
 from ast import main
+import re
 
 from flask import Blueprint, render_template
+from routes import require_permission
 
 main_bp = Blueprint("main", __name__)
 
@@ -22,7 +24,3 @@ def contact():
 @main_bp.route("/tasks")
 def tasks():
     return render_template("tasks.html")
-
-@main_bp.route("/database")
-def database():
-    return render_template("database.html")

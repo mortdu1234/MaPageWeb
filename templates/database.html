@@ -1,15 +1,217 @@
 {% extends "base.html" %}
 
-{% block title %}Denis ROBERT — Contact{% endblock %}
+{% block title %}Denis ROBERT — Base de données{% endblock %}
 
 {% block styles %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/components/section.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/contact.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/database.css') }}"/>
 {% endblock %}
 
 {% block content %}
-<div class="section">
-    <div></div>
+<div class="section db-section">
+
+  <div class="db-header">
+    <h1 class="db-title">Base de données</h1>
+    <p class="db-subtitle">Explorez les tables et recherchez des enregistrements</p>
+  </div>
+
+  <div class="db-controls">
+    <div class="db-select-wrap">
+      <label for="table-select" class="db-label">Table</label>
+      <div class="select-arrow-wrap">
+        <select id="table-select" class="db-select">
+          <option value="" disabled selected>Choisir une table…</option>
+          {% for table in tables %}
+            <option value="{{ table }}">{{ table }}</option>
+          {% endfor %}
+        </select>
+        <svg class="select-arrow" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="db-search-wrap" id="search-wrap" aria-hidden="true">
+      <label for="db-search" class="db-label">Recherche</label>
+      <div class="search-input-wrap">
+        <svg class="search-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M14.5 14.5L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input
+          type="search"
+          id="db-search"
+          class="db-search"
+          placeholder="Rechercher dans la table…"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <span class="match-count" id="match-count"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="db-content" id="db-content">
+    <div class="db-empty" id="db-empty">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="empty-icon" aria-hidden="true">
+        <rect x="8" y="16" width="48" height="36" rx="4" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M8 24h48" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M22 24v28" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/>
+        <path d="M42 24v28" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/>
+        <circle cx="50" cy="12" r="6" fill="var(--gold)" opacity="0.8"/>
+        <path d="M50 9v4M50 14v1" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <p>Sélectionnez une table pour afficher ses données</p>
+    </div>
+
+    <div class="db-loading" id="db-loading" aria-live="polite">
+      <div class="loader-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <p>Chargement…</p>
+    </div>
+
+    <div class="db-error" id="db-error" role="alert"></div>
+
+    <div class="db-table-wrap" id="db-table-wrap">
+      <div class="db-meta" id="db-meta"></div>
+      <div class="table-scroll">
+        <table class="db-table" id="db-table" aria-live="polite">
+          <thead id="db-thead"></thead>
+          <tbody id="db-tbody"></tbody>
+        </table>
+      </div>
+      <div class="db-no-results" id="db-no-results">
+        Aucun résultat pour cette recherche.
+      </div>
+    </div>
+  </div>
+
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const tableSelect = document.getElementById('table-select');
+  const searchWrap  = document.getElementById('search-wrap');
+  const searchInput = document.getElementById('db-search');
+  const matchCount  = document.getElementById('match-count');
+
+  const elEmpty     = document.getElementById('db-empty');
+  const elLoading   = document.getElementById('db-loading');
+  const elError     = document.getElementById('db-error');
+  const elTableWrap = document.getElementById('db-table-wrap');
+  const elMeta      = document.getElementById('db-meta');
+  const elThead     = document.getElementById('db-thead');
+  const elTbody     = document.getElementById('db-tbody');
+  const elNoResults = document.getElementById('db-no-results');
+
+  let allRows = [];
+  let allCols = [];
+
+  function showState(state) {
+    elEmpty.style.display     = state === 'empty'   ? 'flex'  : 'none';
+    elLoading.style.display   = state === 'loading' ? 'flex'  : 'none';
+    elError.style.display     = state === 'error'   ? 'block' : 'none';
+    elTableWrap.style.display = state === 'table'   ? 'block' : 'none';
+  }
+
+  function escHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function buildTable(columns, rows) {
+    allCols = columns;
+    allRows = rows;
+    elThead.innerHTML = '<tr>' + columns.map(c => `<th>${escHtml(c)}</th>`).join('') + '</tr>';
+    renderRows(rows);
+  }
+
+  function renderRows(rows, query = '') {
+    elTbody.innerHTML = '';
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const tr = document.createElement('tr');
+      let rowVisible = false;
+
+      allCols.forEach(col => {
+        const td  = document.createElement('td');
+        const raw = row[col] === null || row[col] === undefined ? '' : String(row[col]);
+
+        if (query) {
+          const idx = raw.toLowerCase().indexOf(query.toLowerCase());
+          if (idx !== -1) {
+            rowVisible = true;
+            td.innerHTML = escHtml(raw.slice(0, idx))
+              + `<mark>${escHtml(raw.slice(idx, idx + query.length))}</mark>`
+              + escHtml(raw.slice(idx + query.length));
+          } else {
+            td.textContent = raw;
+          }
+        } else {
+          rowVisible = true;
+          td.textContent = raw;
+        }
+        tr.appendChild(td);
+      });
+
+      if (query && !rowVisible) {
+        tr.style.display = 'none';
+      } else {
+        visibleCount++;
+      }
+      elTbody.appendChild(tr);
+    });
+
+    elNoResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    matchCount.textContent = query && visibleCount > 0
+      ? `${visibleCount} résultat${visibleCount > 1 ? 's' : ''}`
+      : '';
+    elMeta.textContent = `${visibleCount} / ${allRows.length} enregistrement${allRows.length > 1 ? 's' : ''}`;
+  }
+
+  async function loadTable(tableName) {
+    showState('loading');
+    searchInput.value  = '';
+    matchCount.textContent = '';
+
+    try {
+      const res = await fetch(`/api/database/${encodeURIComponent(tableName)}`);
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      if (!data.columns || !data.rows) throw new Error('Format de réponse invalide');
+
+      buildTable(data.columns, data.rows);
+      showState('table');
+      searchWrap.removeAttribute('aria-hidden');
+      searchInput.focus();
+    } catch (err) {
+      elError.textContent = `Erreur lors du chargement de « ${tableName} » : ${err.message}`;
+      showState('error');
+      searchWrap.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  tableSelect.addEventListener('change', () => {
+    if (tableSelect.value) loadTable(tableSelect.value);
+  });
+
+  let searchTimer;
+  searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => renderRows(allRows, searchInput.value.trim()), 120);
+  });
+
+  showState('empty');
+})();
+</script>
 {% endblock %}

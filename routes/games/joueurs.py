@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from routes.auth import require_permission
+from routes import require_permission
 from db.joueurs import create_joueur, joueur_exists
 
 joueurs_bp = Blueprint("joueurs", __name__)

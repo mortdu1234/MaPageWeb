@@ -88,14 +88,8 @@
   transition: border-color 0.2s;
 }
 
-.tasks-input::placeholder {
-  color: var(--muted);
-  opacity: 0.5;
-}
-
-.tasks-input:focus {
-  border-bottom-color: var(--gold);
-}
+.tasks-input::placeholder { color: var(--muted); opacity: 0.5; }
+.tasks-input:focus { border-bottom-color: var(--gold); }
 
 .tasks-add-btn {
   flex-shrink: 0;
@@ -138,9 +132,7 @@
 .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
 /* ── Compteur de progression ── */
-.tasks-progress {
-  margin-bottom: 28px;
-}
+.tasks-progress { margin-bottom: 28px; }
 
 .tasks-progress-bar-wrap {
   height: 2px;
@@ -162,10 +154,7 @@
   color: var(--muted);
 }
 
-.tasks-progress-label span {
-  color: var(--gold);
-  font-weight: 500;
-}
+.tasks-progress-label span { color: var(--gold); font-weight: 500; }
 
 /* ── Liste ── */
 .tasks-list {
@@ -206,16 +195,15 @@
 
 .task-item:hover { border-color: rgba(184,154,106,0.4); }
 .task-item:hover::before { opacity: 0.5; }
+.task-item:hover .task-delete  { opacity: 1; }
+.task-item:hover .task-share-btn { opacity: 1; }
+
+/* Item partagé reçu */
+.task-item.shared-in::before { background: #7a9bc9; opacity: 0.4; }
 
 /* Item complété */
-.task-item.done {
-  opacity: 0.55;
-}
-
-.task-item.done::before {
-  background: var(--muted);
-  opacity: 0.3;
-}
+.task-item.done { opacity: 0.55; }
+.task-item.done::before { background: var(--muted); opacity: 0.3; }
 
 /* ── Checkbox custom ── */
 .task-checkbox {
@@ -231,16 +219,10 @@
   transition: border-color 0.2s, background 0.2s;
 }
 
-.task-checkbox:hover {
-  border-color: var(--gold);
-}
+.task-checkbox:hover { border-color: var(--gold); }
+.task-checkbox:checked { background: var(--accent); border-color: var(--accent); }
+.task-checkbox:disabled { cursor: default; opacity: 0.4; }
 
-.task-checkbox:checked {
-  background: var(--accent);
-  border-color: var(--accent);
-}
-
-/* Coche SVG via clip-path */
 .task-checkbox:checked::after {
   content: '';
   position: absolute;
@@ -261,7 +243,6 @@
   transition: color 0.2s;
 }
 
-/* Barre de rayure */
 .task-label::after {
   content: '';
   position: absolute;
@@ -274,15 +255,23 @@
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.task-item.done .task-label {
-  color: var(--muted);
+.task-item.done .task-label { color: var(--muted); }
+.task-item.done .task-label::after { width: 100%; }
+
+/* Badge propriétaire partagé */
+.task-shared-badge {
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7a9bc9;
+  border: 1px solid rgba(122,155,201,0.35);
+  padding: 2px 6px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.task-item.done .task-label::after {
-  width: 100%;
-}
-
-/* ── Bouton supprimer ── */
+/* ── Boutons d'action (partage + suppression) ── */
+.task-share-btn,
 .task-delete {
   flex-shrink: 0;
   width: 28px;
@@ -292,39 +281,32 @@
   justify-content: center;
   background: none;
   border: none;
-  color: var(--line);
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.85rem;
   line-height: 1;
   transition: color 0.2s, transform 0.15s;
   opacity: 0;
 }
 
-.task-item:hover .task-delete {
-  opacity: 1;
-}
+.task-share-btn { color: var(--muted); }
+.task-share-btn:hover { color: var(--gold); transform: scale(1.2); }
 
-.task-delete:hover {
-  color: #c0614a;
-  transform: scale(1.15);
-}
+.task-delete { color: var(--line); }
+.task-delete:hover { color: #c0392b; transform: scale(1.15); }
 
 /* ── État vide ── */
 .tasks-empty {
-  padding: 60px 0;
   text-align: center;
+  padding: 64px 0;
   color: var(--muted);
   display: none;
 }
 
 .tasks-empty-icon {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3rem;
-  font-weight: 300;
-  color: rgba(184,154,106,0.25);
   display: block;
-  margin-bottom: 16px;
-  font-style: italic;
+  font-size: 2rem;
+  margin-bottom: 12px;
+  opacity: 0.3;
 }
 
 .tasks-empty p {
@@ -351,12 +333,184 @@
   background: var(--line);
 }
 
+/* ── MODALE PARTAGE ──────────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 23, 20, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  width: min(520px, 94vw);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-overlay.open .modal {
+  transform: translateY(0);
+}
+
+.modal-header {
+  padding: 28px 28px 20px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+.modal-task-name {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.modal-close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.modal-close:hover { color: var(--accent); }
+
+.modal-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Recherche dans la modale */
+.modal-search {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(184,154,106,0.35);
+  padding: 8px 2px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--accent);
+  outline: none;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+
+.modal-search:focus { border-bottom-color: var(--gold); }
+.modal-search::placeholder { color: var(--muted); opacity: 0.5; }
+
+/* Liste d'utilisateurs */
+.share-user-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.share-user-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  transition: border-color 0.15s;
+}
+
+.share-user-item:hover { border-color: rgba(184,154,106,0.4); }
+
+.share-user-avatar {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.share-user-name {
+  flex: 1;
+  font-size: 0.88rem;
+  color: var(--accent);
+}
+
+/* Sélecteur de permission */
+.share-perm-select {
+  background: none;
+  border: 1px solid var(--line);
+  padding: 4px 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  color: var(--muted);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.share-perm-select:focus { border-color: var(--gold); }
+
+/* Bouton partager / retirer */
+.share-toggle-btn {
+  padding: 5px 14px;
+  border: 1px solid var(--line);
+  background: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.share-toggle-btn:hover:not(.shared) { border-color: var(--gold); color: var(--accent); }
+.share-toggle-btn.shared { background: var(--accent); color: #fff; border-color: var(--accent); }
+.share-toggle-btn.shared:hover { background: #c0392b; border-color: #c0392b; }
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .tasks-page { padding: 40px 16px 80px; }
   .tasks-toolbar { flex-direction: column; align-items: stretch; }
   .tasks-filter { justify-content: flex-start; }
-  .task-delete { opacity: 1; }
+  .task-delete, .task-share-btn { opacity: 1; }
+  .modal-header, .modal-body { padding-left: 20px; padding-right: 20px; }
 }
 </style>
 {% endblock %}
@@ -402,48 +556,8 @@
   </div>
 
   <!-- Liste principale (à faire) -->
-  <li class="task-item" data-id="1779002694784" style="animation-delay: 0ms;">
-      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
-      <span class="task-label">faire une page de visualisations de nos propres statistiques</span>
-      <button class="task-delete" aria-label="Supprimer">✕</button>
-    </li><li class="task-item" data-id="1779002668064" style="animation-delay: 80ms;">
-      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
-      <span class="task-label">faire une page de calcul des score pour triomino</span>
-      <button class="task-delete" aria-label="Supprimer">✕</button>
-    </li><li class="task-item" data-id="1779002659338" style="animation-delay: 120ms;">
-      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
-      <span class="task-label">faire une page de calcul de score pour qwirkle</span>
-      <button class="task-delete" aria-label="Supprimer">✕</button>
-    </li><li class="task-item" data-id="1779002637946" style="animation-delay: 160ms;">
-      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
-      <span class="task-label">faire une page d'acces minecraft</span>
-      <button class="task-delete" aria-label="Supprimer">✕</button>
-    </li><li class="task-item" data-id="1779002633422" style="animation-delay: 200ms;">
-      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
-      <span class="task-label">faire une page de visualisation d'information du server</span>
-      <button class="task-delete" aria-label="Supprimer">✕</button>
-    </li><li class="task-item" data-id="1779002611303" style="animation-delay: 240ms;">
-      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
-      <span class="task-label">faire la page de visualisation des base de données</span>
-      <button class="task-delete" aria-label="Supprimer">✕</button>
-    </li><li class="task-item" data-id="1779002597986" style="animation-delay: 280ms;">
-      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
-      <span class="task-label">ajouter un comptage des score très futé</span>
-      <button class="task-delete" aria-label="Supprimer">✕</button>
-    </li><li class="task-item" data-id="1779002685004" style="animation-delay: 40ms;">
-      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
-      <span class="task-label">faire les bases de données de calculs des scores</span>
-      <button class="task-delete" aria-label="Supprimer">✕</button>
-    </li><li class="task-item" data-id="1779002585646" style="animation-delay: 320ms;">
-      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
-      <span class="task-label">faire la page de calcul de smile life</span>
-      <button class="task-delete" aria-label="Supprimer">✕</button>
-    </li><li class="task-item" data-id="1779002578972" style="animation-delay: 360ms;">
-      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
-      <span class="task-label">faire la page de calcul de petit bac</span>
-      <button class="task-delete" aria-label="Supprimer">✕</button>
-    </li>
-    
+  <ul class="tasks-list" id="tasks-list-todo"></ul>
+
   <!-- État vide -->
   <div class="tasks-empty" id="tasks-empty">
     <span class="tasks-empty-icon">∅</span>
@@ -458,74 +572,166 @@
 
 </div>
 
+<!-- ── Modale partage ─────────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="share-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <p class="modal-title" id="modal-title">Partager la tâche</p>
+        <p class="modal-task-name" id="modal-task-name"></p>
+      </div>
+      <button class="modal-close" id="modal-close" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body">
+      <input
+        type="text"
+        class="modal-search"
+        id="modal-search"
+        placeholder="Rechercher un utilisateur…"
+        autocomplete="off"
+      />
+      <ul class="share-user-list" id="share-user-list"></ul>
+    </div>
+  </div>
+</div>
+
 <script>
 (function () {
-  /* ── Données ── */
-  const STORAGE_KEY = 'dr_tasks_v1';
-
-  function load() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-    catch { return []; }
-  }
-
-  function save(tasks) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-  }
-
-  let tasks = load();
+  /* ════════════════════════════════════════════════════════
+     État
+  ════════════════════════════════════════════════════════ */
+  let tasks         = [];
+  let allUsers      = [];     // {id, username}[]
   let currentFilter = 'all';
+  let activeTaskId  = null;   // tâche ouverte dans la modale
 
-  /* ── Date dans le meta ── */
-  const dateEl = document.getElementById('tasks-date');
-  const now = new Date();
-  dateEl.textContent = now.toLocaleDateString('fr-FR', {
+  /* ════════════════════════════════════════════════════════
+     API helpers
+  ════════════════════════════════════════════════════════ */
+  async function apiFetch(url, options = {}) {
+    const res = await fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+      ...options,
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.error || `Erreur ${res.status}`);
+    }
+    return res.json();
+  }
+
+  /* ════════════════════════════════════════════════════════
+     Chargement initial
+  ════════════════════════════════════════════════════════ */
+  async function loadTasks() {
+    try {
+      tasks = await apiFetch('/api/tasks');
+      render();
+    } catch (e) {
+      console.error('Impossible de charger les tâches :', e);
+    }
+  }
+
+  async function loadUsers() {
+    try {
+      allUsers = await apiFetch('/api/tasks/users');
+    } catch (e) {
+      console.error('Impossible de charger les utilisateurs :', e);
+    }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     Date
+  ════════════════════════════════════════════════════════ */
+  document.getElementById('tasks-date').textContent = new Date().toLocaleDateString('fr-FR', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
   });
 
-  /* ── Créer un élément <li> ── */
+  /* ════════════════════════════════════════════════════════
+     Créer un élément <li>
+  ════════════════════════════════════════════════════════ */
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
   function createItem(task) {
     const li = document.createElement('li');
-    li.className = 'task-item' + (task.done ? ' done' : '');
+    const isOwner    = task.is_owner;
+    const canWrite   = isOwner || task.permission === 'write';
+    const isSharedIn = !isOwner;
+
+    li.className = 'task-item'
+      + (task.done       ? ' done'      : '')
+      + (isSharedIn      ? ' shared-in' : '');
     li.dataset.id = task.id;
+
+    /* Badge utilisateur partageur */
+    const badgeHtml = isSharedIn
+      ? `<span class="task-shared-badge" title="Tâche partagée">partagée</span>`
+      : '';
+
+    /* Bouton partage (owner uniquement) */
+    const shareHtml = isOwner
+      ? `<button class="task-share-btn" aria-label="Partager" title="Partager">⇄</button>`
+      : '';
+
+    /* Bouton supprimer (owner uniquement) */
+    const deleteHtml = isOwner
+      ? `<button class="task-delete" aria-label="Supprimer">✕</button>`
+      : '';
 
     li.innerHTML = `
       <input
         type="checkbox"
         class="task-checkbox"
-        ${task.done ? 'checked' : ''}
+        ${task.done    ? 'checked'  : ''}
+        ${!canWrite    ? 'disabled' : ''}
         aria-label="Marquer comme terminée"
       />
       <span class="task-label">${escapeHtml(task.text)}</span>
-      <button class="task-delete" aria-label="Supprimer">✕</button>
+      ${badgeHtml}
+      ${shareHtml}
+      ${deleteHtml}
     `;
 
-    /* Checkbox → toggle done */
-    li.querySelector('.task-checkbox').addEventListener('change', function () {
-      toggleDone(task.id);
-    });
+    /* Toggle done */
+    if (canWrite) {
+      const cb = li.querySelector('.task-checkbox');
+      cb.addEventListener('change', () => toggleDone(task.id));
+      li.querySelector('.task-label').addEventListener('click', () => toggleDone(task.id));
+    }
 
-    /* Label → toggle done au clic */
-    li.querySelector('.task-label').addEventListener('click', function () {
-      toggleDone(task.id);
-    });
+    /* Partager */
+    const shareBtn = li.querySelector('.task-share-btn');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openShareModal(task);
+      });
+    }
 
     /* Supprimer */
-    li.querySelector('.task-delete').addEventListener('click', function (e) {
-      e.stopPropagation();
-      li.style.transition = 'opacity 0.2s, transform 0.2s';
-      li.style.opacity = '0';
-      li.style.transform = 'translateX(20px)';
-      setTimeout(() => deleteTask(task.id), 200);
-    });
+    const delBtn = li.querySelector('.task-delete');
+    if (delBtn) {
+      delBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        li.style.transition = 'opacity 0.2s, transform 0.2s';
+        li.style.opacity = '0';
+        li.style.transform = 'translateX(20px)';
+        setTimeout(() => deleteTask(task.id), 200);
+      });
+    }
 
     return li;
   }
 
-  /* ── Rendu ── */
+  /* ════════════════════════════════════════════════════════
+     Rendu
+  ════════════════════════════════════════════════════════ */
   function render() {
-    const listTodo = document.getElementById('tasks-list-todo');
-    const listDone = document.getElementById('tasks-list-done');
-    const empty    = document.getElementById('tasks-empty');
+    const listTodo    = document.getElementById('tasks-list-todo');
+    const listDone    = document.getElementById('tasks-list-done');
+    const empty       = document.getElementById('tasks-empty');
     const doneSection = document.getElementById('tasks-done-section');
 
     listTodo.innerHTML = '';
@@ -534,11 +740,6 @@
     const todo = tasks.filter(t => !t.done);
     const done = tasks.filter(t =>  t.done);
 
-    const filtered = currentFilter === 'todo' ? todo
-                   : currentFilter === 'done' ? done
-                   : tasks;
-
-    // Tâches "à faire" visibles
     const visibleTodo = currentFilter === 'done' ? [] : todo;
     const visibleDone = currentFilter === 'todo' ? [] : done;
 
@@ -554,48 +755,185 @@
       listDone.appendChild(li);
     });
 
-    // Section terminées
-    doneSection.style.display = (visibleDone.length > 0) ? 'block' : 'none';
+    doneSection.style.display = visibleDone.length > 0 ? 'block' : 'none';
 
-    // État vide
     const totalVisible = visibleTodo.length + visibleDone.length;
     empty.style.display = totalVisible === 0 ? 'block' : 'none';
 
-    // Progression
-    const total = tasks.length;
+    const total    = tasks.length;
     const doneCount = done.length;
     const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
-
     document.getElementById('tasks-progress-bar').style.width = pct + '%';
-    document.getElementById('tasks-count-done').textContent = doneCount;
+    document.getElementById('tasks-count-done').textContent  = doneCount;
     document.getElementById('tasks-count-total').textContent = total;
   }
 
-  /* ── Actions ── */
-  function addTask(text) {
+  /* ════════════════════════════════════════════════════════
+     Actions tâches
+  ════════════════════════════════════════════════════════ */
+  async function addTask(text) {
     text = text.trim();
     if (!text) return;
-    tasks.unshift({ id: Date.now(), text, done: false });
-    save(tasks);
-    render();
+    try {
+      const task = await apiFetch('/api/tasks', {
+        method: 'POST',
+        body: JSON.stringify({ text }),
+      });
+      tasks.unshift(task);
+      render();
+    } catch (e) {
+      alert('Erreur : ' + e.message);
+    }
   }
 
-  function toggleDone(id) {
-    const t = tasks.find(t => t.id === id);
-    if (t) { t.done = !t.done; save(tasks); render(); }
+  async function toggleDone(id) {
+    try {
+      const res = await apiFetch(`/api/tasks/${id}/toggle`, { method: 'PATCH' });
+      const t = tasks.find(t => t.id === id);
+      if (t) { t.done = res.done; render(); }
+    } catch (e) {
+      alert('Erreur : ' + e.message);
+    }
   }
 
-  function deleteTask(id) {
-    tasks = tasks.filter(t => t.id !== id);
-    save(tasks);
-    render();
+  async function deleteTask(id) {
+    try {
+      await apiFetch(`/api/tasks/${id}`, { method: 'DELETE' });
+      tasks = tasks.filter(t => t.id !== id);
+      render();
+    } catch (e) {
+      alert('Erreur : ' + e.message);
+    }
   }
 
-  function escapeHtml(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  /* ════════════════════════════════════════════════════════
+     Modale partage
+  ════════════════════════════════════════════════════════ */
+  const modal       = document.getElementById('share-modal');
+  const modalClose  = document.getElementById('modal-close');
+  const modalSearch = document.getElementById('modal-search');
+  const userList    = document.getElementById('share-user-list');
+  const modalTaskName = document.getElementById('modal-task-name');
+
+  function openShareModal(task) {
+    activeTaskId = task.id;
+    modalTaskName.textContent = task.text.length > 60
+      ? task.text.slice(0, 57) + '…'
+      : task.text;
+    modalSearch.value = '';
+    renderUserList(task);
+    modal.classList.add('open');
+    modalSearch.focus();
   }
 
-  /* ── Événements ── */
+  function closeShareModal() {
+    modal.classList.remove('open');
+    activeTaskId = null;
+  }
+
+  modalClose.addEventListener('click', closeShareModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeShareModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeShareModal(); });
+
+  function renderUserList(task) {
+    const query = modalSearch.value.trim().toLowerCase();
+    const sharedIds = new Set((task.shared_with || []).map(s => s.user_id));
+
+    const filtered = allUsers.filter(u =>
+      !query || u.username.toLowerCase().includes(query)
+    );
+
+    userList.innerHTML = '';
+
+    if (!filtered.length) {
+      userList.innerHTML = '<li style="padding:16px 0;color:var(--muted);font-size:0.85rem;text-align:center;">Aucun utilisateur trouvé</li>';
+      return;
+    }
+
+    filtered.forEach(user => {
+      const isShared   = sharedIds.has(user.id);
+      const shareEntry = (task.shared_with || []).find(s => s.user_id === user.id);
+      const currentPerm = shareEntry ? shareEntry.permission : 'read';
+      const initials    = user.username.slice(0, 2).toUpperCase();
+
+      const li = document.createElement('li');
+      li.className = 'share-user-item';
+      li.innerHTML = `
+        <div class="share-user-avatar">${escapeHtml(initials)}</div>
+        <span class="share-user-name">${escapeHtml(user.username)}</span>
+        <select class="share-perm-select" aria-label="Permission" ${!isShared ? 'disabled' : ''}>
+          <option value="read"  ${currentPerm === 'read'  ? 'selected' : ''}>Lecture</option>
+          <option value="write" ${currentPerm === 'write' ? 'selected' : ''}>Écriture</option>
+        </select>
+        <button class="share-toggle-btn ${isShared ? 'shared' : ''}" data-uid="${user.id}">
+          ${isShared ? 'Retirer' : 'Partager'}
+        </button>
+      `;
+
+      const permSelect = li.querySelector('.share-perm-select');
+      const toggleBtn  = li.querySelector('.share-toggle-btn');
+
+      /* Changer la permission */
+      permSelect.addEventListener('change', async () => {
+        try {
+          await apiFetch(`/api/tasks/${activeTaskId}/share`, {
+            method: 'POST',
+            body: JSON.stringify({ user_id: user.id, permission: permSelect.value }),
+          });
+          /* Met à jour shared_with en local */
+          const t = tasks.find(t => t.id === activeTaskId);
+          if (t) {
+            const entry = t.shared_with.find(s => s.user_id === user.id);
+            if (entry) entry.permission = permSelect.value;
+          }
+        } catch (e) {
+          alert('Erreur : ' + e.message);
+        }
+      });
+
+      /* Partager / retirer */
+      toggleBtn.addEventListener('click', async () => {
+        const t = tasks.find(t => t.id === activeTaskId);
+        if (!t) return;
+
+        if (isShared) {
+          /* Retirer le partage */
+          try {
+            await apiFetch(`/api/tasks/${activeTaskId}/share/${user.id}`, { method: 'DELETE' });
+            t.shared_with = t.shared_with.filter(s => s.user_id !== user.id);
+            renderUserList(t);
+          } catch (e) {
+            alert('Erreur : ' + e.message);
+          }
+        } else {
+          /* Ajouter le partage */
+          const perm = permSelect.value || 'read';
+          try {
+            await apiFetch(`/api/tasks/${activeTaskId}/share`, {
+              method: 'POST',
+              body: JSON.stringify({ user_id: user.id, permission: perm }),
+            });
+            t.shared_with.push({ user_id: user.id, username: user.username, permission: perm });
+            renderUserList(t);
+          } catch (e) {
+            alert('Erreur : ' + e.message);
+          }
+        }
+      });
+
+      userList.appendChild(li);
+    });
+  }
+
+  /* Recherche live dans la modale */
+  modalSearch.addEventListener('input', () => {
+    const t = tasks.find(t => t.id === activeTaskId);
+    if (t) renderUserList(t);
+  });
+
+  /* ════════════════════════════════════════════════════════
+     Événements toolbar
+  ════════════════════════════════════════════════════════ */
   document.getElementById('tasks-add-btn').addEventListener('click', function () {
     const input = document.getElementById('tasks-input');
     addTask(input.value);
@@ -619,8 +957,11 @@
     });
   });
 
-  /* ── Init ── */
-  render();
+  /* ════════════════════════════════════════════════════════
+     Init
+  ════════════════════════════════════════════════════════ */
+  loadUsers();
+  loadTasks();
 })();
 </script>
 {% endblock %}
