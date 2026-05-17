@@ -8,6 +8,7 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from flask import Blueprint, current_app, jsonify, render_template, request
 from werkzeug.utils import secure_filename
+from routes import require_permission
 
 upload_bp = Blueprint("upload", __name__)
 
@@ -95,11 +96,13 @@ def _decrypt_file(
 # ── Routes ────────────────────────────────────────────────────────────────────
 
 @upload_bp.route("/upload", methods=["GET"])
+@require_permission("uploadFile")
 def upload_page():
     return render_template("upload.html")
 
 
 @upload_bp.route("/upload", methods=["POST"])
+@require_permission("uploadFile")
 def upload_file():
     # ── Validation de base ───────────────────────────────────────────────────
     files = request.files.getlist("files")
