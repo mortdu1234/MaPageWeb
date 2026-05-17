@@ -9,12 +9,13 @@ import { injectCSS } from './Utils.js';
 //    pages       – JSON array de pages { label, href, permission? }
 //
 //  Comportement :
-//    Si les liens ne rentrent plus dans la navbar,
-//    les liens en trop sont déplacés dans un menu "···"
+//    • ≤ 640px  : hamburger animé → panneau plein écran
+//    • > 640px  : liens inline ; débordement → menu "···"
 // ─────────────────────────────────────────────
 class NavBar extends HTMLElement {
   connectedCallback() {
     injectCSS('nav-bar', 'navbar.css');
+    injectCSS('nav-bar-responsive', 'responsive.css');
 
     const root        = this.getAttribute('root') || '/';
     const username    = this.getAttribute('username') || '';
@@ -27,6 +28,8 @@ class NavBar extends HTMLElement {
       { label: 'À propos',        href: '/apropos' },
       { label: 'Contact',         href: '/contact' },
       { label: 'Mes projets',     href: '/projets' },
+      { label: 'Mes tâches',      href: '/tasks' },
+      { label: 'Base de données', href: '/database' },
     ];
 
     const rawPages = this.getAttribute('pages');
@@ -47,16 +50,28 @@ class NavBar extends HTMLElement {
     this.innerHTML = `
       <nav>
         <a class="nav-brand" href="${root}">Denis ROBERT</a>
+
         <div class="nav-links-wrapper">
           <ul class="nav-links">
             ${visiblePages.map(p => `<li><a href="${p.href}">${p.label}</a></li>`).join('\n            ')}
             ${authLink}
           </ul>
+
+          <!-- Bouton overflow desktop (···) -->
           <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false" aria-label="Plus de pages">
             ···
           </button>
         </div>
+
+        <!-- Dropdown overflow desktop -->
         <div class="nav-dropdown"></div>
+
+        <!-- Bouton hamburger mobile -->
+        <button class="nav-hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </nav>
     `;
 
@@ -67,15 +82,56 @@ class NavBar extends HTMLElement {
       if (href === currentPath) link.classList.add('active');
     });
 
+    this._initHamburger();
     this._initOverflow();
   }
 
+  /* ── Hamburger mobile ───────────────────────────────────── */
+  _initHamburger() {
+    const hamburger   = this.querySelector('.nav-hamburger');
+    const linksWrapper = this.querySelector('.nav-links-wrapper');
+
+    const open = () => {
+      linksWrapper.classList.add('open');
+      hamburger.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const close = () => {
+      linksWrapper.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+
+    hamburger.addEventListener('click', e => {
+      e.stopPropagation();
+      linksWrapper.classList.contains('open') ? close() : open();
+    });
+
+    // Fermer au clic sur un lien
+    linksWrapper.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', close);
+    });
+
+    // Fermer avec Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') close();
+    });
+
+    // Fermer si on repasse en desktop (resize)
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 640) close();
+    });
+  }
+
+  /* ── Overflow desktop (···) ─────────────────────────────── */
   _initOverflow() {
     const nav      = this.querySelector('nav');
     const moreBtn  = this.querySelector('.nav-more-btn');
     const dropdown = this.querySelector('.nav-dropdown');
 
-    // Ouvre / ferme le dropdown
     moreBtn.addEventListener('click', e => {
       e.stopPropagation();
       const isOpen = dropdown.classList.toggle('open');
@@ -87,13 +143,15 @@ class NavBar extends HTMLElement {
       moreBtn.setAttribute('aria-expanded', 'false');
     });
 
-    // Recalcule à chaque redimensionnement
     const ro = new ResizeObserver(() => this._computeOverflow());
     ro.observe(nav);
     this._computeOverflow();
   }
 
   _computeOverflow() {
+    // En mode mobile le hamburger prend le relais : on ne touche à rien
+    if (window.innerWidth <= 640) return;
+
     const list     = this.querySelector('.nav-links');
     const moreBtn  = this.querySelector('.nav-more-btn');
     const dropdown = this.querySelector('.nav-dropdown');
@@ -105,8 +163,8 @@ class NavBar extends HTMLElement {
     moreBtn.classList.remove('visible');
     dropdown.innerHTML = '';
 
-    const GAP          = 28;   // gap entre les liens (px), doit correspondre au CSS
-    const BTN_ESTIMATE = 56;   // largeur estimée du bouton "···"
+    const GAP          = 28;
+    const BTN_ESTIMATE = 56;
     const wrapperWidth = wrapper.getBoundingClientRect().width;
 
     let usedWidth = 0;
@@ -115,7 +173,6 @@ class NavBar extends HTMLElement {
     items.forEach((li, i) => {
       const w      = li.getBoundingClientRect().width;
       const offset = i > 0 ? GAP : 0;
-      // Si ce n'est pas le dernier élément, réserve la place pour le bouton "···"
       const isLast = i === items.length - 1;
       const limit  = isLast ? wrapperWidth : wrapperWidth - BTN_ESTIMATE - GAP;
 

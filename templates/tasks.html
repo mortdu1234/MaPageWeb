@@ -1,0 +1,626 @@
+{% extends "base.html" %}
+
+{% block title %}Denis ROBERT — Tasks{% endblock %}
+
+{% block styles %}
+<style>
+/* ── Page wrapper ── */
+.tasks-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 64px var(--page-px, 48px) 100px;
+}
+
+/* ── En-tête ── */
+.tasks-header {
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 48px;
+  position: relative;
+}
+
+.tasks-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.tasks-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.tasks-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.tasks-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.tasks-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+/* ── Barre d'actions ── */
+.tasks-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.tasks-add-form {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  gap: 10px;
+}
+
+.tasks-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(184,154,106,0.35);
+  padding: 10px 2px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--accent);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.tasks-input::placeholder {
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+.tasks-input:focus {
+  border-bottom-color: var(--gold);
+}
+
+.tasks-add-btn {
+  flex-shrink: 0;
+  padding: 8px 20px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.tasks-add-btn:hover { background: var(--gold); }
+
+/* Filtre */
+.tasks-filter {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.filter-btn {
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  background: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover { border-color: var(--gold); color: var(--accent); }
+.filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ── Compteur de progression ── */
+.tasks-progress {
+  margin-bottom: 28px;
+}
+
+.tasks-progress-bar-wrap {
+  height: 2px;
+  background: var(--line);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.tasks-progress-bar {
+  height: 100%;
+  background: var(--gold);
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+
+.tasks-progress-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.tasks-progress-label span {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* ── Liste ── */
+.tasks-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ── Item ── */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  transition: border-color 0.2s, opacity 0.2s;
+  position: relative;
+  overflow: hidden;
+  animation: taskAppear 0.3s ease both;
+}
+
+@keyframes taskAppear {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.task-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--gold);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.task-item:hover { border-color: rgba(184,154,106,0.4); }
+.task-item:hover::before { opacity: 0.5; }
+
+/* Item complété */
+.task-item.done {
+  opacity: 0.55;
+}
+
+.task-item.done::before {
+  background: var(--muted);
+  opacity: 0.3;
+}
+
+/* ── Checkbox custom ── */
+.task-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(184,154,106,0.5);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.task-checkbox:hover {
+  border-color: var(--gold);
+}
+
+.task-checkbox:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Coche SVG via clip-path */
+.task-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: #fff;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+/* ── Texte de la tâche ── */
+.task-label {
+  flex: 1;
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1.5;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+
+/* Barre de rayure */
+.task-label::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0%;
+  height: 1px;
+  background: var(--muted);
+  transform: translateY(-50%);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.task-item.done .task-label {
+  color: var(--muted);
+}
+
+.task-item.done .task-label::after {
+  width: 100%;
+}
+
+/* ── Bouton supprimer ── */
+.task-delete {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--line);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  transition: color 0.2s, transform 0.15s;
+  opacity: 0;
+}
+
+.task-item:hover .task-delete {
+  opacity: 1;
+}
+
+.task-delete:hover {
+  color: #c0614a;
+  transform: scale(1.15);
+}
+
+/* ── État vide ── */
+.tasks-empty {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--muted);
+  display: none;
+}
+
+.tasks-empty-icon {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 300;
+  color: rgba(184,154,106,0.25);
+  display: block;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.tasks-empty p {
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+}
+
+/* ── Section "Terminées" repliable ── */
+.tasks-section-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 24px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tasks-section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .tasks-page { padding: 40px 16px 80px; }
+  .tasks-toolbar { flex-direction: column; align-items: stretch; }
+  .tasks-filter { justify-content: flex-start; }
+  .task-delete { opacity: 1; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="tasks-page">
+
+  <!-- En-tête -->
+  <header class="tasks-header">
+    <p class="tasks-eyebrow">Organisation</p>
+    <h1 class="tasks-title">Mes <em>tâches</em></h1>
+    <p class="tasks-meta" id="tasks-date"></p>
+  </header>
+
+  <!-- Barre d'ajout + filtre -->
+  <div class="tasks-toolbar">
+    <div class="tasks-add-form">
+      <input
+        class="tasks-input"
+        id="tasks-input"
+        type="text"
+        placeholder="Ajouter une tâche…"
+        maxlength="200"
+        autocomplete="off"
+      />
+      <button class="tasks-add-btn" id="tasks-add-btn">Ajouter</button>
+    </div>
+    <div class="tasks-filter">
+      <button class="filter-btn active" data-filter="all">Toutes</button>
+      <button class="filter-btn" data-filter="todo">À faire</button>
+      <button class="filter-btn" data-filter="done">Faites</button>
+    </div>
+  </div>
+
+  <!-- Barre de progression -->
+  <div class="tasks-progress">
+    <div class="tasks-progress-bar-wrap">
+      <div class="tasks-progress-bar" id="tasks-progress-bar"></div>
+    </div>
+    <p class="tasks-progress-label" id="tasks-progress-label">
+      <span id="tasks-count-done">0</span> tâche(s) complétée(s) sur <span id="tasks-count-total">0</span>
+    </p>
+  </div>
+
+  <!-- Liste principale (à faire) -->
+  <li class="task-item" data-id="1779002694784" style="animation-delay: 0ms;">
+      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
+      <span class="task-label">faire une page de visualisations de nos propres statistiques</span>
+      <button class="task-delete" aria-label="Supprimer">✕</button>
+    </li><li class="task-item" data-id="1779002668064" style="animation-delay: 80ms;">
+      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
+      <span class="task-label">faire une page de calcul des score pour triomino</span>
+      <button class="task-delete" aria-label="Supprimer">✕</button>
+    </li><li class="task-item" data-id="1779002659338" style="animation-delay: 120ms;">
+      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
+      <span class="task-label">faire une page de calcul de score pour qwirkle</span>
+      <button class="task-delete" aria-label="Supprimer">✕</button>
+    </li><li class="task-item" data-id="1779002637946" style="animation-delay: 160ms;">
+      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
+      <span class="task-label">faire une page d'acces minecraft</span>
+      <button class="task-delete" aria-label="Supprimer">✕</button>
+    </li><li class="task-item" data-id="1779002633422" style="animation-delay: 200ms;">
+      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
+      <span class="task-label">faire une page de visualisation d'information du server</span>
+      <button class="task-delete" aria-label="Supprimer">✕</button>
+    </li><li class="task-item" data-id="1779002611303" style="animation-delay: 240ms;">
+      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
+      <span class="task-label">faire la page de visualisation des base de données</span>
+      <button class="task-delete" aria-label="Supprimer">✕</button>
+    </li><li class="task-item" data-id="1779002597986" style="animation-delay: 280ms;">
+      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
+      <span class="task-label">ajouter un comptage des score très futé</span>
+      <button class="task-delete" aria-label="Supprimer">✕</button>
+    </li><li class="task-item" data-id="1779002685004" style="animation-delay: 40ms;">
+      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
+      <span class="task-label">faire les bases de données de calculs des scores</span>
+      <button class="task-delete" aria-label="Supprimer">✕</button>
+    </li><li class="task-item" data-id="1779002585646" style="animation-delay: 320ms;">
+      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
+      <span class="task-label">faire la page de calcul de smile life</span>
+      <button class="task-delete" aria-label="Supprimer">✕</button>
+    </li><li class="task-item" data-id="1779002578972" style="animation-delay: 360ms;">
+      <input type="checkbox" class="task-checkbox" aria-label="Marquer comme terminée">
+      <span class="task-label">faire la page de calcul de petit bac</span>
+      <button class="task-delete" aria-label="Supprimer">✕</button>
+    </li>
+    
+  <!-- État vide -->
+  <div class="tasks-empty" id="tasks-empty">
+    <span class="tasks-empty-icon">∅</span>
+    <p>Aucune tâche pour le moment.</p>
+  </div>
+
+  <!-- Séparateur tâches terminées -->
+  <div id="tasks-done-section" style="display:none">
+    <p class="tasks-section-label">Terminées</p>
+    <ul class="tasks-list" id="tasks-list-done"></ul>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  /* ── Données ── */
+  const STORAGE_KEY = 'dr_tasks_v1';
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function save(tasks) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  }
+
+  let tasks = load();
+  let currentFilter = 'all';
+
+  /* ── Date dans le meta ── */
+  const dateEl = document.getElementById('tasks-date');
+  const now = new Date();
+  dateEl.textContent = now.toLocaleDateString('fr-FR', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  });
+
+  /* ── Créer un élément <li> ── */
+  function createItem(task) {
+    const li = document.createElement('li');
+    li.className = 'task-item' + (task.done ? ' done' : '');
+    li.dataset.id = task.id;
+
+    li.innerHTML = `
+      <input
+        type="checkbox"
+        class="task-checkbox"
+        ${task.done ? 'checked' : ''}
+        aria-label="Marquer comme terminée"
+      />
+      <span class="task-label">${escapeHtml(task.text)}</span>
+      <button class="task-delete" aria-label="Supprimer">✕</button>
+    `;
+
+    /* Checkbox → toggle done */
+    li.querySelector('.task-checkbox').addEventListener('change', function () {
+      toggleDone(task.id);
+    });
+
+    /* Label → toggle done au clic */
+    li.querySelector('.task-label').addEventListener('click', function () {
+      toggleDone(task.id);
+    });
+
+    /* Supprimer */
+    li.querySelector('.task-delete').addEventListener('click', function (e) {
+      e.stopPropagation();
+      li.style.transition = 'opacity 0.2s, transform 0.2s';
+      li.style.opacity = '0';
+      li.style.transform = 'translateX(20px)';
+      setTimeout(() => deleteTask(task.id), 200);
+    });
+
+    return li;
+  }
+
+  /* ── Rendu ── */
+  function render() {
+    const listTodo = document.getElementById('tasks-list-todo');
+    const listDone = document.getElementById('tasks-list-done');
+    const empty    = document.getElementById('tasks-empty');
+    const doneSection = document.getElementById('tasks-done-section');
+
+    listTodo.innerHTML = '';
+    listDone.innerHTML = '';
+
+    const todo = tasks.filter(t => !t.done);
+    const done = tasks.filter(t =>  t.done);
+
+    const filtered = currentFilter === 'todo' ? todo
+                   : currentFilter === 'done' ? done
+                   : tasks;
+
+    // Tâches "à faire" visibles
+    const visibleTodo = currentFilter === 'done' ? [] : todo;
+    const visibleDone = currentFilter === 'todo' ? [] : done;
+
+    visibleTodo.forEach((t, i) => {
+      const li = createItem(t);
+      li.style.animationDelay = (i * 40) + 'ms';
+      listTodo.appendChild(li);
+    });
+
+    visibleDone.forEach((t, i) => {
+      const li = createItem(t);
+      li.style.animationDelay = (i * 30) + 'ms';
+      listDone.appendChild(li);
+    });
+
+    // Section terminées
+    doneSection.style.display = (visibleDone.length > 0) ? 'block' : 'none';
+
+    // État vide
+    const totalVisible = visibleTodo.length + visibleDone.length;
+    empty.style.display = totalVisible === 0 ? 'block' : 'none';
+
+    // Progression
+    const total = tasks.length;
+    const doneCount = done.length;
+    const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+
+    document.getElementById('tasks-progress-bar').style.width = pct + '%';
+    document.getElementById('tasks-count-done').textContent = doneCount;
+    document.getElementById('tasks-count-total').textContent = total;
+  }
+
+  /* ── Actions ── */
+  function addTask(text) {
+    text = text.trim();
+    if (!text) return;
+    tasks.unshift({ id: Date.now(), text, done: false });
+    save(tasks);
+    render();
+  }
+
+  function toggleDone(id) {
+    const t = tasks.find(t => t.id === id);
+    if (t) { t.done = !t.done; save(tasks); render(); }
+  }
+
+  function deleteTask(id) {
+    tasks = tasks.filter(t => t.id !== id);
+    save(tasks);
+    render();
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── Événements ── */
+  document.getElementById('tasks-add-btn').addEventListener('click', function () {
+    const input = document.getElementById('tasks-input');
+    addTask(input.value);
+    input.value = '';
+    input.focus();
+  });
+
+  document.getElementById('tasks-input').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      addTask(this.value);
+      this.value = '';
+    }
+  });
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentFilter = this.dataset.filter;
+      render();
+    });
+  });
+
+  /* ── Init ── */
+  render();
+})();
+</script>
+{% endblock %}
