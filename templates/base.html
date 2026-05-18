@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{% block title %}Denis ROBERT{% endblock %}</title>
+  <title>{% block title %}Denis ROBERT{% endblock %}</title><!-- Dans ton HTML -->
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 
   <script type="module" src="{{ url_for('static', filename='js/balises/NavBar.js') }}"></script>
   <script type="module" src="{{ url_for('static', filename='js/balises/SiteFooter.js') }}"></script>
@@ -17,7 +18,8 @@
   <nav-bar
     root="/"
     username="{{ current_user.username }}"
-    permissions="{{ current_user.permissions | tojson | forceescape }}">
+    permissions="{{ current_user.permissions | tojson | forceescape }}"
+    pages-url="{{ url_for('static', filename='json/navBar.json') }}">
   </nav-bar>
 
   <main>

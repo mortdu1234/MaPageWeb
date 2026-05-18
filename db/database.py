@@ -19,7 +19,9 @@ def get_all_tables() -> list[str]:
         "task_shares",
         "tasks",
         "user_permissions",
-        "users"
+        "users",
+        "files",
+        "file_shares",
     ]
 
 def get_all_from_table(table: str) -> tuple[dict, None] | tuple[None, str]:

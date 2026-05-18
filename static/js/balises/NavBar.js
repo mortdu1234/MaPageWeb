@@ -7,13 +7,14 @@ import { injectCSS } from './Utils.js';
 //    username    – nom affiché si connecté
 //    permissions – JSON array de permissions
 //    pages       – JSON array de pages { label, href, permission? }
+//    pages-url   – URL vers un fichier JSON de pages (défaut : './navBar.json')
 //
 //  Comportement :
 //    • ≤ 640px  : hamburger animé → panneau plein écran
 //    • > 640px  : liens inline ; débordement → menu "···"
 // ─────────────────────────────────────────────
 class NavBar extends HTMLElement {
-  connectedCallback() {
+  async connectedCallback() {
     injectCSS('nav-bar', 'navbar.css');
     injectCSS('nav-bar-responsive', 'responsive.css');
 
@@ -22,23 +23,15 @@ class NavBar extends HTMLElement {
     const raw         = this.getAttribute('permissions') || '[]';
     const permissions = JSON.parse(raw);
 
-    const defaultPages = [
-      { label: 'Accueil',         href: '/' },
-      { label: 'Jeux de société', href: '/jeux', permission: 'showGame' },
-      { label: 'À propos',        href: '/apropos' },
-      { label: 'Contact',         href: '/contact' },
-      { label: 'Mes projets',     href: '/projets' },
-      { label: 'Mes tâches',      href: '/tasks' },
-      { label: 'Base de données', href: '/database' },
-      { label: 'Upload', href: '/upload' },
-    ];
 
-    const rawPages = this.getAttribute('pages');
-    const pages    = rawPages ? JSON.parse(rawPages) : defaultPages;
+    // Récupère les pages depuis l'attribut ou le fichier JSON
+    const pagesUrl = this.getAttribute('pages-url');
+    const res = await fetch(pagesUrl);
+    let pages = await res.json();
 
     const visiblePages = pages.filter(page => {
       if (!page.permission) return true;
-      return permissions.includes('admin') || permissions.includes(page.permission);
+      return permissions.some(p => page.permission.includes(p));
     });
 
     const authLink = username && username !== 'None'
@@ -89,7 +82,7 @@ class NavBar extends HTMLElement {
 
   /* ── Hamburger mobile ───────────────────────────────────── */
   _initHamburger() {
-    const hamburger   = this.querySelector('.nav-hamburger');
+    const hamburger    = this.querySelector('.nav-hamburger');
     const linksWrapper = this.querySelector('.nav-links-wrapper');
 
     const open = () => {
@@ -111,17 +104,14 @@ class NavBar extends HTMLElement {
       linksWrapper.classList.contains('open') ? close() : open();
     });
 
-    // Fermer au clic sur un lien
     linksWrapper.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', close);
     });
 
-    // Fermer avec Escape
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') close();
     });
 
-    // Fermer si on repasse en desktop (resize)
     window.addEventListener('resize', () => {
       if (window.innerWidth > 640) close();
     });
@@ -150,7 +140,6 @@ class NavBar extends HTMLElement {
   }
 
   _computeOverflow() {
-    // En mode mobile le hamburger prend le relais : on ne touche à rien
     if (window.innerWidth <= 640) return;
 
     const list     = this.querySelector('.nav-links');
@@ -158,7 +147,6 @@ class NavBar extends HTMLElement {
     const dropdown = this.querySelector('.nav-dropdown');
     const wrapper  = this.querySelector('.nav-links-wrapper');
 
-    // Réaffiche tous les éléments pour mesurer
     const items = Array.from(list.querySelectorAll('li'));
     items.forEach(li => { li.style.display = ''; });
     moreBtn.classList.remove('visible');

@@ -29,23 +29,23 @@ class SessionUser:
         return "user_id" in session
 
     @staticmethod
-    def user_id():
-        return session.get("user_id")
+    def user_id() -> int:
+        return session.get("user_id", 0)
 
     @staticmethod
-    def username():
+    def username() -> str:
         return session.get("username", '')
 
     @staticmethod
-    def is_admin():
-        return session.get("is_admin")
+    def is_admin() -> bool:
+        return session.get("is_admin", False)
 
     @staticmethod
-    def permissions():
+    def permissions() -> list[str]:
         return session.get("permissions", [])
 
     @staticmethod
-    def has_permission(perm_name):
+    def has_permission(perm_name: str) -> bool:
         if SessionUser.is_admin():
             return True
         return perm_name in SessionUser.permissions()

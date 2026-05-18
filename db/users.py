@@ -9,6 +9,17 @@ import bcrypt
 
 # ─── Lecture ──────────────────────────────────────────────────────────────────
 
+def get_all_users() -> list[dict]:
+    """Retourne la liste de tous les utilisateurs (id, username)."""
+    conn = get_db()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT id, username FROM users ORDER BY username")
+        rows = cur.fetchall()
+        return [{"id": r[0], "username": r[1]} for r in rows]
+    finally:
+        release_db(conn)
+
 def get_user_by_username(username: str):
     """
     Retourne (id, username, password) ou None si introuvable.

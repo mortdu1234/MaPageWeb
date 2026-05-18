@@ -26,6 +26,8 @@ class Config:
     RSA_PUBLIC_KEY_PATH  = _require("RSA_PUBLIC_KEY_PATH")
     RSA_PRIVATE_KEY_PATH = _require("RSA_PRIVATE_KEY_PATH")
 
+    UPLOAD_FOLDER = _require("UPLOAD_FOLDER")
+
 
 
 class DevelopmentConfig(Config):

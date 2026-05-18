@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Mes fichiers{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/files.css') }}"/>
+{% endblock %}
+
+{% block content %}
+<div class="files-page">
+
+  <!-- ── HEADER ── -->
+  <header class="files-header">
+    <div class="files-header__inner">
+      <div>
+        <p class="files-header__label">Espace personnel</p>
+        <h1 class="files-header__title">Mes fichiers</h1>
+      </div>
+      <label class="btn-upload" for="file-input">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Uploader un fichier
+      </label>
+      <input type="file" id="file-input" style="display:none" onchange="uploadFile(this)"/>
+    </div>
+  </header>
+
+  <!-- ── MES FICHIERS ── -->
+  <section class="files-section">
+    <div class="section-title">
+      <span class="section-title__dot"></span>
+      <h2>Mes uploads</h2>
+      <span class="section-title__count">{{ my_files | length }}</span>
+    </div>
+
+    {% if my_files %}
+    <div class="files-grid">
+      {% for file in my_files %}
+      <article class="file-card" data-id="{{ file.id }}">
+        <div class="file-card__top">
+          <div class="file-card__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+          </div>
+          <div class="file-card__meta">
+            <p class="file-card__name" title="{{ file.file_name }}">{{ file.file_name }}</p>
+            <p class="file-card__size">{{ file.uploaded_at.strftime('%d/%m/%Y') }}</p>
+          </div>
+          <button class="file-card__delete" onclick="deleteFile({{ file.id }})" title="Supprimer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          </button>
+        </div>
+
+        <!-- Partage -->
+        <div class="file-card__share">
+          <p class="file-card__share-label">Partager avec</p>
+          <div class="share-dropdown" id="dropdown-{{ file.id }}">
+            <button class="share-dropdown__toggle" onclick="toggleDropdown({{ file.id }})">
+              <span class="share-dropdown__preview" id="preview-{{ file.id }}">
+                {% if file.shared_with_ids %}
+                  {{ file.shared_with_ids | length }} utilisateur(s)
+                {% else %}
+                  Sélectionner…
+                {% endif %}
+              </span>
+              <svg class="share-dropdown__arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="share-dropdown__menu" id="menu-{{ file.id }}">
+              {% for user in all_users %}
+              {% if user.id != current_user.id %}
+              <label class="share-option">
+                <input
+                  type="checkbox"
+                  class="share-option__check"
+                  value="{{ user.id }}"
+                  data-file="{{ file.id }}"
+                  {% if user.id in file.shared_with_ids %}checked{% endif %}
+                  onchange="toggleShare({{ file.id }}, {{ user.id }}, this.checked)"
+                />
+                <span class="share-option__avatar">{{ user.username[0] | upper }}</span>
+                <span class="share-option__name">{{ user.username }}</span>
+                <svg class="share-option__check-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </label>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-state__icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+      </div>
+      <p>Vous n'avez encore uploadé aucun fichier.</p>
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- ── PARTAGÉS AVEC MOI ── -->
+  <section class="files-section">
+    <div class="section-title">
+      <span class="section-title__dot section-title__dot--gold"></span>
+      <h2>Partagés avec moi</h2>
+      <span class="section-title__count">{{ shared_files | length }}</span>
+    </div>
+
+    {% if shared_files %}
+    <div class="shared-list">
+      {% for file in shared_files %}
+      <div class="shared-row">
+        <div class="shared-row__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+        </div>
+        <div class="shared-row__info">
+          <p class="shared-row__name" title="{{ file.file_name }}">{{ file.file_name }}</p>
+          <p class="shared-row__meta">
+            Partagé par <strong>{{ file.shared_by }}</strong>
+            · Le {{ file.shared_at.strftime('%d/%m/%Y') }}
+          </p>
+        </div>
+        <div class="shared-row__actions">
+          <a class="btn-download" href="{{ url_for('files.download', file_id=file.id) }}" download>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Télécharger
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-state__icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      </div>
+      <p>Aucun fichier partagé avec vous pour l'instant.</p>
+    </div>
+    {% endif %}
+  </section>
+
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* ── Dropdown ── */
+function toggleDropdown(fileId) {
+  document.querySelectorAll('.share-dropdown__menu').forEach(m => {
+    if (m.id !== `menu-${fileId}`) m.classList.remove('open');
+  });
+  document.getElementById(`menu-${fileId}`).classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.share-dropdown')) {
+    document.querySelectorAll('.share-dropdown__menu').forEach(m => m.classList.remove('open'));
+  }
+});
+
+/* ── Share toggle ── */
+async function toggleShare(fileId, userId, add) {
+  const res = await fetch('/files/share', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ file_id: fileId, user_id: userId, add })
+  });
+  const data = await res.json();
+  updatePreview(fileId);
+  showToast(data.message || (add ? 'Partagé ✓' : 'Accès retiré'));
+}
+
+function updatePreview(fileId) {
+  const checked = document.querySelectorAll(`input[data-file="${fileId}"]:checked`);
+  const preview = document.getElementById(`preview-${fileId}`);
+  preview.textContent = checked.length ? `${checked.length} utilisateur(s)` : 'Sélectionner…';
+}
+
+/* ── Upload ── */
+async function uploadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const fd = new FormData();
+  fd.append('file', file);
+  const res = await fetch('/files/upload', { method: 'POST', body: fd });
+  const data = await res.json();
+  if (res.ok) { showToast('Fichier uploadé ✓'); setTimeout(() => location.reload(), 800); }
+  else showToast(data.error || 'Erreur upload', true);
+}
+
+/* ── Delete ── */
+async function deleteFile(fileId) {
+  if (!confirm('Supprimer ce fichier ?')) return;
+  const res = await fetch(`/files/${fileId}`, { method: 'DELETE' });
+  if (res.ok) { showToast('Fichier supprimé'); setTimeout(() => location.reload(), 800); }
+  else showToast('Erreur suppression', true);
+}
+
+/* ── Toast ── */
+function showToast(msg, error = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (error ? ' toast--error' : '') + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+{% endblock %}

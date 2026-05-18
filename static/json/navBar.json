@@ -1,0 +1,10 @@
+[
+  { "label": "Accueil",         "href": "/" },
+  { "label": "Jeux de société", "href": "/jeux",     "permission": ["showGame", "admin"] },
+  { "label": "À propos",        "href": "/apropos" },
+  { "label": "Contact",         "href": "/contact" },
+  { "label": "Mes projets",     "href": "/projets" },
+  { "label": "Mes tâches",      "href": "/tasks" },
+  { "label": "Base de données", "href": "/database", "permission": ["showDatabase", "admin"] },
+  { "label": "File Share",          "href": "/files",   "permission": ["uploadFile", "admin"] }
+]
