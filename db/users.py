@@ -4,6 +4,7 @@ Toutes les requêtes SQL liées à la table `users`.
 """
 
 from db import get_db, release_db
+import bcrypt
 
 
 # ─── Lecture ──────────────────────────────────────────────────────────────────
@@ -59,12 +60,15 @@ def create_user(username: str, password: str) -> int:
     Crée un utilisateur. Retourne l'id du nouvel utilisateur.
     TODO: hasher le mot de passe avec bcrypt avant stockage.
     """
+    # Hasher le mot de passe
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
     conn = get_db()
     try:
         cur = conn.cursor()
         cur.execute(
             "INSERT INTO users (username, password) VALUES (%s, %s) RETURNING id",
-            (username, password)
+            (username, hashed_password)
         )
         new_id = cur.fetchone()[0]
         conn.commit()
@@ -80,4 +84,4 @@ def verify_password(plain_password: str, stored_password: str) -> bool:
     Vérifie le mot de passe.
     TODO: remplacer par bcrypt.checkpw quand les mots de passe seront hachés.
     """
-    return plain_password == stored_password
+    return bcrypt.checkpw(plain_password.encode('utf-8'), stored_password.encode('utf-8'))
