@@ -57,7 +57,7 @@ def upload():
     if file.filename == "":
         return jsonify({"error": "Nom de fichier vide"}), 400
 
-    ext = os.path.splitext(file.filename)[1]
+    ext = os.path.splitext(file.filename)[1] # type: ignore
     stored_filename = f"{uuid.uuid4().hex}{ext}.enc"  # .enc = chiffré
     file_path = os.path.join(UPLOAD_FOLDER, stored_filename)
 
@@ -65,7 +65,7 @@ def upload():
     encrypt_file(file.read(), file_path)
 
     add_new_file(
-        file_name=file.filename,
+        file_name=file.filename, # type: ignore
         stored_filename=stored_filename,
         user_id=SessionUser.user_id(),
     )

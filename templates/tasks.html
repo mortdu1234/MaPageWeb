@@ -71,6 +71,7 @@
   flex: 1;
   min-width: 0;
   gap: 10px;
+  align-items: center;
 }
 
 .tasks-input {
@@ -91,6 +92,25 @@
 .tasks-input::placeholder { color: var(--muted); opacity: 0.5; }
 .tasks-input:focus { border-bottom-color: var(--gold); }
 
+/* Sélecteur de groupe dans la barre d'ajout */
+.tasks-group-select {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(184,154,106,0.35);
+  padding: 10px 6px 10px 2px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--muted);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  max-width: 130px;
+}
+
+.tasks-group-select:focus { border-bottom-color: var(--gold); color: var(--accent); }
+
 .tasks-add-btn {
   flex-shrink: 0;
   padding: 8px 20px;
@@ -108,7 +128,7 @@
 
 .tasks-add-btn:hover { background: var(--gold); }
 
-/* Filtre */
+/* Filtre todo/done */
 .tasks-filter {
   display: flex;
   gap: 2px;
@@ -130,6 +150,60 @@
 
 .filter-btn:hover { border-color: var(--gold); color: var(--accent); }
 .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ── Barre groupes ── */
+.groups-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.group-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  background: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s;
+  position: relative;
+}
+
+.group-pill::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pill-color, var(--gold));
+  flex-shrink: 0;
+}
+
+.group-pill:hover { border-color: var(--gold); color: var(--accent); }
+.group-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.group-pill.active::before { background: #fff; }
+
+.group-pill-manage {
+  padding: 5px 10px;
+  border: 1px dashed rgba(184,154,106,0.35);
+  background: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.group-pill-manage:hover { border-color: var(--gold); color: var(--gold); }
 
 /* ── Compteur de progression ── */
 .tasks-progress { margin-bottom: 28px; }
@@ -188,15 +262,16 @@
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 3px;
-  background: var(--gold);
+  background: var(--item-accent, var(--gold));
   opacity: 0;
   transition: opacity 0.2s;
 }
 
 .task-item:hover { border-color: rgba(184,154,106,0.4); }
-.task-item:hover::before { opacity: 0.5; }
+.task-item:hover::before { opacity: 0.7; }
 .task-item:hover .task-delete  { opacity: 1; }
 .task-item:hover .task-share-btn { opacity: 1; }
+.task-item:hover .task-group-btn { opacity: 1; }
 
 /* Item partagé reçu */
 .task-item.shared-in::before { background: #7a9bc9; opacity: 0.4; }
@@ -258,6 +333,15 @@
 .task-item.done .task-label { color: var(--muted); }
 .task-item.done .task-label::after { width: 100%; }
 
+/* Indicateur de groupe sur l'item */
+.task-group-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--dot-color, transparent);
+}
+
 /* Badge propriétaire partagé */
 .task-shared-badge {
   font-size: 0.62rem;
@@ -270,8 +354,9 @@
   white-space: nowrap;
 }
 
-/* ── Boutons d'action (partage + suppression) ── */
+/* ── Boutons d'action (groupe + partage + suppression) ── */
 .task-share-btn,
+.task-group-btn,
 .task-delete {
   flex-shrink: 0;
   width: 28px;
@@ -290,6 +375,9 @@
 
 .task-share-btn { color: var(--muted); }
 .task-share-btn:hover { color: var(--gold); transform: scale(1.2); }
+
+.task-group-btn { color: var(--muted); font-size: 0.75rem; }
+.task-group-btn:hover { color: var(--gold); transform: scale(1.2); }
 
 .task-delete { color: var(--line); }
 .task-delete:hover { color: #c0392b; transform: scale(1.15); }
@@ -333,7 +421,7 @@
   background: var(--line);
 }
 
-/* ── MODALE PARTAGE ──────────────────────────────────────────────────────────── */
+/* ── MODALE générique ──────────────────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -471,7 +559,6 @@
   color: var(--accent);
 }
 
-/* Sélecteur de permission */
 .share-perm-select {
   background: none;
   border: 1px solid var(--line);
@@ -486,7 +573,6 @@
 
 .share-perm-select:focus { border-color: var(--gold); }
 
-/* Bouton partager / retirer */
 .share-toggle-btn {
   padding: 5px 14px;
   border: 1px solid var(--line);
@@ -504,13 +590,194 @@
 .share-toggle-btn.shared { background: var(--accent); color: #fff; border-color: var(--accent); }
 .share-toggle-btn.shared:hover { background: #c0392b; border-color: #c0392b; }
 
+/* ── Bouton partage dans les items de groupe ── */
+.group-item-share {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: color 0.15s, transform 0.15s;
+  flex-shrink: 0;
+}
+.group-item-share:hover { color: var(--gold); transform: scale(1.15); }
+
+/* Badge "partagé avec moi" sur un groupe */
+.group-shared-badge {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(184,154,106,0.4);
+  padding: 1px 6px;
+  flex-shrink: 0;
+}
+
+/* ── MODALE GROUPES ─────────────────────────────────────────────────────────── */
+.groups-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.group-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  transition: border-color 0.15s;
+}
+
+.group-item:hover { border-color: rgba(184,154,106,0.35); }
+
+.group-color-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.group-color-swatch:hover { border-color: var(--gold); }
+
+.group-item-name {
+  flex: 1;
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--accent);
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Outfit', sans-serif;
+  padding: 0;
+}
+
+.group-item-name:focus {
+  border-bottom: 1px solid var(--gold);
+}
+
+.group-item-delete {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--line);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.group-item-delete:hover { color: #c0392b; }
+
+/* Formulaire nouveau groupe */
+.group-add-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.group-add-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(184,154,106,0.35);
+  padding: 8px 2px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--accent);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.group-add-input::placeholder { color: var(--muted); opacity: 0.5; }
+.group-add-input:focus { border-bottom-color: var(--gold); }
+
+.group-color-picker {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line);
+  padding: 2px;
+  cursor: pointer;
+  background: none;
+  flex-shrink: 0;
+}
+
+.group-add-btn {
+  padding: 7px 16px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.group-add-btn:hover { background: var(--gold); }
+
+/* Modale choix de groupe pour une tâche */
+.task-group-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-group-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  background: none;
+  width: 100%;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  color: var(--accent);
+  text-align: left;
+}
+
+.task-group-option:hover { border-color: rgba(184,154,106,0.4); background: rgba(184,154,106,0.04); }
+.task-group-option.current { border-color: var(--gold); }
+
+.task-group-option-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .tasks-page { padding: 40px 16px 80px; }
   .tasks-toolbar { flex-direction: column; align-items: stretch; }
   .tasks-filter { justify-content: flex-start; }
-  .task-delete, .task-share-btn { opacity: 1; }
+  .task-delete, .task-share-btn, .task-group-btn { opacity: 1; }
   .modal-header, .modal-body { padding-left: 20px; padding-right: 20px; }
+  .tasks-group-select { max-width: 100%; }
 }
 </style>
 {% endblock %}
@@ -536,6 +803,9 @@
         maxlength="200"
         autocomplete="off"
       />
+      <select class="tasks-group-select" id="tasks-group-select">
+        <option value="">— groupe —</option>
+      </select>
       <button class="tasks-add-btn" id="tasks-add-btn">Ajouter</button>
     </div>
     <div class="tasks-filter">
@@ -543,6 +813,11 @@
       <button class="filter-btn" data-filter="todo">À faire</button>
       <button class="filter-btn" data-filter="done">Faites</button>
     </div>
+  </div>
+
+  <!-- Barre de groupes (filtre par groupe) -->
+  <div class="groups-bar" id="groups-bar">
+    <!-- injecté par JS -->
   </div>
 
   <!-- Barre de progression -->
@@ -573,14 +848,14 @@
 </div>
 
 <!-- ── Modale partage ─────────────────────────────────────────────────────── -->
-<div class="modal-overlay" id="share-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<div class="modal-overlay" id="share-modal" role="dialog" aria-modal="true" aria-labelledby="modal-share-title">
   <div class="modal">
     <div class="modal-header">
       <div>
-        <p class="modal-title" id="modal-title">Partager la tâche</p>
+        <p class="modal-title" id="modal-share-title">Partager la tâche</p>
         <p class="modal-task-name" id="modal-task-name"></p>
       </div>
-      <button class="modal-close" id="modal-close" aria-label="Fermer">✕</button>
+      <button class="modal-close" id="share-modal-close" aria-label="Fermer">✕</button>
     </div>
     <div class="modal-body">
       <input
@@ -595,15 +870,87 @@
   </div>
 </div>
 
+<!-- ── Modale gestion des groupes ────────────────────────────────────────── -->
+<div class="modal-overlay" id="groups-modal" role="dialog" aria-modal="true" aria-labelledby="modal-groups-title">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <p class="modal-title" id="modal-groups-title">Mes groupes</p>
+        <p class="modal-task-name">Créez et organisez vos groupes de tâches</p>
+      </div>
+      <button class="modal-close" id="groups-modal-close" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body">
+      <ul class="groups-list" id="groups-list"></ul>
+      <div class="group-add-form">
+        <input
+          type="text"
+          class="group-add-input"
+          id="group-add-input"
+          placeholder="Nouveau groupe…"
+          maxlength="60"
+          autocomplete="off"
+        />
+        <input type="color" class="group-color-picker" id="group-color-picker" value="#b89a6a" title="Couleur" />
+        <button class="group-add-btn" id="group-add-btn">Créer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Modale choix de groupe pour une tâche ─────────────────────────────── -->
+<div class="modal-overlay" id="task-group-modal" role="dialog" aria-modal="true" aria-labelledby="modal-tg-title">
+  <div class="modal" style="max-height:60vh">
+    <div class="modal-header">
+      <div>
+        <p class="modal-title" id="modal-tg-title">Assigner un groupe</p>
+        <p class="modal-task-name" id="modal-tg-task-name"></p>
+      </div>
+      <button class="modal-close" id="tg-modal-close" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body">
+      <ul class="task-group-list" id="task-group-list"></ul>
+    </div>
+  </div>
+</div>
+
+<!-- ── Modale partage de groupe ───────────────────────────────────────────── -->
+<div class="modal-overlay" id="group-share-modal" role="dialog" aria-modal="true" aria-labelledby="modal-group-share-title">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <p class="modal-title" id="modal-group-share-title">Partager le groupe</p>
+        <p class="modal-task-name" id="modal-group-name"></p>
+      </div>
+      <button class="modal-close" id="group-share-modal-close" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body">
+      <input
+        type="text"
+        class="modal-search"
+        id="group-modal-search"
+        placeholder="Rechercher un utilisateur…"
+        autocomplete="off"
+      />
+      <ul class="share-user-list" id="group-share-user-list"></ul>
+    </div>
+  </div>
+</div>
+
 <script>
 (function () {
+  'use strict';
+
   /* ════════════════════════════════════════════════════════
      État
   ════════════════════════════════════════════════════════ */
   let tasks         = [];
-  let allUsers      = [];     // {id, username}[]
+  let groups        = [];   // {id, name, color, position, permission, is_owner, shared_with}[]
+  let allUsers      = [];   // {id, username}[]
   let currentFilter = 'all';
-  let activeTaskId  = null;   // tâche ouverte dans la modale
+  let currentGroup  = null; // null = tous les groupes, int = id du groupe filtré
+  let activeTaskId  = null; // tâche ouverte dans une modale
+  let activeGroupId = null; // groupe ouvert dans la modale de partage
 
   /* ════════════════════════════════════════════════════════
      API helpers
@@ -623,6 +970,16 @@
   /* ════════════════════════════════════════════════════════
      Chargement initial
   ════════════════════════════════════════════════════════ */
+  async function loadGroups() {
+    try {
+      groups = await apiFetch('/api/groups');
+      renderGroupsBar();
+      renderGroupSelect();
+    } catch (e) {
+      console.error('Impossible de charger les groupes :', e);
+    }
+  }
+
   async function loadTasks() {
     try {
       tasks = await apiFetch('/api/tasks');
@@ -648,12 +1005,83 @@
   });
 
   /* ════════════════════════════════════════════════════════
-     Créer un élément <li>
+     Helpers
   ════════════════════════════════════════════════════════ */
   function escapeHtml(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
   }
 
+  function getGroup(id) {
+    return groups.find(g => g.id === id) || null;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     Barre de groupes (filtre)
+  ════════════════════════════════════════════════════════ */
+  function renderGroupsBar() {
+    const bar = document.getElementById('groups-bar');
+    bar.innerHTML = '';
+
+    if (groups.length === 0) {
+      // Juste le bouton "gérer" si pas encore de groupes
+      const btn = document.createElement('button');
+      btn.className = 'group-pill-manage';
+      btn.textContent = '+ Créer un groupe';
+      btn.addEventListener('click', openGroupsModal);
+      bar.appendChild(btn);
+      return;
+    }
+
+    // Pill "Tous"
+    const allPill = document.createElement('button');
+    allPill.className = 'group-pill' + (currentGroup === null ? ' active' : '');
+    allPill.style.setProperty('--pill-color', 'var(--gold)');
+    allPill.innerHTML = `<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${currentGroup===null?'#fff':'var(--gold)'};"></span> Tous`;
+    allPill.addEventListener('click', () => { currentGroup = null; renderGroupsBar(); render(); });
+    bar.appendChild(allPill);
+
+    groups.forEach(g => {
+      const pill = document.createElement('button');
+      const isActive = currentGroup === g.id;
+      pill.className = 'group-pill' + (isActive ? ' active' : '');
+      pill.style.setProperty('--pill-color', g.color);
+      pill.innerHTML = `<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${isActive ? '#fff' : g.color};flex-shrink:0"></span> ${escapeHtml(g.name)}`;
+      pill.addEventListener('click', () => {
+        currentGroup = isActive ? null : g.id;
+        renderGroupsBar();
+        render();
+      });
+      bar.appendChild(pill);
+    });
+
+    // Bouton gérer
+    const manageBtn = document.createElement('button');
+    manageBtn.className = 'group-pill-manage';
+    manageBtn.textContent = '⚙ Gérer';
+    manageBtn.addEventListener('click', openGroupsModal);
+    bar.appendChild(manageBtn);
+  }
+
+  /* Select groupe dans la barre d'ajout (groupes possédés uniquement) */
+  function renderGroupSelect() {
+    const sel = document.getElementById('tasks-group-select');
+    // Garder l'option vide
+    sel.innerHTML = '<option value="">— groupe —</option>';
+    groups.filter(g => g.is_owner !== false).forEach(g => {
+      const opt = document.createElement('option');
+      opt.value = g.id;
+      opt.textContent = g.name;
+      sel.appendChild(opt);
+    });
+  }
+
+  /* ════════════════════════════════════════════════════════
+     Créer un élément <li> de tâche
+  ════════════════════════════════════════════════════════ */
   function createItem(task) {
     const li = document.createElement('li');
     const isOwner    = task.is_owner;
@@ -661,13 +1089,29 @@
     const isSharedIn = !isOwner;
 
     li.className = 'task-item'
-      + (task.done       ? ' done'      : '')
-      + (isSharedIn      ? ' shared-in' : '');
+      + (task.done    ? ' done'      : '')
+      + (isSharedIn   ? ' shared-in' : '');
     li.dataset.id = task.id;
 
-    /* Badge utilisateur partageur */
+    // Couleur de l'accent latéral selon le groupe
+    const grp = task.group_id ? getGroup(task.group_id) : null;
+    if (grp && !isSharedIn) {
+      li.style.setProperty('--item-accent', grp.color);
+    }
+
+    /* Badge utilisateur partagé */
     const badgeHtml = isSharedIn
       ? `<span class="task-shared-badge" title="Tâche partagée">partagée</span>`
+      : '';
+
+    /* Point de couleur du groupe (visible même sur tâches partagées) */
+    const dotHtml = grp
+      ? `<span class="task-group-dot" style="background:${escapeHtml(grp.color)}" title="${escapeHtml(grp.name)}"></span>`
+      : `<span class="task-group-dot"></span>`;
+
+    /* Bouton assigner groupe (write/owner uniquement) */
+    const groupBtnHtml = canWrite
+      ? `<button class="task-group-btn" aria-label="Assigner un groupe" title="Groupe">⊞</button>`
       : '';
 
     /* Bouton partage (owner uniquement) */
@@ -684,12 +1128,14 @@
       <input
         type="checkbox"
         class="task-checkbox"
-        ${task.done    ? 'checked'  : ''}
-        ${!canWrite    ? 'disabled' : ''}
+        ${task.done  ? 'checked'  : ''}
+        ${!canWrite  ? 'disabled' : ''}
         aria-label="Marquer comme terminée"
       />
+      ${dotHtml}
       <span class="task-label">${escapeHtml(task.text)}</span>
       ${badgeHtml}
+      ${groupBtnHtml}
       ${shareHtml}
       ${deleteHtml}
     `;
@@ -699,6 +1145,15 @@
       const cb = li.querySelector('.task-checkbox');
       cb.addEventListener('change', () => toggleDone(task.id));
       li.querySelector('.task-label').addEventListener('click', () => toggleDone(task.id));
+    }
+
+    /* Assigner groupe */
+    const grpBtn = li.querySelector('.task-group-btn');
+    if (grpBtn) {
+      grpBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openTaskGroupModal(task);
+      });
     }
 
     /* Partager */
@@ -737,8 +1192,13 @@
     listTodo.innerHTML = '';
     listDone.innerHTML = '';
 
-    const todo = tasks.filter(t => !t.done);
-    const done = tasks.filter(t =>  t.done);
+    // Filtre groupe
+    let filtered = currentGroup === null
+      ? tasks
+      : tasks.filter(t => t.group_id === currentGroup);
+
+    const todo = filtered.filter(t => !t.done);
+    const done = filtered.filter(t =>  t.done);
 
     const visibleTodo = currentFilter === 'done' ? [] : todo;
     const visibleDone = currentFilter === 'todo' ? [] : done;
@@ -760,8 +1220,9 @@
     const totalVisible = visibleTodo.length + visibleDone.length;
     empty.style.display = totalVisible === 0 ? 'block' : 'none';
 
-    const total    = tasks.length;
-    const doneCount = done.length;
+    // Progression sur toutes les tâches (pas filtrées par groupe)
+    const total     = tasks.length;
+    const doneCount = tasks.filter(t => t.done).length;
     const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
     document.getElementById('tasks-progress-bar').style.width = pct + '%';
     document.getElementById('tasks-count-done').textContent  = doneCount;
@@ -774,10 +1235,12 @@
   async function addTask(text) {
     text = text.trim();
     if (!text) return;
+    const sel      = document.getElementById('tasks-group-select');
+    const groupId  = sel.value ? parseInt(sel.value, 10) : null;
     try {
       const task = await apiFetch('/api/tasks', {
         method: 'POST',
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, group_id: groupId }),
       });
       tasks.unshift(task);
       render();
@@ -806,13 +1269,25 @@
     }
   }
 
+  async function setTaskGroup(taskId, groupId) {
+    try {
+      await apiFetch(`/api/tasks/${taskId}/group`, {
+        method: 'PATCH',
+        body: JSON.stringify({ group_id: groupId }),
+      });
+      const t = tasks.find(t => t.id === taskId);
+      if (t) { t.group_id = groupId; render(); }
+    } catch (e) {
+      alert('Erreur : ' + e.message);
+    }
+  }
+
   /* ════════════════════════════════════════════════════════
      Modale partage
   ════════════════════════════════════════════════════════ */
-  const modal       = document.getElementById('share-modal');
-  const modalClose  = document.getElementById('modal-close');
-  const modalSearch = document.getElementById('modal-search');
-  const userList    = document.getElementById('share-user-list');
+  const shareModal   = document.getElementById('share-modal');
+  const modalSearch  = document.getElementById('modal-search');
+  const userList     = document.getElementById('share-user-list');
   const modalTaskName = document.getElementById('modal-task-name');
 
   function openShareModal(task) {
@@ -822,26 +1297,22 @@
       : task.text;
     modalSearch.value = '';
     renderUserList(task);
-    modal.classList.add('open');
+    shareModal.classList.add('open');
     modalSearch.focus();
   }
 
   function closeShareModal() {
-    modal.classList.remove('open');
+    shareModal.classList.remove('open');
     activeTaskId = null;
   }
 
-  modalClose.addEventListener('click', closeShareModal);
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeShareModal(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeShareModal(); });
+  document.getElementById('share-modal-close').addEventListener('click', closeShareModal);
+  shareModal.addEventListener('click', (e) => { if (e.target === shareModal) closeShareModal(); });
 
   function renderUserList(task) {
-    const query = modalSearch.value.trim().toLowerCase();
+    const query     = modalSearch.value.trim().toLowerCase();
     const sharedIds = new Set((task.shared_with || []).map(s => s.user_id));
-
-    const filtered = allUsers.filter(u =>
-      !query || u.username.toLowerCase().includes(query)
-    );
+    const filtered  = allUsers.filter(u => !query || u.username.toLowerCase().includes(query));
 
     userList.innerHTML = '';
 
@@ -851,8 +1322,8 @@
     }
 
     filtered.forEach(user => {
-      const isShared   = sharedIds.has(user.id);
-      const shareEntry = (task.shared_with || []).find(s => s.user_id === user.id);
+      const isShared    = sharedIds.has(user.id);
+      const shareEntry  = (task.shared_with || []).find(s => s.user_id === user.id);
       const currentPerm = shareEntry ? shareEntry.permission : 'read';
       const initials    = user.username.slice(0, 2).toUpperCase();
 
@@ -861,7 +1332,7 @@
       li.innerHTML = `
         <div class="share-user-avatar">${escapeHtml(initials)}</div>
         <span class="share-user-name">${escapeHtml(user.username)}</span>
-        <select class="share-perm-select" aria-label="Permission" ${!isShared ? 'disabled' : ''}>
+        <select class="share-perm-select" aria-label="Permission" style="display:${isShared ? '' : 'none'}">
           <option value="read"  ${currentPerm === 'read'  ? 'selected' : ''}>Lecture</option>
           <option value="write" ${currentPerm === 'write' ? 'selected' : ''}>Écriture</option>
         </select>
@@ -873,14 +1344,12 @@
       const permSelect = li.querySelector('.share-perm-select');
       const toggleBtn  = li.querySelector('.share-toggle-btn');
 
-      /* Changer la permission */
       permSelect.addEventListener('change', async () => {
         try {
           await apiFetch(`/api/tasks/${activeTaskId}/share`, {
             method: 'POST',
             body: JSON.stringify({ user_id: user.id, permission: permSelect.value }),
           });
-          /* Met à jour shared_with en local */
           const t = tasks.find(t => t.id === activeTaskId);
           if (t) {
             const entry = t.shared_with.find(s => s.user_id === user.id);
@@ -891,29 +1360,34 @@
         }
       });
 
-      /* Partager / retirer */
       toggleBtn.addEventListener('click', async () => {
         const t = tasks.find(t => t.id === activeTaskId);
         if (!t) return;
-
         if (isShared) {
-          /* Retirer le partage */
           try {
             await apiFetch(`/api/tasks/${activeTaskId}/share/${user.id}`, { method: 'DELETE' });
             t.shared_with = t.shared_with.filter(s => s.user_id !== user.id);
+            // Cacher le select et mettre à jour le bouton
+            permSelect.style.display = 'none';
+            toggleBtn.textContent = 'Partager';
+            toggleBtn.classList.remove('shared');
             renderUserList(t);
           } catch (e) {
             alert('Erreur : ' + e.message);
           }
         } else {
-          /* Ajouter le partage */
-          const perm = permSelect.value || 'read';
+          const perm = 'read';
           try {
             await apiFetch(`/api/tasks/${activeTaskId}/share`, {
               method: 'POST',
               body: JSON.stringify({ user_id: user.id, permission: perm }),
             });
             t.shared_with.push({ user_id: user.id, username: user.username, permission: perm });
+            // Afficher le select et mettre à jour le bouton
+            permSelect.value = perm;
+            permSelect.style.display = '';
+            toggleBtn.textContent = 'Retirer';
+            toggleBtn.classList.add('shared');
             renderUserList(t);
           } catch (e) {
             alert('Erreur : ' + e.message);
@@ -925,10 +1399,361 @@
     });
   }
 
-  /* Recherche live dans la modale */
   modalSearch.addEventListener('input', () => {
     const t = tasks.find(t => t.id === activeTaskId);
     if (t) renderUserList(t);
+  });
+
+  /* ════════════════════════════════════════════════════════
+     Modale gestion des groupes
+  ════════════════════════════════════════════════════════ */
+  const groupsModal = document.getElementById('groups-modal');
+
+  function openGroupsModal() {
+    renderGroupsList();
+    groupsModal.classList.add('open');
+    document.getElementById('group-add-input').focus();
+  }
+
+  function closeGroupsModal() {
+    groupsModal.classList.remove('open');
+  }
+
+  document.getElementById('groups-modal-close').addEventListener('click', closeGroupsModal);
+  groupsModal.addEventListener('click', (e) => { if (e.target === groupsModal) closeGroupsModal(); });
+
+  function renderGroupsList() {
+    const ul = document.getElementById('groups-list');
+    ul.innerHTML = '';
+
+    if (!groups.length) {
+      ul.innerHTML = '<li style="padding:12px 0;color:var(--muted);font-size:0.85rem;text-align:center;font-style:italic;">Aucun groupe pour le moment</li>';
+      return;
+    }
+
+    groups.forEach(g => {
+      const isOwner = g.is_owner !== false;
+      const li = document.createElement('li');
+      li.className = 'group-item';
+      li.innerHTML = `
+        <span class="group-color-swatch" style="background:${escapeHtml(g.color)}" title="Couleur"
+              ${!isOwner ? 'style="cursor:default;pointer-events:none;opacity:0.6"' : ''}></span>
+        <input class="group-item-name" type="text" value="${escapeHtml(g.name)}"
+               maxlength="60" aria-label="Nom du groupe" ${!isOwner ? 'readonly' : ''} />
+        ${!isOwner ? '<span class="group-shared-badge">partagé</span>' : ''}
+        ${isOwner  ? '<button class="group-item-share" aria-label="Partager le groupe" title="Partager">⇄</button>' : ''}
+        <button class="group-item-delete" aria-label="Supprimer le groupe">✕</button>
+      `;
+
+      const nameInput = li.querySelector('.group-item-name');
+      const swatch    = li.querySelector('.group-color-swatch');
+      const delBtn    = li.querySelector('.group-item-delete');
+
+      if (isOwner) {
+        // Renommer au blur
+        let lastSavedName = g.name;
+        nameInput.addEventListener('blur', async () => {
+          const newName = nameInput.value.trim();
+          if (!newName || newName === lastSavedName) {
+            nameInput.value = lastSavedName;
+            return;
+          }
+          try {
+            const updated = await apiFetch(`/api/groups/${g.id}`, {
+              method: 'PATCH',
+              body: JSON.stringify({ name: newName }),
+            });
+            g.name       = updated.name;
+            lastSavedName = updated.name;
+            renderGroupsBar();
+            renderGroupSelect();
+          } catch (e) {
+            alert('Erreur : ' + e.message);
+            nameInput.value = lastSavedName;
+          }
+        });
+
+        nameInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') nameInput.blur();
+        });
+
+        // Changer la couleur via color picker inline
+        swatch.addEventListener('click', () => {
+          const picker = document.createElement('input');
+          picker.type  = 'color';
+          picker.value = g.color;
+          picker.style.position = 'absolute';
+          picker.style.opacity  = '0';
+          picker.style.pointerEvents = 'none';
+          document.body.appendChild(picker);
+          picker.click();
+          picker.addEventListener('input', async () => {
+            swatch.style.background = picker.value;
+          });
+          picker.addEventListener('change', async () => {
+            try {
+              const updated = await apiFetch(`/api/groups/${g.id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ color: picker.value }),
+              });
+              g.color = updated.color;
+              renderGroupsBar();
+              render();
+            } catch (e) {
+              alert('Erreur : ' + e.message);
+              swatch.style.background = g.color;
+            } finally {
+              picker.remove();
+            }
+          });
+        });
+
+        // Bouton partager le groupe
+        const shareBtn = li.querySelector('.group-item-share');
+        shareBtn.addEventListener('click', () => openGroupShareModal(g));
+
+        // Supprimer le groupe
+        delBtn.addEventListener('click', async () => {
+          if (!confirm(`Supprimer le groupe « ${g.name} » ? Les tâches ne seront pas supprimées.`)) return;
+          try {
+            await apiFetch(`/api/groups/${g.id}`, { method: 'DELETE' });
+            groups = groups.filter(x => x.id !== g.id);
+            tasks.forEach(t => { if (t.group_id === g.id) t.group_id = null; });
+            if (currentGroup === g.id) currentGroup = null;
+            renderGroupsList();
+            renderGroupsBar();
+            renderGroupSelect();
+            render();
+          } catch (e) {
+            alert('Erreur : ' + e.message);
+          }
+        });
+
+      } else {
+        // Groupe partagé reçu : champ en lecture seule, pas d'actions d'édition
+        nameInput.style.opacity = '0.7';
+        delBtn.title = 'Masquer ce groupe partagé';
+        delBtn.addEventListener('click', async () => {
+          if (!confirm(`Masquer le groupe partagé « ${g.name} » ?`)) return;
+          // Côté client seulement : retirer de la liste locale
+          groups = groups.filter(x => x.id !== g.id);
+          if (currentGroup === g.id) currentGroup = null;
+          renderGroupsList();
+          renderGroupsBar();
+          renderGroupSelect();
+          render();
+        });
+      }
+
+      ul.appendChild(li);
+    });
+  }
+
+  // Créer un groupe
+  document.getElementById('group-add-btn').addEventListener('click', async () => {
+    const input = document.getElementById('group-add-input');
+    const color = document.getElementById('group-color-picker').value;
+    const name  = input.value.trim();
+    if (!name) return;
+    try {
+      const group = await apiFetch('/api/groups', {
+        method: 'POST',
+        body: JSON.stringify({ name, color }),
+      });
+      groups.push(group);
+      groups.sort((a, b) => a.position - b.position);
+      input.value = '';
+      renderGroupsList();
+      renderGroupsBar();
+      renderGroupSelect();
+    } catch (e) {
+      alert('Erreur : ' + e.message);
+    }
+  });
+
+  document.getElementById('group-add-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('group-add-btn').click();
+  });
+
+  /* ════════════════════════════════════════════════════════
+     Modale choix de groupe pour une tâche
+  ════════════════════════════════════════════════════════ */
+  const taskGroupModal = document.getElementById('task-group-modal');
+
+  function openTaskGroupModal(task) {
+    activeTaskId = task.id;
+    const nameEl = document.getElementById('modal-tg-task-name');
+    nameEl.textContent = task.text.length > 60 ? task.text.slice(0, 57) + '…' : task.text;
+    renderTaskGroupList(task);
+    taskGroupModal.classList.add('open');
+  }
+
+  function closeTaskGroupModal() {
+    taskGroupModal.classList.remove('open');
+    activeTaskId = null;
+  }
+
+  document.getElementById('tg-modal-close').addEventListener('click', closeTaskGroupModal);
+  taskGroupModal.addEventListener('click', (e) => { if (e.target === taskGroupModal) closeTaskGroupModal(); });
+
+  function renderTaskGroupList(task) {
+    const ul = document.getElementById('task-group-list');
+    ul.innerHTML = '';
+
+    // Option "Sans groupe"
+    const noGroupBtn = document.createElement('button');
+    noGroupBtn.className = 'task-group-option' + (task.group_id === null ? ' current' : '');
+    noGroupBtn.innerHTML = `<span class="task-group-option-dot" style="background:var(--line)"></span> Sans groupe`;
+    noGroupBtn.addEventListener('click', async () => {
+      await setTaskGroup(task.id, null);
+      closeTaskGroupModal();
+    });
+    ul.appendChild(noGroupBtn);
+
+    // Seuls les groupes possédés par l'utilisateur (pas les groupes partagés reçus)
+    groups.filter(g => g.is_owner !== false).forEach(g => {
+      const btn = document.createElement('button');
+      btn.className = 'task-group-option' + (task.group_id === g.id ? ' current' : '');
+      btn.innerHTML = `<span class="task-group-option-dot" style="background:${escapeHtml(g.color)}"></span> ${escapeHtml(g.name)}`;
+      btn.addEventListener('click', async () => {
+        await setTaskGroup(task.id, g.id);
+        closeTaskGroupModal();
+      });
+      ul.appendChild(btn);
+    });
+  }
+
+  /* ════════════════════════════════════════════════════════
+     Modale partage de groupe
+  ════════════════════════════════════════════════════════ */
+  const groupShareModal      = document.getElementById('group-share-modal');
+  const groupModalSearch     = document.getElementById('group-modal-search');
+  const groupShareUserList   = document.getElementById('group-share-user-list');
+  const modalGroupName       = document.getElementById('modal-group-name');
+
+  function openGroupShareModal(group) {
+    activeGroupId = group.id;
+    modalGroupName.textContent = group.name.length > 60
+      ? group.name.slice(0, 57) + '…'
+      : group.name;
+    groupModalSearch.value = '';
+    renderGroupShareUserList(group);
+    groupShareModal.classList.add('open');
+    groupModalSearch.focus();
+  }
+
+  function closeGroupShareModal() {
+    groupShareModal.classList.remove('open');
+    activeGroupId = null;
+  }
+
+  document.getElementById('group-share-modal-close').addEventListener('click', closeGroupShareModal);
+  groupShareModal.addEventListener('click', (e) => { if (e.target === groupShareModal) closeGroupShareModal(); });
+
+  function renderGroupShareUserList(group) {
+    const query     = groupModalSearch.value.trim().toLowerCase();
+    const sharedIds = new Set((group.shared_with || []).map(s => s.user_id));
+    const filtered  = allUsers.filter(u => !query || u.username.toLowerCase().includes(query));
+
+    groupShareUserList.innerHTML = '';
+
+    if (!filtered.length) {
+      groupShareUserList.innerHTML = '<li style="padding:16px 0;color:var(--muted);font-size:0.85rem;text-align:center;">Aucun utilisateur trouvé</li>';
+      return;
+    }
+
+    filtered.forEach(user => {
+      const isShared    = sharedIds.has(user.id);
+      const shareEntry  = (group.shared_with || []).find(s => s.user_id === user.id);
+      const currentPerm = shareEntry ? shareEntry.permission : 'read';
+      const initials    = user.username.slice(0, 2).toUpperCase();
+
+      const li = document.createElement('li');
+      li.className = 'share-user-item';
+      li.innerHTML = `
+        <div class="share-user-avatar">${escapeHtml(initials)}</div>
+        <span class="share-user-name">${escapeHtml(user.username)}</span>
+        <select class="share-perm-select" aria-label="Permission" style="display:${isShared ? '' : 'none'}">
+          <option value="read"  ${currentPerm === 'read'  ? 'selected' : ''}>Lecture</option>
+          <option value="write" ${currentPerm === 'write' ? 'selected' : ''}>Écriture</option>
+        </select>
+        <button class="share-toggle-btn ${isShared ? 'shared' : ''}" data-uid="${user.id}">
+          ${isShared ? 'Retirer' : 'Partager'}
+        </button>
+      `;
+
+      const permSelect = li.querySelector('.share-perm-select');
+      const toggleBtn  = li.querySelector('.share-toggle-btn');
+
+      permSelect.addEventListener('change', async () => {
+        try {
+          await apiFetch(`/api/groups/${activeGroupId}/share`, {
+            method: 'POST',
+            body: JSON.stringify({ user_id: user.id, permission: permSelect.value }),
+          });
+          const g = groups.find(g => g.id === activeGroupId);
+          if (g) {
+            const entry = (g.shared_with || []).find(s => s.user_id === user.id);
+            if (entry) entry.permission = permSelect.value;
+          }
+        } catch (e) {
+          alert('Erreur : ' + e.message);
+        }
+      });
+
+      toggleBtn.addEventListener('click', async () => {
+        const g = groups.find(g => g.id === activeGroupId);
+        if (!g) return;
+        if (isShared) {
+          try {
+            await apiFetch(`/api/groups/${activeGroupId}/share/${user.id}`, { method: 'DELETE' });
+            g.shared_with = (g.shared_with || []).filter(s => s.user_id !== user.id);
+            permSelect.style.display = 'none';
+            toggleBtn.textContent = 'Partager';
+            toggleBtn.classList.remove('shared');
+            renderGroupShareUserList(g);
+          } catch (e) {
+            alert('Erreur : ' + e.message);
+          }
+        } else {
+          const perm = 'read';
+          try {
+            await apiFetch(`/api/groups/${activeGroupId}/share`, {
+              method: 'POST',
+              body: JSON.stringify({ user_id: user.id, permission: perm }),
+            });
+            if (!g.shared_with) g.shared_with = [];
+            g.shared_with.push({ user_id: user.id, username: user.username, permission: perm });
+            permSelect.value = perm;
+            permSelect.style.display = '';
+            toggleBtn.textContent = 'Retirer';
+            toggleBtn.classList.add('shared');
+            renderGroupShareUserList(g);
+          } catch (e) {
+            alert('Erreur : ' + e.message);
+          }
+        }
+      });
+
+      groupShareUserList.appendChild(li);
+    });
+  }
+
+  groupModalSearch.addEventListener('input', () => {
+    const g = groups.find(g => g.id === activeGroupId);
+    if (g) renderGroupShareUserList(g);
+  });
+
+  /* ════════════════════════════════════════════════════════
+     Fermeture globale modales (Escape)
+  ════════════════════════════════════════════════════════ */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeShareModal();
+      closeGroupsModal();
+      closeTaskGroupModal();
+      closeGroupShareModal();
+    }
   });
 
   /* ════════════════════════════════════════════════════════
@@ -961,7 +1786,7 @@
      Init
   ════════════════════════════════════════════════════════ */
   loadUsers();
-  loadTasks();
+  loadGroups().then(() => loadTasks());
 })();
 </script>
 {% endblock %}
