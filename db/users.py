@@ -58,10 +58,12 @@ def username_exists(username: str) -> bool:
 def create_user(username: str, password: str) -> int:
     """
     Crée un utilisateur. Retourne l'id du nouvel utilisateur.
-    TODO: hasher le mot de passe avec bcrypt avant stockage.
+    Le mot de passe est haché avec bcrypt et stocké sous forme de chaîne (VARCHAR).
     """
-    # Hasher le mot de passe
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    hashed_password = bcrypt.hashpw(
+        password.encode('utf-8'),
+        bcrypt.gensalt(rounds=12)
+    ).decode('utf-8')  # stocker en str pour éviter les problèmes de type avec psycopg2
 
     conn = get_db()
     try:
@@ -79,9 +81,19 @@ def create_user(username: str, password: str) -> int:
 
 # ─── Authentification ─────────────────────────────────────────────────────────
 
-def verify_password(plain_password: str, stored_password: str) -> bool:
+def verify_password(plain_password: str, stored_password) -> bool:
     """
-    Vérifie le mot de passe.
-    TODO: remplacer par bcrypt.checkpw quand les mots de passe seront hachés.
+    Vérifie le mot de passe saisi face au hash stocké en base.
+    Accepte stored_password en str ou en bytes (selon le driver / la colonne).
     """
-    return bcrypt.checkpw(plain_password.encode('utf-8'), stored_password.encode('utf-8'))
+    pwd_bytes = plain_password.encode('utf-8')
+
+    # Normalise le hash en bytes quel que soit ce que le driver renvoie
+    if isinstance(stored_password, str):
+        print("choix 1")
+        hash_bytes = stored_password.encode('utf-8')
+    else:
+        print("choix 2")
+        hash_bytes = stored_password
+
+    return bcrypt.checkpw(pwd_bytes, hash_bytes)
