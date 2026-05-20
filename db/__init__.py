@@ -13,15 +13,22 @@ _pool = None
 
 def init_pool():
     global _pool
-    _pool = psycopg2.pool.ThreadedConnectionPool(
-        minconn=2,   # connexions toujours ouvertes
-        maxconn=10,  # maximum simultané
-        host=Config.DB_HOST,
-        port=Config.DB_PORT,
-        database=Config.DB_NAME,
-        user=Config.DB_USER,
-        password=Config.DB_PASSWORD
-    )
+    try:
+        _pool = psycopg2.pool.ThreadedConnectionPool(
+            minconn=2,   # connexions toujours ouvertes
+            maxconn=10,  # maximum simultané
+            host=Config.DB_HOST,
+            port=Config.DB_PORT,
+            database=Config.DB_NAME,
+            user=Config.DB_USER,
+            password=Config.DB_PASSWORD,
+            connect_timeout=5,
+            options="-c client_encoding=UTF8"
+        )
+    except Exception as exc:
+        raise RuntimeError(
+            f"[DB] Impossible de se connecter à PostgreSQL {Config.DB_HOST}:{Config.DB_PORT} : {exc}"
+        ) from exc
 
 def get_db():
     return _pool.getconn()
