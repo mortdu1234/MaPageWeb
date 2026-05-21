@@ -5,7 +5,8 @@ Gestion de la logique d'authentification
 
 from typing import Tuple
 
-from db.users import get_user_by_username, verify_password, create_user, username_exists, create_joueur
+from db.users import get_user_by_username, verify_password, create_user, username_exists
+from db.joueurs import create_joueur
 from db.permissions import get_user_permissions
 from sessionUser import SessionUser
 
