@@ -1,6 +1,3 @@
-from ast import main
-import re
-
 from flask import Blueprint, render_template
 from routes import require_permission
 

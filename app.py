@@ -21,6 +21,7 @@ def create_app(config_class=Config):
     from routes.rsaKeys import rsaKeys_bp
     from routes.files import files_bp
     from routes.terminal import terminal_bp
+    from routes.errors import errors_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(jeux_bp, url_prefix="/jeux")
@@ -32,6 +33,7 @@ def create_app(config_class=Config):
     app.register_blueprint(rsaKeys_bp)
     app.register_blueprint(files_bp)
     app.register_blueprint(terminal_bp)
+    app.register_blueprint(errors_bp)
 
     @app.context_processor
     def inject_user():
@@ -47,17 +49,6 @@ def create_app(config_class=Config):
     @app.context_processor
     def inject_today():
         return {"today": date.today().isoformat()}
-
-    
-    # ─── Gestionnaires d'erreurs ──────────────────────────────────────────────
-
-    @app.errorhandler(403)
-    def forbidden(e):
-        return render_template("403.html"), 403
-
-    @app.errorhandler(404)
-    def not_found(e):
-        return render_template("404.html"), 404
 
     return app
 
