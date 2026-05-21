@@ -10,19 +10,20 @@ from db import get_db, joueurs, permissions, release_db
 
 def get_all_tables() -> list[str]:
     """Retourne la liste des tables publiques de la base PostgreSQL."""
-    return [
-        "jeux",
-        "joueurs",
-        "joueurs_partie",
-        "parties",
-        "permissions",
-        "task_shares",
-        "tasks",
-        "user_permissions",
-        "users",
-        "files",
-        "file_shares",
-    ]
+    conn = get_db()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT table_name
+            FROM information_schema.tables
+            WHERE table_schema = 'public'
+            AND table_type = 'BASE TABLE'
+            ORDER BY table_name;
+        """)
+        rows = cur.fetchall()
+        return [row[0] for row in rows]
+    finally:
+        release_db(conn)
 
 def get_all_from_table(table: str) -> tuple[dict, None] | tuple[None, str]:
     """

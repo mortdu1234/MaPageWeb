@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from routes import require_permission
-from db.joueurs import create_joueur, joueur_exists
+from backend.Auth import Auth
 
 joueurs_bp = Blueprint("joueurs", __name__)
 
@@ -14,13 +14,9 @@ def nouveau_joueur():
     if request.method == "POST":
         prenom = request.form.get("prenom", "").strip()
         nom    = request.form.get("nom", "").strip()
-
-        if not prenom or not nom:
-            error = "Le prénom et le nom sont obligatoires."
-        elif joueur_exists(prenom, nom):
-            error = f"Le joueur « {prenom} {nom} » existe déjà."
-        else:
-            create_joueur(prenom, nom)
+        
+        success, error = Auth.addNewPlayer(nom, prenom)
+        if success:
             return redirect(next_url)
 
     return render_template("nouveau.html", next_url=next_url, error=error)

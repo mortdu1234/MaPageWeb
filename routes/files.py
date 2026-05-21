@@ -4,7 +4,7 @@ Blueprint Flask pour la gestion des fichiers.
 """
 
 import os
-import uuid
+from backend.FilesService import FileService
 from flask import Blueprint, render_template, request, jsonify, send_file, abort
 from sessionUser import SessionUser
 from db.files import (
@@ -47,58 +47,25 @@ def index():
     )
 
 
-# ─── Upload ──────────────────────────────────────────────────────────────────
 @files_bp.route("/upload", methods=["POST"])
 def upload():
     if "file" not in request.files:
         return jsonify({"error": "Aucun fichier reçu"}), 400
+    try:
+        FileService.upload(request.files["file"], SessionUser.user_id())
+        return jsonify({"message": "Fichier uploadé avec succès"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
-    file = request.files["file"]
-    if file.filename == "":
-        return jsonify({"error": "Nom de fichier vide"}), 400
-
-    ext = os.path.splitext(file.filename)[1] # type: ignore
-    stored_filename = f"{uuid.uuid4().hex}{ext}.enc"  # .enc = chiffré
-    file_path = os.path.join(UPLOAD_FOLDER, stored_filename)
-
-    # Chiffre le contenu avant écriture sur disque
-    encrypt_file(file.read(), file_path)
-
-    add_new_file(
-        file_name=file.filename, # type: ignore
-        stored_filename=stored_filename,
-        user_id=SessionUser.user_id(),
-    )
-    return jsonify({"message": "Fichier uploadé avec succès"}), 200
-
-
-# ─── Téléchargement ──────────────────────────────────────────────────────────
 @files_bp.route("/download/<int:file_id>")
 def download(file_id):
-    file = get_file_by_id(file_id)
-    if not file:
-        abort(404)
-
-    if not file.get("stored_filename"):
-        abort(410)
-
-    shared_ids = [f["id"] for f in get_files_shared_with_user(SessionUser.user_id())]
-    if file["user_id"] != SessionUser.user_id() and file_id not in shared_ids:
+    try:
+        decrypted, file = FileService.download(file_id, SessionUser.user_id())
+        return send_file(decrypted, as_attachment=True, download_name=file["file_name"])
+    except PermissionError:
         abort(403)
-
-    file_path = os.path.join(UPLOAD_FOLDER, file["stored_filename"])
-    if not os.path.isfile(file_path):
+    except FileNotFoundError:
         abort(404)
-
-    # Déchiffre en mémoire puis envoie directement — rien d'écrit en clair sur disque
-    decrypted_bytes = decrypt_file(file_path)
-
-    return send_file(
-        decrypted_bytes,
-        as_attachment=True,
-        download_name=file["file_name"],
-    )
-
 
 # ─── Partage / retrait ───────────────────────────────────────────────────────
 @files_bp.route("/share", methods=["POST"])
