@@ -1,6 +1,6 @@
 import uuid
 import os
-from crypto import encrypt_file, decrypt_file
+from backend.crypto import encrypt_file, decrypt_file
 from db.files import (
     get_files_by_user_id,
     get_files_shared_with_user,
