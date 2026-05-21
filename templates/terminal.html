@@ -1,0 +1,402 @@
+{% extends "base.html" %}
+
+{% block title %}Terminal – Denis ROBERT{% endblock %}
+
+{% block styles %}
+<style>
+  /* ── TERMINAL PAGE ─────────────────────────────────────────── */
+  .terminal-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+
+  /* Header */
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .terminal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .terminal-title span {
+    color: var(--gold);
+  }
+
+  .terminal-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .btn-terminal {
+    font-family: 'Outfit', sans-serif;
+    font-size: .8rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--muted);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+
+  .btn-terminal:hover {
+    border-color: var(--gold);
+    color: var(--accent);
+  }
+
+  .btn-terminal.danger:hover {
+    border-color: #c0392b;
+    color: #c0392b;
+  }
+
+  /* Status pill */
+  .status-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: .78rem;
+    font-family: 'Outfit', monospace;
+    color: var(--muted);
+    padding: 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--surface);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #888;
+    transition: background .4s;
+  }
+
+  .status-dot.connected   { background: #27ae60; box-shadow: 0 0 6px #27ae6088; animation: pulse 2s infinite; }
+  .status-dot.disconnected{ background: #c0392b; }
+  .status-dot.connecting  { background: var(--gold); animation: pulse 1s infinite; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: .45; }
+  }
+
+  /* Terminal box */
+  .terminal-box {
+    background: #0f0e0c;
+    border: 1px solid #2a2620;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  }
+
+  .terminal-topbar {
+    background: #1a1714;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #2a2620;
+  }
+
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.red    { background: #ff5f56; }
+  .dot.yellow { background: #ffbd2e; }
+  .dot.green  { background: #27c93f; }
+
+  .terminal-path {
+    margin-left: auto;
+    font-family: 'Outfit', monospace;
+    font-size: .72rem;
+    color: #4a4540;
+    letter-spacing: .04em;
+  }
+
+  /* Log output */
+  #log-output {
+    height: 520px;
+    overflow-y: auto;
+    padding: 18px 22px;
+    font-family: 'Outfit', monospace;
+    font-size: .82rem;
+    line-height: 1.75;
+    scroll-behavior: smooth;
+  }
+
+  #log-output::-webkit-scrollbar        { width: 6px; }
+  #log-output::-webkit-scrollbar-track  { background: transparent; }
+  #log-output::-webkit-scrollbar-thumb  { background: #2a2620; border-radius: 3px; }
+
+  .log-line {
+    display: flex;
+    gap: 12px;
+    padding: 1px 0;
+    border-bottom: 1px solid transparent;
+    transition: background .15s;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .log-line:hover { background: rgba(255,255,255,.03); }
+
+  .log-num {
+    min-width: 36px;
+    text-align: right;
+    color: #3a3530;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  .log-text { flex: 1; }
+
+  /* Niveaux de log */
+  .log-info     { color: #c8c0b4; }
+  .log-debug    { color: #5a8a6a; }
+  .log-warning  { color: #d4a043; }
+  .log-error    { color: #d45a43; }
+  .log-critical { color: #ff4444; font-weight: 700; }
+  .log-system   { color: #3a3530; font-style: italic; border-bottom: 1px solid #2a2620 !important; margin: 4px 0; }
+
+  /* Highlight du niveau */
+  .log-level-badge {
+    display: inline-block;
+    font-size: .68rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
+
+  .badge-info     { background: #1e2a1e; color: #4caf50; }
+  .badge-debug    { background: #1a2530; color: #4fa3d4; }
+  .badge-warning  { background: #2a2010; color: #d4a043; }
+  .badge-error    { background: #2a1010; color: #d45a43; }
+  .badge-critical { background: #3a0a0a; color: #ff4444; }
+
+  /* Footer info */
+  .terminal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    font-size: .74rem;
+    color: var(--muted);
+    font-family: 'Outfit', monospace;
+    padding: 0 2px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Filter bar */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: 'Outfit', monospace;
+    font-size: .72rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border: 1px solid #2a2620;
+    background: transparent;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all .2s;
+    color: #5a5248;
+  }
+
+  .filter-btn.active     { border-color: var(--gold); color: var(--gold); }
+  .filter-btn[data-level="info"].active     { border-color: #4caf50; color: #4caf50; }
+  .filter-btn[data-level="debug"].active    { border-color: #4fa3d4; color: #4fa3d4; }
+  .filter-btn[data-level="warning"].active  { border-color: #d4a043; color: #d4a043; }
+  .filter-btn[data-level="error"].active    { border-color: #d45a43; color: #d45a43; }
+  .filter-btn[data-level="critical"].active { border-color: #ff4444; color: #ff4444; }
+
+  @media (max-width: 600px) {
+    .terminal-wrapper { padding: 24px 16px 60px; }
+    #log-output { height: 380px; font-size: .75rem; }
+    .terminal-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="terminal-wrapper">
+
+  <!-- Header -->
+  <div class="terminal-header">
+    <h1 class="terminal-title">Flux <span>/</span> Terminal</h1>
+    <div class="terminal-controls">
+      <div class="status-pill">
+        <span class="status-dot connecting" id="status-dot"></span>
+        <span id="status-label">Connexion…</span>
+      </div>
+      <button class="btn-terminal" id="btn-scroll">Auto-scroll ON</button>
+      <button class="btn-terminal danger" id="btn-clear">Effacer</button>
+    </div>
+  </div>
+
+  <!-- Filter bar (rendered inside the dark box context) -->
+  <div class="filter-bar">
+    <button class="filter-btn active" data-level="all">Tous</button>
+    <button class="filter-btn" data-level="info">Info</button>
+    <button class="filter-btn" data-level="debug">Debug</button>
+    <button class="filter-btn" data-level="warning">Warning</button>
+    <button class="filter-btn" data-level="error">Error</button>
+    <button class="filter-btn" data-level="critical">Critical</button>
+  </div>
+
+  <!-- Terminal -->
+  <div class="terminal-box">
+    <div class="terminal-topbar">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+      <span class="terminal-path">flask · /terminal/stream</span>
+    </div>
+    <div id="log-output"></div>
+  </div>
+
+  <!-- Footer -->
+  <div class="terminal-footer">
+    <span id="line-count">0 ligne(s)</span>
+    <span id="last-time">—</span>
+  </div>
+
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(() => {
+  const output     = document.getElementById('log-output');
+  const statusDot  = document.getElementById('status-dot');
+  const statusLbl  = document.getElementById('status-label');
+  const lineCount  = document.getElementById('line-count');
+  const lastTime   = document.getElementById('last-time');
+  const btnScroll  = document.getElementById('btn-scroll');
+  const btnClear   = document.getElementById('btn-clear');
+
+  let autoScroll   = true;
+  let lineNum      = 0;
+  let activeFilter = 'all';
+  let lines        = [];          // {level, html}
+
+  /* ── Badges ───────────────────────────────────────────────── */
+  const BADGE = {
+    info:     '<span class="log-level-badge badge-info">INFO</span>',
+    debug:    '<span class="log-level-badge badge-debug">DEBUG</span>',
+    warning:  '<span class="log-level-badge badge-warning">WARN</span>',
+    error:    '<span class="log-level-badge badge-error">ERROR</span>',
+    critical: '<span class="log-level-badge badge-critical">CRIT</span>',
+    system:   '',
+  };
+
+  function escape(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function addLine(level, text) {
+    lineNum++;
+    const badge   = BADGE[level] || BADGE.info;
+    const html    = `<div class="log-line log-${level}" data-level="${level}">
+      <span class="log-num">${lineNum}</span>
+      <span class="log-text">${badge}${escape(text)}</span>
+    </div>`;
+
+    lines.push({ level, html });
+
+    // Cap à 2000 lignes en mémoire
+    if (lines.length > 2000) lines.shift();
+
+    if (activeFilter === 'all' || activeFilter === level) {
+      output.insertAdjacentHTML('beforeend', html);
+      if (autoScroll) output.scrollTop = output.scrollHeight;
+    }
+
+    lineCount.textContent = `${lineNum} ligne(s)`;
+    lastTime.textContent  = new Date().toLocaleTimeString('fr-FR');
+  }
+
+  function applyFilter(level) {
+    activeFilter = level;
+    output.innerHTML = '';
+    const subset = level === 'all'
+      ? lines
+      : lines.filter(l => l.level === level);
+    output.insertAdjacentHTML('beforeend', subset.map(l => l.html).join(''));
+    if (autoScroll) output.scrollTop = output.scrollHeight;
+  }
+
+  /* ── SSE ──────────────────────────────────────────────────── */
+  function connect() {
+    setStatus('connecting', 'Connexion…');
+    const es = new EventSource('/terminal/stream');
+
+    es.onopen = () => setStatus('connected', 'Connecté');
+
+    es.onmessage = (e) => {
+      const sep   = e.data.indexOf('|');
+      const level = sep >= 0 ? e.data.slice(0, sep) : 'info';
+      const text  = sep >= 0 ? e.data.slice(sep + 1) : e.data;
+      addLine(level, text);
+    };
+
+    es.onerror = () => {
+      setStatus('disconnected', 'Déconnecté – reconnexion…');
+      es.close();
+      setTimeout(connect, 3000);
+    };
+  }
+
+  function setStatus(cls, label) {
+    statusDot.className = `status-dot ${cls}`;
+    statusLbl.textContent = label;
+  }
+
+  /* ── Contrôles ────────────────────────────────────────────── */
+  btnScroll.addEventListener('click', () => {
+    autoScroll = !autoScroll;
+    btnScroll.textContent = `Auto-scroll ${autoScroll ? 'ON' : 'OFF'}`;
+    btnScroll.style.borderColor = autoScroll ? 'var(--gold)' : '';
+    btnScroll.style.color       = autoScroll ? 'var(--accent)' : '';
+  });
+
+  btnClear.addEventListener('click', () => {
+    output.innerHTML = '';
+    lines   = [];
+    lineNum = 0;
+    lineCount.textContent = '0 ligne(s)';
+  });
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilter(btn.dataset.level);
+    });
+  });
+
+  connect();
+})();
+</script>
+{% endblock %}
