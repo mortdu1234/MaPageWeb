@@ -181,10 +181,19 @@ function updatePreview(fileId) {
 async function uploadFile(input) {
   const file = input.files[0];
   if (!file) return;
+
+  console.log("Type MIME :", file.type);   // <-- ajoute ça
+  console.log("Taille :", file.size);      // <-- et ça
+
   const fd = new FormData();
   fd.append('file', file);
   const res = await fetch('/files/upload', { method: 'POST', body: fd });
+
+  console.log("Status HTTP :", res.status); // <-- et ça
+
   const data = await res.json();
+  console.log("Réponse :", data);           // <-- et ça
+
   if (res.ok) { showToast('Fichier uploadé ✓'); setTimeout(() => location.reload(), 800); }
   else showToast(data.error || 'Erreur upload', true);
 }

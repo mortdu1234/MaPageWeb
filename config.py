@@ -28,6 +28,8 @@ class Config:
 
     UPLOAD_FOLDER = _require("UPLOAD_FOLDER")
 
+    NOTIFICATIONS_URL = _require("NOTIFICATIONS_URL")
+    WEB_SITE_URL = _require("WEB_SITE_URL")
 
 
 class DevelopmentConfig(Config):

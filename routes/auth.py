@@ -7,6 +7,7 @@ Toutes les interactions BDD passent par db/users.py et db/permissions.py.
 from flask import Blueprint, render_template, request, redirect, url_for, abort
 from functools import wraps
 
+from backend.notifications import notifier
 from db.users import get_user_by_username, get_user_by_id, username_exists, create_user, verify_password
 from db.permissions import get_user_permissions
 from sessionUser import SessionUser
@@ -73,6 +74,9 @@ def register():
                     error = "Ce nom d'utilisateur est déjà pris."
                 else:
                     create_user(username, password)
+                    success = notifier("inscription", f"le user \"{username}\" vient d'être créé", "min", ["UserCreate"])
+                    if not success:
+                        print("[ERROR] Erreur lors de l'envois de la notification")
                     return redirect(url_for("auth.login"))
             except Exception as e:
                 error = "Erreur de connexion à la base de données."
