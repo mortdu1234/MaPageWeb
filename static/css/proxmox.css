@@ -482,3 +482,88 @@
 }
 
 .px-error-banner.visible { display: block; }
+
+/* ── DISQUES PHYSIQUES ── */
+.px-disk-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.px-disk-row {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--px-radius);
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 130px 1fr 80px 60px 90px auto;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--px-shadow);
+  font-size: .82rem;
+}
+
+@media (max-width: 700px) {
+  .px-disk-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+  }
+}
+
+.px-disk-row__dev   { font-weight: 700; color: var(--accent); font-family: monospace; font-size: .8rem; }
+.px-disk-row__model { color: var(--muted); }
+.px-disk-row__size  { font-weight: 600; color: var(--accent); }
+.px-disk-row__type  { text-transform: uppercase; font-size: .68rem; letter-spacing: .1em; color: var(--muted); }
+.px-disk-row__health { font-weight: 600; font-size: .75rem; }
+.px-disk-row__health.ok  { color: var(--ok); }
+.px-disk-row__health.hot { color: var(--danger); }
+.px-disk-row__wear  { font-size: .72rem; color: var(--muted); }
+
+/* ── RÉSEAU (nouvelle version liste) ── */
+.px-net-row {
+  display: grid;
+  grid-template-columns: 90px 60px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: .82rem;
+}
+.px-net-row:last-child { border-bottom: none; }
+.px-net-row__iface { font-weight: 700; color: var(--accent); font-family: monospace; }
+.px-net-row__type  { text-transform: uppercase; font-size: .68rem; letter-spacing: .08em; color: var(--muted); }
+.px-net-row__addr  { color: var(--muted); font-family: monospace; font-size: .78rem; }
+.px-net-row__state { font-size: .72rem; font-weight: 600; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; }
+.px-net-row__state.running { background: rgba(76,175,125,.12); color: var(--ok); }
+.px-net-row__state.stopped { background: rgba(217,91,91,.1);  color: var(--danger); }
+
+/* ── VMs enrichis ── */
+.px-vm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.px-vm-row:last-child { border-bottom: none; }
+.px-vm-row__left  { display: flex; flex-direction: column; gap: 2px; }
+.px-vm-row__name  { font-weight: 600; font-size: .88rem; color: var(--accent); }
+.px-vm-row__type  { font-size: .68rem; color: var(--muted); letter-spacing: .08em; }
+.px-vm-row__metrics {
+  display: flex; gap: 16px; align-items: center; flex-wrap: wrap; flex: 1;
+  padding: 0 8px;
+}
+.px-vm-row__metric {
+  display: flex; align-items: center; gap: 6px;
+  font-size: .74rem; color: var(--muted);
+}
+
+/* ── STORAGE row info ── */
+.px-storage-row__info {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.px-storage-row__type {
+  font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+}
