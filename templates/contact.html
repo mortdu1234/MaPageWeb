@@ -23,11 +23,55 @@
       </div>
     </div>
     <form class="contact-form" onsubmit="handleSubmit(event)">
-      <div class="form-group"><label>Nom</label><input type="text" placeholder="Votre nom complet" required/></div>
-      <div class="form-group"><label>Email</label><input type="email" placeholder="votre@email.com" required/></div>
-      <div class="form-group"><label>Message</label><textarea placeholder="Votre message…" required></textarea></div>
-      <button type="submit" class="btn btn-primary">Envoyer le message</button>
+      <div class="form-group"><label>Nom</label><input id="nom" type="text" placeholder="Votre nom complet" required/></div>
+      <div class="form-group"><label>Email</label><input id="email" type="email" placeholder="votre@email.com" required/></div>
+      <div class="form-group"><label>Message</label><textarea id="message" placeholder="Votre message…" required></textarea></div>
+      <button type="submit" class="btn btn-primary" id="submit-btn">Envoyer le message</button>
+      <p id="form-status" style="margin-top:1rem;"></p>
     </form>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const btn    = document.getElementById('submit-btn');
+    const status = document.getElementById('form-status');
+
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+    status.textContent = '';
+
+    console.log("1");
+    try {
+      const res = await fetch('/contact/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nom:     document.getElementById('nom').value,
+          email:   document.getElementById('email').value,
+          message: document.getElementById('message').value,
+        })
+      });
+      console.log("2");
+
+      const data = await res.json();
+      if (data.success) {
+        status.style.color = 'green';
+        status.textContent = '✅ Message envoyé ! Je vous répondrai sous 48h.';
+        event.target.reset();
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (err) {
+      status.style.color = 'red';
+      status.textContent = '❌ Une erreur est survenue. Réessayez ou écrivez directement à dr05@orange.fr.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Envoyer le message';
+    }
+  }
+</script>
 {% endblock %}
