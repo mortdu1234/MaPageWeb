@@ -567,3 +567,133 @@
 .px-storage-row__type {
   font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
 }
+
+/* bridge ports */
+.px-net-row__bridge {
+  font-size: .72rem;
+  color: var(--gold);
+  font-family: monospace;
+}
+
+/* net stat dans VM row */
+.px-vm-row__metric.net-stat {
+  font-family: monospace;
+  font-size: .72rem;
+}
+/* ── DONUTS DISQUES ── */
+.px-disk-donuts {
+  display: flex;
+  gap: var(--px-gap);
+  margin-bottom: calc(var(--px-gap) * 1.5);
+  flex-wrap: wrap;
+}
+
+.px-donut-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--px-radius);
+  box-shadow: var(--px-shadow);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  min-width: 260px;
+  transition: box-shadow .25s, transform .25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.px-donut-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity .25s;
+}
+
+#px-donut-hdd::before { background: var(--warn); }
+#px-donut-ssd::before { background: var(--ram-c); }
+
+.px-donut-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,.1); transform: translateY(-2px); }
+.px-donut-card:hover::before { opacity: 1; }
+
+.px-donut-svg {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  transform: rotate(-90deg);
+}
+
+.px-donut-track {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 10;
+}
+
+.px-donut-fill {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dasharray .8s cubic-bezier(.4,0,.2,1);
+}
+
+.px-donut-fill--hdd { stroke: var(--warn); }
+.px-donut-fill--ssd { stroke: var(--ram-c); }
+
+.px-donut-fill.danger {
+  stroke: var(--danger) !important;
+}
+
+.px-donut-center {
+  position: absolute;
+  left: 24px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.px-donut-pct {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.px-donut-label {
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.px-donut-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.px-donut-meta {
+  font-size: .78rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.px-donut-meta strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Quand aucun disque de ce type */
+.px-donut-card.px-donut-empty {
+  opacity: .45;
+  pointer-events: none;
+}

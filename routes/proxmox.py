@@ -23,9 +23,22 @@ import requests
 import urllib3
 from flask import Blueprint, jsonify, render_template
 
+from routes import require_permission
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 proxmox_bp = Blueprint("proxmox", __name__)
+
+@proxmox_bp.route("/api/proxmox/debug")
+def proxmox_debug():
+    cfg = _cfg()
+    header = f"PVEAPIToken={cfg['user']}!{cfg['token_name']}={cfg['token_val']}"
+    return jsonify({
+        "host":   cfg["host"],
+        "node":   cfg["node"],
+        "header": header,
+        "url":    f"https://{cfg['host']}:{cfg['port']}/api2/json/nodes",
+    })
 
 # ── Config ────────────────────────────────────────────────────────────────
 
@@ -319,10 +332,12 @@ def _node_sysinfo(cfg, node):
 # ── Routes ────────────────────────────────────────────────────────────────
 
 @proxmox_bp.route("/proxmox")
+@require_permission("admin")
 def proxmox_page():
     return render_template("proxmox.html")
 
 @proxmox_bp.route("/api/proxmox/stats")
+@require_permission("admin")
 def proxmox_stats():
     try:
         cfg  = _cfg()

@@ -90,18 +90,6 @@
 
   </section>
 
-  <!-- Températures -->
-  <section class="px-section">
-    <h2 class="px-section__title">Températures</h2>
-    <div class="px-grid px-grid--temps" id="px-temps">
-      <div class="px-temp-card px-skeleton">
-        <span class="px-temp-card__name">—</span>
-        <span class="px-temp-card__val">—°C</span>
-        <div class="px-gauge"><div class="px-gauge__fill"></div></div>
-      </div>
-    </div>
-  </section>
-
   <!-- Stockage Proxmox -->
   <section class="px-section">
     <h2 class="px-section__title">Stockages Proxmox</h2>
@@ -118,41 +106,41 @@
   <!-- Disques physiques -->
   <section class="px-section">
     <h2 class="px-section__title">Disques physiques</h2>
+
+    <!-- Graphiques donuts HDD / SSD -->
+    <div class="px-disk-donuts" id="px-disk-donuts">
+      <div class="px-donut-card" id="px-donut-hdd">
+        <svg class="px-donut-svg" viewBox="0 0 120 120">
+          <circle class="px-donut-track" cx="60" cy="60" r="48"/>
+          <circle class="px-donut-fill px-donut-fill--hdd" cx="60" cy="60" r="48"
+                  id="donut-hdd-arc" stroke-dasharray="0 301.6"/>
+        </svg>
+        <div class="px-donut-center">
+          <span class="px-donut-pct" id="donut-hdd-pct">—</span>
+          <span class="px-donut-label">HDD</span>
+        </div>
+        <div class="px-donut-meta" id="donut-hdd-meta">—</div>
+      </div>
+
+      <div class="px-donut-card" id="px-donut-ssd">
+        <svg class="px-donut-svg" viewBox="0 0 120 120">
+          <circle class="px-donut-track" cx="60" cy="60" r="48"/>
+          <circle class="px-donut-fill px-donut-fill--ssd" cx="60" cy="60" r="48"
+                  id="donut-ssd-arc" stroke-dasharray="0 301.6"/>
+        </svg>
+        <div class="px-donut-center">
+          <span class="px-donut-pct" id="donut-ssd-pct">—</span>
+          <span class="px-donut-label">SSD / NVMe</span>
+        </div>
+        <div class="px-donut-meta" id="donut-ssd-meta">—</div>
+      </div>
+    </div>
+
+    <!-- Liste détaillée -->
     <div class="px-disk-list" id="px-disks">
       <div class="px-disk-row px-skeleton">
         <span>—</span><span>—</span><span>—</span><span>—</span><span>—</span>
       </div>
-    </div>
-  </section>
-
-  <!-- Réseau & Conteneurs -->
-  <div class="px-grid px-grid--bottom">
-
-    <section class="px-card px-card--net px-section">
-      <h2 class="px-section__title">Interfaces réseau</h2>
-      <div class="px-net-list" id="px-net">
-        <div class="px-net-row px-skeleton">
-          <span>—</span><span>—</span><span>—</span><span>—</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="px-card px-card--vms px-section">
-      <h2 class="px-section__title">Conteneurs &amp; VMs</h2>
-      <div class="px-vm-list" id="px-vms">
-        <div class="px-vm-row px-skeleton">
-          <span>—</span><span>—</span>
-        </div>
-      </div>
-    </section>
-
-  </div>
-
-  <!-- Infos système -->
-  <section class="px-section">
-    <h2 class="px-section__title">Informations système</h2>
-    <div class="px-info-list" id="px-info-list">
-      <div class="px-info-item px-skeleton"><span>—</span><span>—</span></div>
     </div>
   </section>
 

@@ -1,14 +1,13 @@
-/* proxmox.js — Dashboard Proxmox (données via API Proxmox)
-   Polling toutes les 5 s vers /api/proxmox/stats
-*/
+/* proxmox.js — Dashboard Proxmox */
 
 const POLL_INTERVAL = 5000;
+const DONUT_CIRC    = 2 * Math.PI * 48; // ~301.6
 
 const $  = id => document.getElementById(id);
-const fmt = (n, d = 1) => (typeof n === 'number' ? n.toFixed(d) : '—');
+const fmt = (n, d = 1) => (typeof n === 'number' ? n.toFixed(d) : String(n ?? '—'));
 
 function toGo(bytes) {
-  if (!bytes) return '0';
+  if (!bytes && bytes !== 0) return '0';
   return (bytes / 1073741824).toFixed(1);
 }
 
@@ -20,37 +19,11 @@ function gaugeColor(pct) {
   return '';
 }
 
-function tempClass(t) {
-  if (t >= 85) return 'hot';
-  if (t >= 65) return 'warn';
-  return 'ok';
-}
-
 function setBar(el, pct) {
   if (!el) return;
-  const p = clamp(pct, 0, 100);
+  const p = clamp(pct ?? 0, 0, 100);
   el.style.width = p + '%';
   el.className   = 'px-gauge__fill ' + gaugeColor(p);
-}
-
-function formatUptime(s) {
-  if (!s) return '—';
-  const d = Math.floor(s / 86400);
-  const h = Math.floor((s % 86400) / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const parts = [];
-  if (d) parts.push(d + 'j');
-  if (h) parts.push(h + 'h');
-  parts.push(m + 'min');
-  return parts.join(' ');
-}
-
-function formatBytes(b) {
-  if (!b && b !== 0) return '—';
-  for (const [u, lim] of [['o/s',1024],['Ko/s',1024],['Mo/s',1024],['Go/s',Infinity]]) {
-    if (b < lim) return b.toFixed(1) + ' ' + u;
-    b /= 1024;
-  }
 }
 
 function setStatus(online, text) {
@@ -63,186 +36,7 @@ function setLastUpdate() {
   $('px-last-update').textContent = new Date().toLocaleTimeString('fr-FR');
 }
 
-/* ── Render ── */
-
-function renderTop(data) {
-  // CPU
-  const cpuPct = data.cpu.percent;
-  $('cpu-pct').textContent   = fmt(cpuPct, 1);
-  setBar($('cpu-bar'), cpuPct);
-  $('cpu-model').textContent = data.cpu.model || '—';
-  $('cpu-cores').textContent =
-    `${data.cpu.sockets} socket(s) · ${data.cpu.physical_cores} cœurs · ${data.cpu.mhz ? data.cpu.mhz + ' MHz' : ''}`;
-
-  // RAM
-  const ramPct  = data.memory.percent;
-  $('ram-used').textContent   = toGo(data.memory.used);
-  setBar($('ram-bar'), ramPct);
-  $('ram-detail').textContent = `${toGo(data.memory.used)} / ${toGo(data.memory.total)} Go`;
-  $('ram-pct').textContent    = fmt(ramPct, 1) + '%';
-
-  // Swap
-  const swapPct  = data.swap.percent;
-  $('swap-used').textContent   = toGo(data.swap.used);
-  setBar($('swap-bar'), swapPct);
-  $('swap-detail').textContent = `${toGo(data.swap.used)} / ${toGo(data.swap.total)} Go`;
-  $('swap-pct').textContent    = fmt(swapPct, 1) + '%';
-
-  // Uptime
-  $('uptime-val').textContent   = data.uptime.human || formatUptime(data.uptime.seconds);
-  $('uptime-since').textContent = data.load_avg
-    ? `Load avg : ${data.load_avg.map(v => v.toFixed(2)).join(' · ')}`
-    : '—';
-}
-
-function renderTemps(temps) {
-  const container = $('px-temps');
-  if (!temps || Object.keys(temps).length === 0) {
-    container.innerHTML =
-      '<p style="color:var(--muted);font-size:.8rem;grid-column:1/-1">' +
-      'Aucune donnée de température — installez <code>lm-sensors</code> sur le nœud Proxmox.</p>';
-    return;
-  }
-  container.innerHTML = '';
-  for (const [name, info] of Object.entries(temps)) {
-    const t   = info.current;
-    const max = info.high || 100;
-    const pct = clamp(Math.round(t / max * 100), 0, 100);
-    const cls = tempClass(t);
-    const gCls = cls === 'warn' ? 'warn' : cls === 'hot' ? 'danger' : '';
-    const card = document.createElement('div');
-    card.className = 'px-temp-card';
-    card.innerHTML = `
-      <span class="px-temp-card__name">${name}</span>
-      <span class="px-temp-card__val ${cls}">${fmt(t, 1)}°C</span>
-      <div class="px-gauge"><div class="px-gauge__fill ${gCls}" style="width:${pct}%"></div></div>
-      <span style="font-size:.68rem;color:var(--muted)">
-        max ${info.high ? info.high + '°C' : '—'} · crit ${info.critical ? info.critical + '°C' : '—'}
-      </span>`;
-    container.appendChild(card);
-  }
-}
-
-function renderStorage(storage) {
-  const container = $('px-storage');
-  if (!storage || storage.length === 0) {
-    container.innerHTML = '<p style="color:var(--muted);font-size:.8rem">Aucun stockage Proxmox trouvé.</p>';
-    return;
-  }
-  container.innerHTML = '';
-  for (const s of storage) {
-    const pct = s.percent;
-    const row = document.createElement('div');
-    row.className = 'px-storage-row';
-    row.innerHTML = `
-      <div class="px-storage-row__info">
-        <span class="px-storage-row__name">${s.storage}</span>
-        <span class="px-storage-row__type">${s.type}</span>
-      </div>
-      <div class="px-storage-row__bar-wrap">
-        <div class="px-gauge"><div class="px-gauge__fill ${gaugeColor(pct)}" style="width:${pct}%"></div></div>
-      </div>
-      <span class="px-storage-row__detail">${toGo(s.used)} / ${toGo(s.total)} Go</span>
-      <span class="px-storage-row__pct">${fmt(pct, 1)}%</span>`;
-    container.appendChild(row);
-  }
-}
-
-function renderDisks(disks) {
-  const container = $('px-disks');
-  if (!disks || disks.length === 0) {
-    container.innerHTML = '<p style="color:var(--muted);font-size:.8rem">Aucun disque physique détecté.</p>';
-    return;
-  }
-  container.innerHTML = '';
-  for (const d of disks) {
-    const sizeGo = toGo(d.size);
-    const typeIcon = d.type === 'ssd' || d.type === 'nvme' ? '⚡' : '💿';
-    const health = d.health === 'PASSED' ? 'ok' : d.health === 'FAILED' ? 'hot' : '';
-    const row = document.createElement('div');
-    row.className = 'px-disk-row';
-    row.innerHTML = `
-      <span class="px-disk-row__dev">${typeIcon} ${d.devpath}</span>
-      <span class="px-disk-row__model">${d.model || '—'}</span>
-      <span class="px-disk-row__size">${sizeGo} Go</span>
-      <span class="px-disk-row__type">${d.type || '—'}</span>
-      <span class="px-disk-row__health ${health}">${d.health || '—'}</span>
-      ${d.wearout != null ? `<span class="px-disk-row__wear">Usure : ${d.wearout}%</span>` : ''}`;
-    container.appendChild(row);
-  }
-}
-
-function renderNetwork(ifaces) {
-  const container = $('px-net');
-  if (!ifaces || ifaces.length === 0) {
-    container.innerHTML = '<p style="color:var(--muted);font-size:.8rem">Aucune interface réseau.</p>';
-    return;
-  }
-  container.innerHTML = '';
-  for (const iface of ifaces) {
-    const row = document.createElement('div');
-    row.className = 'px-net-row';
-    row.innerHTML = `
-      <span class="px-net-row__iface">${iface.iface}</span>
-      <span class="px-net-row__type">${iface.type}</span>
-      <span class="px-net-row__addr">${iface.address || '—'}</span>
-      <span class="px-net-row__state ${iface.active ? 'running' : 'stopped'}">${iface.active ? 'Actif' : 'Inactif'}</span>`;
-    container.appendChild(row);
-  }
-}
-
-function renderVMs(vms) {
-  const container = $('px-vms');
-  if (!vms || vms.length === 0) {
-    container.innerHTML = '<p style="color:var(--muted);font-size:.8rem">Aucun conteneur / VM.</p>';
-    return;
-  }
-  container.innerHTML = '';
-  for (const vm of vms) {
-    const statusCls   = vm.status === 'running' ? 'running' : vm.status === 'paused' ? 'paused' : 'stopped';
-    const statusLabel = { running: 'Actif', stopped: 'Arrêté', paused: 'Suspendu' }[vm.status] || vm.status;
-    const row = document.createElement('div');
-    row.className = 'px-vm-row';
-
-    const cpuBar  = vm.status === 'running' ? `<div class="px-gauge" style="width:80px"><div class="px-gauge__fill ${gaugeColor(vm.cpu)}" style="width:${clamp(vm.cpu,0,100)}%"></div></div>` : '';
-    const memBar  = vm.status === 'running' ? `<div class="px-gauge" style="width:80px"><div class="px-gauge__fill ${gaugeColor(vm.mem_pct)}" style="width:${clamp(vm.mem_pct,0,100)}%;background:var(--ram-c)"></div></div>` : '';
-
-    row.innerHTML = `
-      <div class="px-vm-row__left">
-        <span class="px-vm-row__name">${vm.name}</span>
-        <span class="px-vm-row__type">${vm.type} #${vm.vmid}</span>
-      </div>
-      <div class="px-vm-row__metrics">
-        ${vm.status === 'running' ? `
-          <span class="px-vm-row__metric">CPU ${fmt(vm.cpu,1)}% ${cpuBar}</span>
-          <span class="px-vm-row__metric">RAM ${toGo(vm.mem)}/${toGo(vm.maxmem)} Go ${memBar}</span>
-          <span class="px-vm-row__metric">↑${vm.uptime}</span>
-        ` : ''}
-      </div>
-      <span class="px-vm-row__status ${statusCls}">${statusLabel}</span>`;
-    container.appendChild(row);
-  }
-}
-
-function renderSysInfo(info) {
-  const entries = [
-    ['Hostname',      info.hostname],
-    ['Version PVE',   info.pve_version],
-    ['Release PVE',   info.pve_release],
-    ['Noyau',         info.kernel],
-    ['Processeur',    info.cpu_model],
-    ['Sockets CPU',   info.cpu_sockets],
-    ['Cœurs total',   info.cpu_cores],
-    ['Architecture',  info.arch],
-  ];
-  $('px-info-list').innerHTML = entries.map(([k, v]) => `
-    <div class="px-info-item">
-      <span>${k}</span>
-      <span>${v || '—'}</span>
-    </div>`).join('');
-}
-
-function renderError(msg) {
+function showError(msg) {
   let banner = document.querySelector('.px-error-banner');
   if (!banner) {
     banner = document.createElement('div');
@@ -254,20 +48,180 @@ function renderError(msg) {
 }
 
 function clearError() {
-  const banner = document.querySelector('.px-error-banner');
-  if (banner) banner.classList.remove('visible');
+  const b = document.querySelector('.px-error-banner');
+  if (b) b.classList.remove('visible');
 }
 
-/* ── Fetch & poll ── */
+/* ── Render ── */
+
+function renderTop(data) {
+  const cpuPct = data.cpu.percent;
+  $('cpu-pct').textContent   = fmt(cpuPct, 1);
+  setBar($('cpu-bar'), cpuPct);
+  $('cpu-model').textContent = data.cpu.model || '—';
+  $('cpu-cores').textContent =
+    `${data.cpu.sockets} socket · ${data.cpu.physical_cores} cœurs · ${data.cpu.mhz ? Math.round(data.cpu.mhz) + ' MHz' : ''}`;
+
+  const ramPct = data.memory.percent;
+  $('ram-used').textContent   = toGo(data.memory.used);
+  setBar($('ram-bar'), ramPct);
+  $('ram-detail').textContent = `${toGo(data.memory.used)} / ${toGo(data.memory.total)} Go`;
+  $('ram-pct').textContent    = fmt(ramPct, 1) + '%';
+
+  const swapPct = data.swap.percent;
+  $('swap-used').textContent   = toGo(data.swap.used);
+  setBar($('swap-bar'), swapPct);
+  $('swap-detail').textContent = `${toGo(data.swap.used)} / ${toGo(data.swap.total)} Go`;
+  $('swap-pct').textContent    = fmt(swapPct, 1) + '%';
+
+  $('uptime-val').textContent = data.uptime.human || '—';
+  if (data.load_avg && data.load_avg.length) {
+    $('uptime-since').textContent =
+      'Load avg : ' + data.load_avg.map(v => parseFloat(v).toFixed(2)).join(' · ');
+  }
+}
+
+function renderStorage(storage) {
+  const container = $('px-storage');
+  if (!storage || storage.length === 0) {
+    container.innerHTML = '<p style="color:var(--muted);font-size:.82rem">Aucun stockage trouvé.</p>';
+    return;
+  }
+  container.innerHTML = '';
+  for (const s of storage) {
+    const pct = s.percent ?? 0;
+    const row = document.createElement('div');
+    row.className = 'px-storage-row';
+    row.innerHTML = `
+      <div class="px-storage-row__info">
+        <span class="px-storage-row__name">${s.storage}</span>
+        <span class="px-storage-row__type">${s.type}</span>
+      </div>
+      <div class="px-storage-row__bar-wrap">
+        <div class="px-gauge">
+          <div class="px-gauge__fill ${gaugeColor(pct)}" style="width:${pct}%"></div>
+        </div>
+      </div>
+      <span class="px-storage-row__detail">${toGo(s.used)} / ${toGo(s.total)} Go · libre ${toGo(s.avail)} Go</span>
+      <span class="px-storage-row__pct">${fmt(pct, 1)}%</span>`;
+    container.appendChild(row);
+  }
+}
+
+/* ── Donuts disques ── */
+
+function setDonut(arcId, pctId, metaId, cardId, disks, storage) {
+  const arc    = $(arcId);
+  const pctEl  = $(pctId);
+  const metaEl = $(metaId);
+  const card   = $(cardId);
+
+  if (!disks || disks.length === 0) {
+    card.classList.add('px-donut-empty');
+    pctEl.textContent  = '—';
+    metaEl.textContent = 'Aucun disque';
+    arc.setAttribute('stroke-dasharray', `0 ${DONUT_CIRC}`);
+    return;
+  }
+
+  card.classList.remove('px-donut-empty');
+
+  // Calculer used/total réels depuis les données de stockage Proxmox
+  // On agrège tous les stockages actifs dont le contenu inclut "images" ou "rootdir"
+  let totalBytes = 0, usedBytes = 0;
+  if (storage && storage.length > 0) {
+    for (const s of storage) {
+      totalBytes += s.total || 0;
+      usedBytes  += s.used  || 0;
+    }
+  }
+
+  // Fallback : si pas de données stockage, afficher la taille brute des disques physiques
+  if (totalBytes === 0) {
+    totalBytes = disks.reduce((s, d) => s + (d.size || 0), 0);
+    usedBytes  = 0;
+  }
+
+  const pct = totalBytes > 0 ? clamp(Math.round(usedBytes / totalBytes * 100), 0, 100) : 0;
+
+  const dash = (pct / 100 * DONUT_CIRC).toFixed(1);
+  arc.setAttribute('stroke-dasharray', `${dash} ${DONUT_CIRC}`);
+  arc.classList.toggle('danger', pct >= 90);
+
+  pctEl.textContent = pct + '%';
+
+  const totalGo = (totalBytes / 1073741824).toFixed(1);
+  const usedGo  = (usedBytes  / 1073741824).toFixed(1);
+  const names   = disks.map(d => d.devpath).join(', ');
+  metaEl.innerHTML = `
+    <strong>${disks.length} disque${disks.length > 1 ? 's' : ''}</strong> · ${usedGo} / ${totalGo} Go<br>
+    <span style="font-family:monospace;font-size:.72rem">${names}</span>`;
+}
+
+function renderDisks(disks, storage) {
+  const container = $('px-disks');
+  if (!disks || disks.length === 0) {
+    container.innerHTML = '<p style="color:var(--muted);font-size:.82rem">Aucun disque physique détecté.</p>';
+    renderDonuts([], storage);
+    return;
+  }
+
+  window._allDiskTotal = disks.reduce((s, d) => s + (d.size || 0), 0) || 1;
+
+  renderDonuts(disks, storage);
+
+  container.innerHTML = '';
+  for (const d of disks) {
+    const typeIcon  = d.type === 'ssd' ? '⚡ SSD' : d.type === 'nvme' ? '⚡ NVMe' : '💿 HDD';
+    const healthCls = d.health === 'PASSED' ? 'ok' : d.health === 'FAILED' ? 'hot' : '';
+    const wearTxt   = d.wearout != null && d.wearout !== 'N/A'
+      ? `<span class="px-disk-row__wear">Usure : ${d.wearout}%</span>` : '';
+    const rpmTxt    = d.rpm && d.rpm !== 0
+      ? `<span style="font-size:.7rem;color:var(--muted)">${d.rpm} tr/min</span>` : '';
+    const row = document.createElement('div');
+    row.className = 'px-disk-row';
+    row.innerHTML = `
+      <span class="px-disk-row__dev">${d.devpath}</span>
+      <span class="px-disk-row__model">${(d.model || '—').replace(/_/g,' ')}</span>
+      <span class="px-disk-row__size">${toGo(d.size)} Go</span>
+      <span class="px-disk-row__type">${typeIcon}</span>
+      ${rpmTxt}
+      <span class="px-disk-row__health ${healthCls}">${d.health || '—'}</span>
+      ${wearTxt}`;
+    container.appendChild(row);
+  }
+}
+
+function renderDonuts(disks, storage) {
+  const hdds = disks.filter(d => d.type === 'hdd');
+  const ssds  = disks.filter(d => d.type === 'ssd' || d.type === 'nvme');
+
+  // Séparer les stockages par type de disque (heuristique sur le nom/type)
+  // Pour les HDD : stockages de type lvm, dir sur des HDD
+  // Pour les SSD : stockages sur le SSD (pve, local-lvm, etc.)
+  // On fait simple : on passe tous les stockages aux deux donuts,
+  // chaque donut affiche used/total de ses disques physiques associés
+  const hddStorage = storage ? storage.filter(s =>
+    s.type === 'lvm' || s.type === 'lvmthin' || s.type === 'dir'
+  ) : [];
+  const ssdStorage = storage ? storage.filter(s =>
+    s.storage === 'local' || s.storage === 'local-lvm' || s.type === 'zfspool'
+  ) : [];
+
+  setDonut('donut-hdd-arc', 'donut-hdd-pct', 'donut-hdd-meta', 'px-donut-hdd', hdds, hddStorage);
+  setDonut('donut-ssd-arc', 'donut-ssd-pct', 'donut-ssd-meta', 'px-donut-ssd', ssds, ssdStorage);
+}
+
+/* ── Fetch ── */
 
 async function fetchStats() {
   try {
-    const res = await fetch('/api/proxmox/stats');
+    const res  = await fetch('/api/proxmox/stats');
     const data = await res.json();
 
     if (!res.ok || data.error) {
-      setStatus(false, 'Erreur');
-      renderError(data.error || `HTTP ${res.status}`);
+      setStatus(false, 'Erreur API');
+      showError(data.error || `HTTP ${res.status}`);
       return;
     }
 
@@ -276,16 +230,12 @@ async function fetchStats() {
     setLastUpdate();
 
     renderTop(data);
-    renderTemps(data.temperatures);
     renderStorage(data.storage);
-    renderDisks(data.disks);
-    renderNetwork(data.network);
-    renderVMs(data.vms);
-    renderSysInfo(data.system);
+    renderDisks(data.disks, data.storage);
 
   } catch (err) {
     setStatus(false, 'Hors ligne');
-    renderError('Impossible de joindre le serveur Flask.');
+    showError(`Fetch échoué : ${err.message}`);
     console.error('[proxmox]', err);
   }
 }
@@ -297,4 +247,3 @@ $('px-refresh-btn').addEventListener('click', () => {
 });
 
 fetchStats();
-setInterval(fetchStats, POLL_INTERVAL);
