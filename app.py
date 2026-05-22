@@ -21,6 +21,7 @@ def create_app(config_class=Config):
     from routes.rsaKeys import rsaKeys_bp
     from routes.files import files_bp
     from routes.terminal import terminal_bp
+    from routes.proxmox import proxmox_bp
     from routes.errors import errors_bp
 
     app.register_blueprint(main_bp)
@@ -34,6 +35,7 @@ def create_app(config_class=Config):
     app.register_blueprint(files_bp)
     app.register_blueprint(terminal_bp)
     app.register_blueprint(errors_bp)
+    app.register_blueprint(proxmox_bp)
 
     @app.context_processor
     def inject_user():
