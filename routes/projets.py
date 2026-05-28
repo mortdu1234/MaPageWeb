@@ -15,6 +15,10 @@ PROJETS = [
     "serverminecraft",
     "smilelife",
     "vpn",
+    "nextcloud",
+    "nginx",
+    "mapageweb",
+    "database",
 ]
 
 

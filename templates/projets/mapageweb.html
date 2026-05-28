@@ -1,0 +1,274 @@
+{% extends "projets/baseProjects.html" %}
+{% block title %}Denis ROBERT — Base de Données{% endblock %}
+{% block projet_head_scripts %}
+  <script type="module" src="{{ url_for('static', filename='js/balises/ImageCarousel.js') }}"></script>
+{% endblock %}
+
+{% block hero %}
+  <project-hero-banner
+    type="personnel"
+    name="Ma page web"
+    tagline="Un page web personnelle"
+    status="Terminé">
+  </project-hero-banner>
+{% endblock %}
+
+{% block project_content %}
+    <section>
+        <h2 class="project-section__heading">Présentation</h2>
+        <div class="project-section__text">
+        
+            <p>
+            L'objectif de ce projet est de réaliser une <strong>page web</strong> qui permet de
+            <strong>centraliser l'ensemble de mes projets</strong> afin de servir de
+            <em>hub</em> pour mes différents projets, ainsi que de servir de
+            <strong>page de présentation</strong> de mes différentes réalisations.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section>
+        <h2 class="project-section__heading">Fonctionnalités</h2>
+        <div class="project-features">
+        <div class="project-feature"><div class="project-feature__title">Utilisateurs</div><p class="project-feature__desc">Gestion de plusieurs utilisateurs simultanément</p></div>
+        <div class="project-feature"><div class="project-feature__title">Enregistrement Scores</div><p class="project-feature__desc">Une page d'enregistrement de score dans plusieurs jeux de société</p></div>
+        <div class="project-feature"><div class="project-feature__title">Dashboard Proxmox</div><p class="project-feature__desc">Une page de Dashboard Proxmox afin de voir l'utilisation de mes ressources</p></div>
+        <div class="project-feature"><div class="project-feature__title">Note</div><p class="project-feature__desc">Une page gestion de notes par utilisateurs</p></div>
+        <div class="project-feature"><div class="project-feature__title">Partage de fichier chiffrée</div><p class="project-feature__desc">Une page afin de pouvoir partager des fichiers entre 2 utilisateurs de manière chiffrée de bout en bout</p></div>
+        <div class="project-feature"><div class="project-feature__title">Base de données</div><p class="project-feature__desc">Une page de gestion de la base de données</p></div>
+        <div class="project-feature"><div class="project-feature__title">Notification automatiques</div><p class="project-feature__desc">Notification automatique pour certaines actions avec ntfy</p></div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="project-section__heading">Globalité</h2>
+        <div class="project-section__text">
+            
+        <p>
+        Dans ce projet, j'ai plusieurs <strong>composantes importantes</strong>. 
+        Tout d'abord, un <strong>serveur Flask</strong> qui sera utilisé pour le 
+        <strong>backend</strong>. J'ai également une <strong>base de données PostgreSQL</strong> 
+        qui est utilisée afin de stocker des <em>informations sur les utilisateurs</em>. 
+        Enfin, j'ai un <strong>service reverse proxy Nginx</strong> qui permet de faire 
+        le lien entre mon <em>adresse IP publique</em> et les différentes pages à ma disposition.
+        </p>
+
+        </div>
+    </section>
+
+
+    <section>
+        <h2 class="project-section__heading">Utilisateurs</h2>
+        <div class="project-section__text">
+            
+            <p>
+            Cette page web propose un service de <strong>connexion sécurisée</strong> avec un 
+            <em>identifiant</em> et un <em>mot de passe</em> chiffré grâce à l'algorithme de 
+            hachage : <strong>bcrypt</strong>.
+            </p>
+
+            <p>
+            En effet, cet algorithme est utilisé car il possède un <strong>sel intégré</strong>, 
+            ce qui le protège contre les <strong>attaques par rainbow table</strong>. De plus, 
+            le hachage est <strong>volontairement lent</strong>, ce qui permet de résister contre 
+            les <strong>attaques par brute-force</strong>. Enfin, cet algorithme produira toujours 
+            une <strong>longueur fixe de caractères</strong>, ce qui ne permet pas de déterminer 
+            d'informations sur le mot de passe chiffré.
+            </p>
+
+            <p>
+            Il y a un souci principal : cet algorithme <strong>tronque les mots de passe à 
+            72 caractères maximum</strong>, mais je considère qu'il est suffisant pour mon 
+            utilisation.
+            </p>
+
+            <p>
+            En plus de cette gestion multi-utilisateurs, j'ai également une 
+            <strong>gestion des droits par utilisateur</strong>. Ainsi, tous les utilisateurs 
+            n'ont pas accès à toutes les pages. Il m'est donc possible de garder des pages 
+            <em>en privé</em> ou de les <em>partager uniquement à certains membres de ma famille</em> 
+            (à condition que leur compte ne soit pas compromis).
+            </p>
+
+        </div>
+    </section>
+
+    <section>
+        <h2 class="project-section__heading">Enregistrement scores</h2>
+        <div class="project-section__text">
+            
+            <p>
+            Étant donné que je suis un <strong>joueur de jeux de société</strong>, j'ai toujours 
+            aimé réaliser des <em>tableaux Excel</em> afin de noter les scores des différentes 
+            parties. Il m'a donc paru naturel de faire la même chose ici, sur mon propre site web.
+            </p>
+
+            <p>
+            Ainsi, j'ai créé une page recensant <strong>différents jeux de société</strong>. 
+            Pour chaque jeu, j'ai ajouté :
+            </p>
+
+            <ul>
+            <li>une <strong>page dédiée aux règles</strong>, afin de pouvoir les partager 
+            facilement avec de nouveaux joueurs ;</li>
+            <li>un <strong>espace de saisie des scores</strong> réalisés lors des différentes parties.</li>
+            </ul>
+
+            <p>
+            L'intégralité de ces scores est enregistrée dans ma <strong>base de données personnelle</strong> 
+            et me permet de réaliser des <em>statistiques sur les parties</em> 
+            (la personne qui gagne le plus, les points moyens par jeu, etc.).
+            </p>
+
+            <p>
+            Cela me permet d'atteindre <strong>2 objectifs principaux</strong> :
+            </p>
+
+            <ul>
+            <li>garder un moyen <strong>simple et rapide de noter les scores</strong> pour les différents jeux de société ;</li>
+            <li>conserver mes <strong>données personnelles</strong> sans les confier aux <em>GAFAM</em> 
+            et autres plateformes tierces, même si les données partagées ici ne sont pas sensibles.</li>
+            </ul>
+
+        </div>
+    </section>
+    <section>
+        <h2 class="project-section__heading">Dashboard Proxmox</h2>
+        <div class="project-section__text">
+            
+            <p>
+            Étant donné que j'héberge l'ensemble de mes services sur un <strong>serveur Proxmox</strong>, 
+            je souhaitais avoir un accès facile à un <strong>dashboard simplifié</strong> me permettant 
+            de visualiser ma consommation de <em>RAM</em>, <em>CPU</em>, etc. Cela me permet de déterminer 
+            si une <strong>amélioration des composants</strong> de mon serveur est nécessaire ou non. 
+            De plus, cela me permet d'effectuer des <strong>actions supplémentaires</strong> directement 
+            depuis mon serveur.
+            </p>
+
+            <p>
+            Pour réaliser cela, j'ai créé un <strong>nouvel utilisateur Proxmox</strong> disposant 
+            uniquement des accès aux données que je souhaite exposer. J'utilise ensuite un 
+            <strong>token d'authentification</strong> afin de récupérer les informations souhaitées 
+            directement depuis la machine, de manière <em>sécurisée</em>.
+            </p>
+
+        </div>
+    </section>
+    <section>
+        <h2 class="project-section__heading">Note</h2>
+        <div class="project-section__text">
+            
+            <p>
+            Lors du début de ce projet, je n'avais pas d'objectifs particuliers. Cependant, 
+            au fur et à mesure de l'avancement, je me retrouvais avec de nombreuses idées 
+            sans endroit pour les noter. C'est ainsi qu'est née l'idée de créer une 
+            <strong>page de gestion de notes par utilisateur</strong>.
+            </p>
+
+            <p>
+            Je souhaitais que ces notes puissent être <strong>partagées avec d'autres utilisateurs</strong>. 
+            Il serait ainsi possible, par exemple, de créer une <em>liste de courses</em> visible 
+            par tous les membres d'une même famille et modifiable par chacun d'eux.
+            </p>
+
+            <p>
+            Pour réaliser cela, j'ai utilisé ma propre <strong>base de données</strong> avec : 
+            </p>
+
+            <ul>
+            <li>une <strong>table dédiée aux notes</strong> ;</li>
+            <li>une <strong>table dédiée aux partages</strong>.</li>
+            </ul>
+
+            <p>
+            Suite aux retours de certains utilisateurs souhaitant un <strong>système de groupes de notes</strong>, 
+            j'ai implémenté cette fonctionnalité. Désormais, toutes les notes sont associées à un groupe, 
+            <em>personnel par défaut</em>, et peuvent être déplacées vers un autre groupe.
+            </p>
+
+            <p>
+            La limite principale est qu'<strong>une note ne peut appartenir qu'à un seul groupe à la fois</strong>, 
+            ce qui est un choix délibéré car la gestion multi-groupes ne semblait pas apporter de réelle valeur ajoutée.
+            </p>
+
+        </div>
+    </section>
+    <section>
+        <h2 class="project-section__heading">Partage de fichiers</h2>
+        <div class="project-section__text">
+            
+            <p>
+            Je souhaitais également pouvoir réaliser du <strong>partage de fichiers chiffré de bout en bout</strong>, 
+            afin que deux utilisateurs puissent échanger des <em>fichiers sensibles</em> à distance 
+            (clés de chiffrement, documents confidentiels, etc.).
+            </p>
+
+            <p>
+            Pour cela, j'ai développé une <strong>page de partage de fichiers sécurisée</strong>. 
+            Le chiffrement repose sur le mécanisme suivant :
+            </p>
+
+            <ul>
+            <li>utilisation d'une <strong>paire de clés RSA</strong> propre à chaque utilisateur ;</li>
+            <li>génération collaborative d'une <strong>clé AES jetable</strong>, qui sert à chiffrer les fichiers.</li>
+            </ul>
+
+            <p>
+            Ce partage est véritablement <strong>chiffré de bout en bout</strong>, puisque même sur 
+            le serveur, les fichiers restent <em>chiffrés</em> et inaccessibles en clair.
+            </p>
+
+            <p>
+            Il est ensuite possible de <strong>partager ces fichiers</strong> avec un ou plusieurs 
+            utilisateurs, qui pourront les <em>consulter</em> et les <em>télécharger</em> en toute sécurité.
+            </p>
+
+        </div>
+    </section>
+    <section>
+        <h2 class="project-section__heading">Base de données</h2>
+        <div class="project-section__text">
+            
+            <p>
+            Comme expliqué dans les sections précédentes, j'utilise très fréquemment des 
+            <strong>données persistantes</strong>. Afin de les stocker, j'utilise une 
+            <strong>base de données PostgreSQL</strong>, hébergée en local sur mon serveur 
+            dans une <em>machine virtuelle dédiée</em>.
+            </p>
+
+            <p>
+            L'utilisation de cette base de données est <strong>indépendante de la page web</strong>. 
+            Elle peut ainsi être utilisée pour <em>l'ensemble de mes autres services et tâches</em>, 
+            et non uniquement pour mon site web personnel.
+            </p>
+
+        </div>
+    </section>
+
+    <section>
+        <h2 class="project-section__heading">Notifications automatiques</h2>
+        <div class="project-section__text">
+            
+            <p>
+            Afin de surveiller certains problèmes potentiels et d'éviter que des 
+            <strong>personnes malveillantes</strong> cherchent à nuire en saturant ma base de données 
+            ou en exploitant une faille de mon site web, j'ai mis en place plusieurs 
+            <strong>points de contrôle de sécurité</strong> qui s'activent automatiquement en cas d'incident.
+            </p>
+
+            <p>
+            Lors du déclenchement d'un de ces points de sécurité, une 
+            <strong>notification automatique</strong> est envoyée grâce à <strong>NTFY</strong>. 
+            Il s'agit d'un service de notifications sur lequel il est possible de s'abonner 
+            afin de recevoir une <em>alerte pour chaque message publié</em>. En utilisant un 
+            <strong>nom de canal privé</strong>, il m'est possible de recevoir ces notifications 
+            de manière confidentielle en m'abonnant à ce nom. Ce service fonctionne via des 
+            <em>requêtes HTTP</em>.
+            </p>
+
+        </div>
+    </section>
+
+{% endblock %}

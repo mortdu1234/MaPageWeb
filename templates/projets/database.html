@@ -1,0 +1,35 @@
+{% extends "projets/baseProjects.html" %}
+{% block title %}Denis ROBERT — Base de Données{% endblock %}
+{% block projet_head_scripts %}
+  <script type="module" src="{{ url_for('static', filename='js/balises/ImageCarousel.js') }}"></script>
+{% endblock %}
+
+{% block hero %}
+  <project-hero-banner
+    type="personnel"
+    name="Base de Données"
+    tagline="Un service de base de données"
+    status="Terminé">
+  </project-hero-banner>
+{% endblock %}
+
+{% block project_content %}
+  <section>
+    <h2 class="project-section__heading">Présentation</h2>
+    <div class="project-section__text">
+    
+        <p>
+        Dans le cadre de la création de <strong>ma page web personnelle</strong>, j'avais besoin d'un système 
+        fiable pour persister mes données. Mon choix s'est naturellement porté sur 
+        <strong>PostgreSQL</strong>, une base de données relationnelle robuste et éprouvée, 
+        me permettant ainsi d'héberger <em>mes propres données</em> de manière totalement indépendante.
+        </p>
+        <p>
+        Pour la mise en place, j'ai créé un <strong>conteneur LXC sous Proxmox</strong> sur lequel 
+        j'ai installé directement <strong>PostgreSQL</strong>. Concernant l'accès réseau, 
+        j'ai configuré mon service <strong>Nginx</strong> en tant que <em>reverse proxy</em> 
+        afin d'exposer la base de données de manière sécurisée au sein de mon infrastructure.
+        </p>
+    </div>
+  </section>
+{% endblock %}

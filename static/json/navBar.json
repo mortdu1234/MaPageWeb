@@ -7,5 +7,6 @@
   { "label": "Mes tâches",      "href": "/tasks" },
   { "label": "Base de données", "href": "/database", "permission": ["showDatabase", "admin"] },
   { "label": "File Share",          "href": "/files",   "permission": ["uploadFile", "admin"] },
-  { "label": "Terminal",          "href": "/terminal",   "permission": ["showTerminal", "admin"] }
+  { "label": "Terminal",          "href": "/terminal",   "permission": ["showTerminal", "admin"] },
+  { "label": "DashBoard",          "href": "/proxmox",   "permission": ["showTerminal", "admin"] }
 ]
