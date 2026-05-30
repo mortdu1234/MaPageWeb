@@ -4,7 +4,6 @@ from sessionUser import SessionUser
 from db import init_pool
 from datetime import date
 
-
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
@@ -20,9 +19,9 @@ def create_app(config_class=Config):
     from routes.tasks import tasks_bp
     from routes.rsaKeys import rsaKeys_bp
     from routes.files import files_bp
-    from routes.terminal import terminal_bp
     from routes.proxmox import proxmox_bp
     from routes.errors import errors_bp
+    from routes.minecraft import minecraft_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(jeux_bp, url_prefix="/jeux")
@@ -33,9 +32,11 @@ def create_app(config_class=Config):
     app.register_blueprint(tasks_bp)
     app.register_blueprint(rsaKeys_bp)
     app.register_blueprint(files_bp)
-    app.register_blueprint(terminal_bp)
     app.register_blueprint(errors_bp)
     app.register_blueprint(proxmox_bp)
+    app.register_blueprint(minecraft_bp)
+
+
 
     @app.context_processor
     def inject_user():

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Minecraft — Servers Hub{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/minecraft.css') }}"/>
+  <script type="module" src="{{ url_for('static', filename='js/balises/minecraftServerCard.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<section class="mc-main section">
+  <div class="mc-toolbar">
+    <div class="mc-toolbar__search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="search-input" placeholder="Rechercher un serveur…">
+    </div>
+    <div class="mc-toolbar__filters">
+      <button class="mc-filter active" data-filter="all">Tous</button>
+      <button class="mc-filter" data-filter="running">En ligne</button>
+      <button class="mc-filter" data-filter="offline">Hors ligne</button>
+      <button class="mc-filter" data-filter="starting">Démarrage</button>
+    </div>
+    <button class="mc-btn mc-btn--gold" id="refresh-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+      </svg>
+      Actualiser
+    </button>
+  </div>
+
+  <div class="mc-grid" id="servers-grid">
+    <!-- Les cartes sont injectées ici par le JS -->
+  </div>
+
+  <div class="mc-empty hidden" id="empty-state">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="2" y="3" width="20" height="14" rx="2"/>
+      <line x1="8" y1="21" x2="16" y2="21"/>
+      <line x1="12" y1="17" x2="12" y2="21"/>
+    </svg>
+    <p>Aucun serveur trouvé</p>
+  </div>
+</section>
+
+<div class="mc-toasts" id="toasts"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+// Gestion des différents servers
+function refreshAllServer() {
+  async function getAllServer() {
+    const r = await fetch(`/minecraft/api/getServers`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  }
+  getAllServer().then(data => {
+    document.getElementById("servers-grid").innerHTML = data.map(server => `
+      <minecraft-server-card
+        serverID="${server.id}"
+        name="${server.name}"
+        status="${server.status ?? ''}"
+        cpuUsed="${server.cpuUsed ?? 0.0}"
+        ramUsed="${server.ramUsed ?? 0.0}"
+        ramLimit="${server.ramLimit ?? 0.0}"
+        diskUsed="${server.diskUsed ?? 0.0}"
+        diskLimit="${server.diskLimit ?? 0.0}"
+      ></minecraft-server-card>
+    `).join('');
+  })
+  .catch(err => console.error(err));
+}
+refreshAllServer();
+document.getElementById("refresh-btn").addEventListener("click", refreshAllServer);
+
+
+</script>
+{% endblock %}

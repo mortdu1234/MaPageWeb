@@ -31,6 +31,9 @@ class Config:
     NOTIFICATIONS_URL = _require("NOTIFICATIONS_URL")
     WEB_SITE_URL = _require("WEB_SITE_URL")
 
+    PANEL_URL = _require("PANEL_URL")
+    CLIENT_API_KEY = _require("CLIENT_API_KEY")
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
