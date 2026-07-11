@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Denis ROBERT — À propos{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/section.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/apropos.css') }}"/>
+{% endblock %}
+
+{% block content %}
+<div class="section">
+  <p class="section-tag">Mon parcours</p>
+  <div class="about-grid">
+    <div class="about-photo"><div class="about-photo-inner">DR</div></div>
+    <div class="about-content">
+      <h2 class="section-title">À propos<br/><em style="font-style:italic;color:var(--gold);">de moi</em></h2>
+      <p class="about-text">Bonjour, je suis Denis ROBERT. Etudiant en cybersécurité, je suis passionné par les technologies de l'information et leur application dans la protection des données.</p>
+      <p class="section-tag" style="margin-bottom:12px;">Centres d'intérêt</p>
+      <ul class="skills-list">
+        <li>Informatique</li><li>Cybersécurité</li><li>Badminton</li>
+        <li>Jeux de Société</li><li>Automatisation</li><li>Programmation</li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

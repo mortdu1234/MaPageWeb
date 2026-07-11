@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Denis ROBERT{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  {% block styles %}{% endblock %}
+</head>
+<body>
+  <nav class="navbar">
+    <a href="{{ url_for('index.index') }}">Accueil</a>
+    <a href="{{ url_for('apropos.apropos') }}">À propos</a>
+    <a href="{{ url_for('contact.contact') }}">Contact</a>
+  </nav>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>
