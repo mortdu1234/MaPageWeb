@@ -1,8 +1,8 @@
 import { injectCSS } from './Utils.js';
 
-class MinecraftServerCard extends HTMLElement {
+class GenericServerCard extends HTMLElement {
     connectedCallback() {
-        injectCSS('minecraft-server-card', 'minecraftServerCard.css');
+        injectCSS('generic-server-card', 'generic-server-card.css');
 
         const serverID  = this.getAttribute('serverID')  || null;
         const name      = this.getAttribute('name')      || null;
@@ -33,7 +33,7 @@ class MinecraftServerCard extends HTMLElement {
         const fmt = (mo) => mo >= 1024 ? `${(mo / 1024).toFixed(1)} Go` : `${mo} Mo`;
 
         this.innerHTML = `
-            <div class="minecraft-server-card">
+            <div class="generic-server-card">
 
                 <div class="server-main-infos">
                     <div class="name">${this._escapeHtml(name)}</div>
@@ -197,4 +197,4 @@ class MinecraftServerCard extends HTMLElement {
     }
 }
 
-customElements.define('minecraft-server-card', MinecraftServerCard);
+customElements.define('generic-server-card', GenericServerCard);

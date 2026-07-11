@@ -1,11 +1,14 @@
-/* ── minecraft-server-card.css ── */
+/* ════════════════════════════════════════════════════════════
+   palworld-server-card.css
+   Styles spécifiques pour les cartes de serveurs Palworld
+   ════════════════════════════════════════════════════════════ */
 
-minecraft-server-card {
+palworld-server-card {
   display: block;
   font-family: 'Outfit', sans-serif;
 }
 
-.minecraft-server-card {
+.palworld-server-card {
   background: var(--surface, #ffffff);
   border: 1px solid var(--line, #e0d9d0);
   border-radius: 12px;
@@ -14,10 +17,23 @@ minecraft-server-card {
   flex-direction: column;
   gap: 14px;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.minecraft-server-card:hover {
-  box-shadow: 0 4px 20px rgba(58, 48, 40, 0.08);
+/* Bande de couleur pour l'identité visuelle Palworld (rose/pourpre) */
+.palworld-server-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #d946a6 0%, #ec4899 50%, #d946a6 100%);
+}
+
+.palworld-server-card:hover {
+  box-shadow: 0 4px 20px rgba(217, 70, 166, 0.12);
   transform: translateY(-2px);
 }
 
@@ -73,14 +89,14 @@ minecraft-server-card {
 }
 
 .status-badge.running {
-  background: #e6f5ec;
-  color: #1f7a40;
-  border: 1px solid #a8ddb8;
+  background: #fce7f3;
+  color: #9d174d;
+  border: 1px solid #f8bbd0;
 }
 .status-badge.running .status-dot {
-  background: #27ae60;
-  box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.25);
-  animation: pulse-green 2s infinite;
+  background: #ec4899;
+  box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.25);
+  animation: pulse-pink 2s infinite;
 }
 
 .status-badge.offline {
@@ -93,30 +109,30 @@ minecraft-server-card {
 }
 
 .status-badge.starting {
-  background: #fef7e6;
-  color: #9a6c0a;
-  border: 1px solid #f5d88a;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
 }
 .status-badge.starting .status-dot {
-  background: #f0a500;
-  animation: pulse-orange 1s infinite;
+  background: #eab308;
+  animation: pulse-yellow 1s infinite;
 }
 
 .status-badge.stopping {
-  background: #fdecea;
-  color: #992b22;
-  border: 1px solid #f5b4ae;
+  background: #fee2e2;
+  color: #7f1d1d;
+  border: 1px solid #fecaca;
 }
 .status-badge.stopping .status-dot {
-  background: #d95040;
+  background: #ef4444;
   animation: pulse-red 1s infinite;
 }
 
-@keyframes pulse-green {
-  0%, 100% { box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.25); }
-  50%       { box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.10); }
+@keyframes pulse-pink {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.25); }
+  50%       { box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.10); }
 }
-@keyframes pulse-orange {
+@keyframes pulse-yellow {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 }
@@ -162,7 +178,7 @@ minecraft-server-card {
   font-variant-numeric: tabular-nums;
 }
 
-/* ── Barre de progression dégradée ── */
+/* ── Barre de progression dégradée (teintes Palworld) ── */
 .progress-track {
   height: 6px;
   background: var(--line, #e0d9d0);
@@ -173,14 +189,13 @@ minecraft-server-card {
 .progress-fill {
   height: 100%;
   border-radius: 99px;
-  background: linear-gradient(90deg, #27ae60 0%, #f0a500 65%, #d95040 100%);
-  background-size: 200% 100%; /* taille fixe, on clippe avec width */
+  background: linear-gradient(90deg, #06b6d4 0%, #ec4899 65%, #dc2626 100%);
+  background-size: 200% 100%;
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* override couleur unie pour les seuils critiques */
-.progress-fill.warn  { background: linear-gradient(90deg, #27ae60 0%, #f0a500 65%, #d95040 100%); }
-.progress-fill.alert { background: linear-gradient(90deg, #27ae60 0%, #f0a500 40%, #d95040 100%); }
+.progress-fill.warn  { background: linear-gradient(90deg, #06b6d4 0%, #ec4899 65%, #dc2626 100%); }
+.progress-fill.alert { background: linear-gradient(90deg, #06b6d4 0%, #ec4899 40%, #dc2626 100%); }
 
 /* ── BOUTONS ── */
 .buttons {
@@ -208,18 +223,18 @@ minecraft-server-card {
 }
 
 .start-button {
-  background: var(--accent, #3b3028);
-  color: #f5f2ee;
-  border-color: var(--accent, #3b3028) !important;
+  background: #d946a6;
+  color: #ffffff;
+  border-color: #d946a6 !important;
 }
-.start-button:hover:not(:disabled) { background: #2a2118; }
+.start-button:hover:not(:disabled) { background: #c2185b; }
 
 .stop-button {
-  background: #fdecea;
-  color: #992b22;
-  border-color: #f5b4ae !important;
+  background: #fee2e2;
+  color: #7f1d1d;
+  border-color: #fecaca !important;
 }
-.stop-button:hover:not(:disabled) { background: #fbdad7; }
+.stop-button:hover:not(:disabled) { background: #fecaca; }
 
 .details-button {
   background: var(--surface, #ffffff);

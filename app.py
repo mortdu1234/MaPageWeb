@@ -21,7 +21,7 @@ def create_app(config_class=Config):
     from routes.files import files_bp
     from routes.proxmox import proxmox_bp
     from routes.errors import errors_bp
-    from routes.minecraft import minecraft_bp
+    from routes.serverHub import serverhub_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(jeux_bp, url_prefix="/jeux")
@@ -34,7 +34,7 @@ def create_app(config_class=Config):
     app.register_blueprint(files_bp)
     app.register_blueprint(errors_bp)
     app.register_blueprint(proxmox_bp)
-    app.register_blueprint(minecraft_bp)
+    app.register_blueprint(serverhub_bp)
 
 
 
