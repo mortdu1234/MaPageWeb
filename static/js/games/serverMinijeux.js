@@ -51,10 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
       version.className = "minijeux-card__version";
       version.textContent = `MC ${game.minecraft_version}`;
 
+      const isActive = game.name === currentGame;
+
       const btn = document.createElement("button");
-      btn.className = "minijeux-card__btn";
-      btn.textContent = game.name === currentGame ? "Actif" : "Activer";
-      btn.disabled = game.name === currentGame || switching;
+      btn.className = "minijeux-card__btn" + (isActive ? " minijeux-card__btn--reload" : "");
+      btn.textContent = isActive ? "Reload" : "Activer";
+      btn.disabled = switching;
       btn.addEventListener("click", () => switchGame(game.name));
 
       card.append(name, version, btn);
