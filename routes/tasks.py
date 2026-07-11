@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 
-from sessionUser import SessionUser
+from app.core.auth import SessionUser
 
 from db.tasks import (
     db_get_tasks_and_groups,

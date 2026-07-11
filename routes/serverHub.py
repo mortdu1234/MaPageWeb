@@ -38,7 +38,14 @@ from config import MINIGAME_VM_PTERODACTYL_ID
 
 log = logging.getLogger(__name__)
 
-serverhub_bp = Blueprint("serverhub", __name__, url_prefix="/serverhub")
+serverhub_bp = Blueprint(
+    "serverhub",
+    __name__,
+    url_prefix="/serverhub",
+    template_folder="../app/features/servers/templates",
+    static_folder="../app/features/servers/static",
+    static_url_path="/static",
+)
 
 _ALLOWED_SIGNALS = {"start", "stop", "restart", "kill"}
 

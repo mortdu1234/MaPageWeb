@@ -1,17 +1,19 @@
-"""
-routes/auth.py
-Gestion des routes d'authentification
-"""
+"""Routes d'authentification du package app."""
 
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, redirect, render_template, request, url_for
 
-from app.core.auth import Auth, SessionUser
+from app.core.auth.session import SessionUser
+from app.core.auth.services import Auth
+
+auth_bp = Blueprint(
+    "auth",
+    __name__,
+    template_folder="templates",
+    static_folder="static",
+    static_url_path="/auth/static",
+)
 
 
-auth_bp = Blueprint("auth", __name__)
-
-
-# ─── Routes ───────────────────────────────────────────────────────────────────
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if SessionUser.is_logged_in():
@@ -41,7 +43,6 @@ def register():
         password_confirm = request.form.get("password_confirm", "")
 
         success, error = Auth.register(username, password, password_confirm)
-
         if success:
             return redirect(url_for("auth.login"))
 
@@ -52,3 +53,6 @@ def register():
 def logout():
     SessionUser.logout()
     return redirect(url_for("main.index"))
+
+
+__all__ = ["auth_bp"]

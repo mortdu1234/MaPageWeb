@@ -18,7 +18,6 @@ pip install requests
 """
 
 import os
-import time
 import requests
 import urllib3
 from flask import Blueprint, jsonify, render_template

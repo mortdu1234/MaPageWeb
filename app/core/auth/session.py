@@ -1,5 +1,5 @@
+"""Adaptateur de compatibilité pour la session utilisateur."""
 from flask import session
-
 
 class SessionUser:
     """Encapsule la session Flask pour un accès propre aux données utilisateur."""

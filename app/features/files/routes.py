@@ -1,38 +1,41 @@
-"""
-routes/files_routes.py
-Blueprint Flask pour la gestion des fichiers.
-"""
+"""Routes de fichiers du package app."""
 
 import os
-from app.features.files import FileService
-from flask import Blueprint, render_template, request, jsonify, send_file, abort
+
+from flask import Blueprint, abort, jsonify, render_template, request, send_file
+
 from app.core.auth import SessionUser
+from app.features.files.service import FileService
 from db.files import (
+    add_file_share,
+    add_new_file,
+    delete_file,
+    get_file_by_id,
     get_files_by_user_id,
     get_files_shared_with_user,
     get_shared_user_ids_for_file,
-    add_new_file,
-    add_file_share,
     remove_file_share,
-    get_file_by_id,
-    delete_file,
 )
 from db.users import get_all_users
-from backend.crypto import encrypt_file, decrypt_file
 
-files_bp = Blueprint("files", __name__, url_prefix="/files")
+files_bp = Blueprint(
+    "files",
+    __name__,
+    url_prefix="/files",
+    template_folder="templates",
+    static_folder="static",
+    static_url_path="/static",
+)
 
-# ── Dossier de stockage ──────────────────────────────────────────────────────
-UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "..", "uploads")
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "..", "..", "..", "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
-# ─── Page principale ─────────────────────────────────────────────────────────
 @files_bp.route("/")
 def index():
     my_files_raw = get_files_by_user_id(SessionUser.user_id())
     shared_files = get_files_shared_with_user(SessionUser.user_id())
-    all_users    = get_all_users()
+    all_users = get_all_users()
 
     my_files = []
     for f in my_files_raw:
@@ -57,6 +60,7 @@ def upload():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+
 @files_bp.route("/download/<int:file_id>")
 def download(file_id):
     try:
@@ -67,13 +71,13 @@ def download(file_id):
     except FileNotFoundError:
         abort(404)
 
-# ─── Partage / retrait ───────────────────────────────────────────────────────
+
 @files_bp.route("/share", methods=["POST"])
 def share():
-    data    = request.get_json()
+    data = request.get_json()
     file_id = data.get("file_id")
     user_id = data.get("user_id")
-    add     = data.get("add", True)
+    add = data.get("add", True)
 
     file = get_file_by_id(file_id)
     if not file or file["user_id"] != SessionUser.user_id():
@@ -91,7 +95,6 @@ def share():
         return jsonify({"message": "Accès retiré"})
 
 
-# ─── Suppression ─────────────────────────────────────────────────────────────
 @files_bp.route("/<int:file_id>", methods=["DELETE"])
 def delete(file_id):
     file = get_file_by_id(file_id)
@@ -106,3 +109,6 @@ def delete(file_id):
 
     delete_file(file_id)
     return jsonify({"message": "Fichier supprimé"})
+
+
+__all__ = ["files_bp"]

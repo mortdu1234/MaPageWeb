@@ -16,7 +16,7 @@ import time
 
 from flask import Blueprint, Response, jsonify, render_template, request, stream_with_context
 
-from backend.RemoteMinigameService import RemoteMinigameService, RemoteMinigameServiceError
+from app.features.games.services.remote_minigame import RemoteMinigameService, RemoteMinigameServiceError
 from config import MINIGAME_VM_PTERODACTYL_ID
 from pterodactyl.PterodactylClient import PterodactylClientWrapper
 

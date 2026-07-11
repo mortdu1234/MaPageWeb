@@ -1,14 +1,12 @@
-"""
-backend/Auth.py
-Gestion de la logique d'authentification 
-"""
+"""Adaptateur de compatibilité pour les services d'authentification."""
+
 
 from typing import Tuple
 
-from db.users import get_user_by_username, verify_password, create_user, username_exists
+from app.core.db.users import get_user_by_username, verify_password, create_user, username_exists
 from db.joueurs import create_joueur
 from db.permissions import get_user_permissions
-from sessionUser import SessionUser
+from app.core.auth import SessionUser
 
 from backend.notifications import notifier
 

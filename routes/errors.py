@@ -1,6 +1,11 @@
 from flask import Blueprint, render_template
 
-errors_bp = Blueprint("errors", __name__)
+errors_bp = Blueprint(
+    "errors",
+    __name__,
+    template_folder="../app/core/errors/templates",
+    static_folder="../app/core/errors/static",
+)
 
 @errors_bp.errorhandler(404)
 @errors_bp.errorhandler(403)

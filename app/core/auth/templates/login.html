@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Denis ROBERT — Connexion{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/login.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('auth.static', filename='css/components/buttons.css') }}"/>
+{% endblock %}
+
+{% block content %}
+<section class="login-wrap">
+  <div class="login-card">
+    <p class="login-label">Espace privé</p>
+    <h1>Connexion<br/><em>sécurisée</em></h1>
+
+    {% if error %}
+      <p class="error-msg">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('auth.login') }}">
+      <div class="field">
+        <label for="username">Identifiant</label>
+        <input type="text" id="username" name="username" placeholder="Votre nom d'utilisateur" required autofocus autocomplete="username"/>
+      </div>
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password"/>
+      </div>
+      <button type="submit" class="btn btn-outline">Se connecter</button>
+    </form>
+    <p class="login-footer">
+      Créer un compte ? <a href="{{ url_for('auth.register') }}">S'inscrire</a>
+    </p>
+  </div>
+</section>
+{% endblock %}
