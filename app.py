@@ -22,7 +22,9 @@ def create_app(config_class=Config):
     from routes.proxmox import proxmox_bp
     from routes.errors import errors_bp
     from routes.serverHub import serverhub_bp
-
+    from routes.games.serverMinijeux import serverMinijeux_bp
+    
+    app.register_blueprint(serverMinijeux_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(jeux_bp, url_prefix="/jeux")
     app.register_blueprint(projets_bp, url_prefix="/projets")

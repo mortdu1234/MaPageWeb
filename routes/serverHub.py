@@ -7,6 +7,8 @@ via Pterodactyl.
 Routes HTML (pages Jinja2)
   GET  /serverhub/                                → hub (liste des serveurs)
   GET  /serverhub/<server_id>                      → page détail d'un serveur
+                                                      (redirige vers /minijeux/serveur
+                                                       si server_id est le serveur minijeux)
 
 Routes API JSON  (préfixe /serverhub/api/)
   GET  /serverhub/api/getServers                       → liste + ressources live
@@ -28,10 +30,11 @@ Route WebSocket  (enregistrée dans app.py via register_ws)
 import logging
 from functools import wraps
 
-from flask import Blueprint, jsonify, render_template, request, abort
+from flask import Blueprint, jsonify, render_template, request, abort, redirect, url_for
 import requests
 
 from backend.ServersGestions.manager import ServerManager
+from config import MINIGAME_VM_PTERODACTYL_ID
 
 log = logging.getLogger(__name__)
 
@@ -80,8 +83,14 @@ def hub():
 @serverhub_bp.route("/<server_id>")
 def server_detail(server_id: str):
     """Page de détail d'un serveur.
-    Les données sont chargées côté JS via les routes /serverhub/api/servers/<id>/...
+
+    Cas particulier : le serveur "minijeux" a sa propre page de gestion
+    dédiée (switch de map + power on/off), donc on redirige dessus au lieu
+    d'afficher la page de détail générique.
     """
+    if MINIGAME_VM_PTERODACTYL_ID and server_id == MINIGAME_VM_PTERODACTYL_ID:
+        return redirect(url_for("serverMinijeux.serveur_minijeux_page"))
+
     return render_template("errors/404.html")
     return render_template("serverdetail.html", server_id=server_id)
 
