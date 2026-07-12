@@ -1,12 +1,12 @@
 [
   { "label": "Accueil",         "href": "/" },
-  { "label": "Jeux de société", "href": "/jeux" },
+  { "label": "Jeux de société", "href": "/jeux" , "permission": ["showGame", "admin"]},
   { "label": "À propos",        "href": "/apropos" },
   { "label": "Contact",         "href": "/contact" },
   { "label": "Mes projets",     "href": "/projets" },
   { "label": "Mes tâches",      "href": "/tasks" },
-  { "label": "Base de données", "href": "/databaseReader" },
-  { "label": "File Share",          "href": "/files" },
-  { "label": "DashBoard",          "href": "/dashboard/proxmox" },
-  { "label": "Servers", "href": "/serverhub" }
+  { "label": "Base de données", "href": "/databaseReader" , "permission": ["showDatabase", "admin"]},
+  { "label": "File Share",          "href": "/files" , "permission": ["uploadFile", "admin"]},
+  { "label": "DashBoard",          "href": "/dashboard/proxmox" , "permission": ["showTerminal", "admin"]},
+  { "label": "Servers", "href": "/serverhub" , "permission": ["minecraft", "admin"]}
 ]
