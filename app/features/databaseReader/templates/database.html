@@ -87,6 +87,28 @@
     </div>
   </div>
 
+
+  <div class="db-query-section">
+    <div class="db-query-header">
+      <label for="sql-input" class="db-label">Requête SQL</label>
+      <button id="sql-run" class="db-query-run" type="button">Exécuter <kbd>Ctrl+Enter</kbd></button>
+    </div>
+    <textarea
+      id="sql-input"
+      class="db-query-textarea"
+      placeholder="SELECT * FROM joueurs LIMIT 20;"
+      spellcheck="false"
+    ></textarea>
+    <div id="sql-status" class="db-query-status"></div>
+    <div id="sql-error" class="db-error" role="alert" style="display:none;"></div>
+    <div class="table-scroll" id="sql-result-wrap" style="display:none;">
+      <table class="db-table" id="sql-result-table">
+        <thead id="sql-thead"></thead>
+        <tbody id="sql-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 {% endblock %}
 
@@ -215,6 +237,84 @@
   });
 
   showState('empty');
+})();
+
+(function () {
+  const RUN_QUERY_URL = "{{ url_for('databaseReader.run_query') }}";
+
+  const sqlInput   = document.getElementById('sql-input');
+  const sqlRun     = document.getElementById('sql-run');
+  const sqlStatus  = document.getElementById('sql-status');
+  const sqlError   = document.getElementById('sql-error');
+  const resultWrap = document.getElementById('sql-result-wrap');
+  const sqlThead   = document.getElementById('sql-thead');
+  const sqlTbody   = document.getElementById('sql-tbody');
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function isSelect(sql) {
+    return /^\s*(select|with)\b/i.test(sql);
+  }
+
+  async function runQuery() {
+    const sql = sqlInput.value.trim();
+    if (!sql) return;
+
+    if (!isSelect(sql)) {
+      const ok = confirm(
+        "Cette requête n'est pas un SELECT et peut modifier ou supprimer des données " +
+        "de façon irréversible. Continuer ?"
+      );
+      if (!ok) return;
+    }
+
+    sqlRun.disabled = true;
+    sqlStatus.textContent = 'Exécution…';
+    sqlError.style.display = 'none';
+    resultWrap.style.display = 'none';
+
+    try {
+      const res = await fetch(RUN_QUERY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sql })
+      });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+
+      if (data.type === 'select') {
+        sqlThead.innerHTML = '<tr>' + data.columns.map(c => `<th>${escHtml(c)}</th>`).join('') + '</tr>';
+        sqlTbody.innerHTML = data.rows.map(row =>
+          '<tr>' + data.columns.map(c => {
+            const v = row[c];
+            return `<td>${v === null || v === undefined ? '' : escHtml(v)}</td>`;
+          }).join('') + '</tr>'
+        ).join('');
+        resultWrap.style.display = 'block';
+        sqlStatus.textContent = `${data.row_count} ligne${data.row_count > 1 ? 's' : ''}` +
+          (data.truncated ? ' (résultat tronqué)' : '') +
+          ` — ${data.elapsed_ms} ms`;
+      } else {
+        sqlStatus.textContent = `${data.row_count} ligne(s) affectée(s) — ${data.elapsed_ms} ms`;
+      }
+    } catch (err) {
+      sqlError.textContent = err.message;
+      sqlError.style.display = 'block';
+      sqlStatus.textContent = '';
+    } finally {
+      sqlRun.disabled = false;
+    }
+  }
+
+  sqlRun.addEventListener('click', runQuery);
+  sqlInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) runQuery();
+  });
 })();
 </script>
 {% endblock %}

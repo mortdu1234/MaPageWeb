@@ -304,3 +304,55 @@
   .db-controls { flex-direction: column; gap: 16px; }
   .db-select-wrap { width: 100%; }
 }
+
+.db-query-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.db-query-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.db-query-textarea {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.85rem;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.db-query-textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(184,154,106,0.15);
+}
+
+.db-query-run {
+  background: var(--accent);
+  color: #f5f2ee;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.db-query-run:disabled { opacity: 0.6; cursor: default; }
+.db-query-run kbd { font-size: 0.7rem; opacity: 0.7; }
+
+.db-query-status {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 8px 0;
+}
