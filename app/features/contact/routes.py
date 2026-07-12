@@ -2,11 +2,11 @@ from flask import render_template, request, jsonify
 
 from app.core.utils.blueprints import make_blueprint
 
-contact_bp = make_blueprint("contact", __name__, url_prefix=None)
+contact_bp = make_blueprint("contact", __name__, __file__, url_prefix=None)
 
 @contact_bp.route("/contact")
 def contact():
-    return render_template("contact.html")
+    return render_template(contact_bp.get_templates_path("contact.html"))
 
 
 @contact_bp.route("/contact/send", methods=["POST"])

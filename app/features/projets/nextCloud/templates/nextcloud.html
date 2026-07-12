@@ -1,0 +1,44 @@
+{% extends "projets/baseProjects.html" %}
+{% block title %}Denis ROBERT — NextCloud{% endblock %}
+{% block projet_head_scripts %}
+{% endblock %}
+
+{% block hero %}
+  <project-hero-banner
+    type="personnel"
+    name="Service NextCloud"
+    tagline="Un service de cloud alternatif a google drive"
+    status="Terminé">
+  </project-hero-banner>
+{% endblock %}
+
+{% block project_content %}
+  <section>
+    <h2 class="project-section__heading">Présentation</h2>
+    <div class="project-section__text">
+    
+        <p>
+        Au départ, ce projet est né d'une volonté d'<strong>héberger moi-même mon propre service de stockage</strong>
+        et de ne plus dépendre de solutions tierces comme <strong>Google Drive</strong>.
+        Après quelques recherches sur les alternatives disponibles,
+        <strong>Nextcloud</strong> s'est rapidement imposé comme la solution répondant à <em>tous mes critères</em>.
+        </p>
+        <p>
+        Cette infrastructure me permet désormais de <strong>créer et gérer des comptes utilisateurs</strong>,
+        de stocker et organiser mes <strong>photos personnelles</strong>, mais aussi d'<strong>éditer mes fichiers
+        directement en ligne</strong> — documents Word, feuilles Excel et bien d'autres —
+        sans quitter mon navigateur.
+        </p>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="project-section__heading">Fonctionnalités</h2>
+    <div class="project-features">
+      <div class="project-feature"><div class="project-feature__title">Plusieurs comptes</div><p class="project-feature__desc">Permet au administrateurs de créer des nouveaux comptes pour chaques personnes</p></div>
+      <div class="project-feature"><div class="project-feature__title">Limite de stockage</div><p class="project-feature__desc">Permet de définir une quantité de stockage différentes pour chaque utilisateurs</p></div>
+      <div class="project-feature"><div class="project-feature__title">Only Office</div><p class="project-feature__desc">Utilisation du projet Only Office qui permet d'interragir avec les fichiers des outils windows</p></div>
+    </div>
+  </section>
+{% endblock %}

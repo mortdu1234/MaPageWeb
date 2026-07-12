@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Denis ROBERT{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Denis ROBERT{% endblock %}</title><!-- Dans ton HTML -->
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+  <script type="module" src="{{ url_for('static', filename='js/NavBar.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/SiteFooter.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}"/>
+
   {% block styles %}{% endblock %}
+  {% block head_scripts %}{% endblock %}
 </head>
 <body>
-  <nav class="navbar">
-    <a href="{{ url_for('index.index') }}">Accueil</a>
-    <a href="{{ url_for('apropos.apropos') }}">À propos</a>
-    <a href="{{ url_for('contact.contact') }}">Contact</a>
-  </nav>
+  <nav-bar
+    root="/"
+    username="{{ current_user.username }}"
+    permissions="{{ current_user.permissions | tojson | forceescape }}"
+    pages-url="{{ url_for('static', filename='json/navBar.json') }}">
+  </nav-bar>
 
   <main>
     {% block content %}{% endblock %}
   </main>
 
+  <site-footer></site-footer>
+
   {% block scripts %}{% endblock %}
+
 </body>
 </html>

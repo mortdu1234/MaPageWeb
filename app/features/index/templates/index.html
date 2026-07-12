@@ -3,6 +3,7 @@
 {% block title %}Denis ROBERT — Accueil{% endblock %}
 
 {% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons.css') }}"/>
   <link rel="stylesheet" href="{{ url_for('index.static', filename='css/index.css') }}"/>
 {% endblock %}
 
@@ -12,7 +13,9 @@
   <h1>Denis<br/><em>ROBERT</em></h1>
   <p class="hero-desc">Passionné d'informatique, je vous partage mon espace personnel</p>
   <div class="hero-actions">
+    <a class="btn btn-outline" href="{{ url_for('jeux.jeux') }}">Découvrir les jeux</a>
     <a class="btn btn-outline" href="{{ url_for('apropos.apropos') }}">En savoir plus</a>
+    <a class="btn btn-outline" href="{{ url_for('projets.mesprojets') }}">Mes projets</a>
   </div>
 </section>
 {% endblock %}

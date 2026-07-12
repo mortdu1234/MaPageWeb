@@ -1,0 +1,152 @@
+{% extends "projets/baseProjects.html" %}
+{% block title %}Denis ROBERT — Add Skipper Dragon City{% endblock %}
+{% block projet_head_scripts %}
+  <script type="module" src="{{ url_for('projets.static', filename='js/ImageCarousel.js') }}"></script>
+{% endblock %}
+
+{% block hero %}
+  <project-hero-banner 
+        type="Personnel"
+        name="Add Skipper Dragon City"
+        tagline="Il s'agit d'un programme qui permet de passer automatiquement les pubs dans le jeu Dragon City."
+        language="Python"
+        interface="Terminale"
+        status="En Pause"
+        gitHubPage="https://github.com/mortdu1234/Ad-skipper-DC.git">
+      </project-hero-banner>
+{% endblock %}
+
+{% block project_content %}
+<!-- ── Galerie carrousel ── -->
+        <section>
+          <h2 class="project-section__heading">Aperçu</h2>
+          <images-carousel 
+            src1="{{ url_for('adSkipperDC.static', filename='img/dc-home.png') }}" alt1="interface utilisateur du programme"
+          ></images-carousel>
+
+        </section>
+
+        <!-- Présentation -->
+        <section>
+          <h2 class="project-section__heading">Présentation</h2>
+          <div class="project-section__text">
+            <p>
+              Ce projet est né d'une volonté d'automatiser des taches répétitives dans le jeu mobile Dragon City.
+              En effet ce jeu propose de regarder 30 pubs toutes les heures afin de gagner des récompenses.
+            </p>
+            <p>
+              Pour créer ce script j'ai utiliser ADB et BlueStack afin de pouvoir interragir avec l'appareil android.
+              Ce script vas rechercher sur l'ecran des patterns prédéfinis et quand il les trouve, vas simuler un clic
+              dessus.
+            </p>
+          </div>
+        </section>
+
+        <!-- Fonctionnalités -->
+        <section>
+          <h2 class="project-section__heading">Fonctionnalités</h2>
+          <div class="project-features">
+            <div class="project-feature">
+              <div class="project-feature__title">Creation d'un nouveau template</div>
+              <p class="project-feature__desc">Permet de créer des nouveau patterns de recherche.</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Fermeture d'une pub</div>
+              <p class="project-feature__desc">Effectue la fermeture d'une seule et unique pub</p>
+            </div>
+            <div class="project-feature">
+              <div class="project-feature__title">Lancement d'un cycle</div>
+              <p class="project-feature__desc">Le programme vas effectuer un cycle de recherche de pub</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stack technique -->
+        <section>
+          <h2 class="project-section__heading">Stack technique</h2>
+          <div class="project-section__text">
+            <p>
+              Le projet est entièrement écrit en Python avec des dépendance importante avec ADB et un emulateur
+              compatible avec ADB. Il propose une interface Terminale pour gerer ce programme et s'auto alimente
+              de nouveau template avec les patterns assez fiable.
+            </p>
+          </div>
+          <div class="project-stack">
+            <span class="project-stack__tag">Python</span>
+            <span class="project-stack__tag">ADB</span>
+          </div>
+        </section>
+
+        <!-- Démarche -->
+        <section>
+          <h2 class="project-section__heading">Démarche</h2>
+          <div class="project-steps">
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Première approche</div>
+                <p class="project-step__desc">
+                  Ma première idée à été de réaliser un script qui vas scanner l'ecran à la 
+                  recherche de pattern de pub et qui vas simuler un clic dessus. 
+                  J'ai utiliser Tesseract-OCR pour faire la reconnaissance, mais ce n'était pas très fiables
+                  puisqu'il trouvais en plus d'autre croix sur l'écran ce qui réduisait énormément l'efficacité du script.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Deuxième approche</div>
+                <p class="project-step__desc">
+                  Par hazard j'ai découvert Android Debug Bridge (ADB) qui permet d'interagir avec un appareil Android. 
+                  Ainsi je pouvais récupérer une capture d'écran de l'appareil et faire ma recherche dessus. J'ai également
+                  choisit de changer de méthode de reconnaissance en utilisant OpenCV pour faire du template matching, 
+                  ce qui s'est avéré beaucoup plus fiable que Tesseract.
+                </p>
+              </div>
+            </div>
+
+            <div class="project-step">
+              <div class="project-step__indicator">
+                <div class="project-step__dot"></div>
+                <div class="project-step__line"></div>
+              </div>
+              <div class="project-step__content">
+                <div class="project-step__title">Application fonctionnelle théoriquement</div>
+                <p class="project-step__desc">
+                  Mon application fonctionne correctement mais après quelques minutes force un redémarge de l'ordinateur qui l'héberge.
+                  Aucune solutions n'est encore trouvée à ce problème, c'est pourquoi le projet est actuellement en pause. Il me faudrait
+                  certainement changer d'émulateur qui pourrait etre lié a ce problème.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Utilisation -->
+        <section>
+          <h2 class="project-section__heading">Utilisation</h2>
+          <div class="project-usage-steps">
+            <div class="project-usage-step">
+              <span class="project-usage-step__number">01</span>
+              <p class="project-usage-step__text">lancer le script et suivre les instructions</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Remerciements -->
+        <section>
+          <h2 class="project-section__heading">Remerciements</h2>
+          <p class="project-section__text" style="margin-bottom: 20px;">
+            Ce projet s'appuie sur mon propre travail.
+          </p>
+        </section>
+{% endblock %}

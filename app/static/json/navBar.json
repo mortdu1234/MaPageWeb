@@ -1,0 +1,12 @@
+[
+  { "label": "Accueil",         "href": "/" },
+  { "label": "Jeux de société", "href": "/jeux" },
+  { "label": "À propos",        "href": "/apropos" },
+  { "label": "Contact",         "href": "/contact" },
+  { "label": "Mes projets",     "href": "/projets" },
+  { "label": "Mes tâches",      "href": "/tasks" },
+  { "label": "Base de données", "href": "/databaseReader" },
+  { "label": "File Share",          "href": "/files" },
+  { "label": "DashBoard",          "href": "/dashboard/proxmox" },
+  { "label": "Servers", "href": "/serverhub" }
+]

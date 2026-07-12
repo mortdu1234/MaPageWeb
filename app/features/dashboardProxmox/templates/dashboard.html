@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Serveur — Denis ROBERT{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('proxmox.static', filename='css/proxmox.css') }}"/>
+{% endblock %}
+
+{% block content %}
+<div class="px-wrapper">
+
+  <!-- En-tête -->
+  <header class="px-header">
+    <div class="px-header__left">
+      <span class="px-header__label">Infrastructure</span>
+      <h1 class="px-header__title">Serveur Proxmox</h1>
+    </div>
+    <div class="px-header__right">
+      <div class="px-status" id="px-status">
+        <span class="px-status__dot"></span>
+        <span class="px-status__text">Connexion…</span>
+      </div>
+      <span class="px-header__updated">Mis à jour <span id="px-last-update">—</span></span>
+      <button class="px-refresh-btn" id="px-refresh-btn" title="Actualiser">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Cartes principales -->
+  <section class="px-grid px-grid--top">
+
+    <div class="px-card px-card--cpu">
+      <div class="px-card__header">
+        <span class="px-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+        </span>
+        <span class="px-card__label">CPU</span>
+      </div>
+      <div class="px-card__value"><span id="cpu-pct">—</span><em>%</em></div>
+      <div class="px-gauge"><div class="px-gauge__fill" id="cpu-bar"></div></div>
+      <div class="px-card__meta">
+        <span id="cpu-model">—</span>
+        <span id="cpu-cores">—</span>
+      </div>
+    </div>
+
+    <div class="px-card px-card--ram">
+      <div class="px-card__header">
+        <span class="px-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="8" width="20" height="8" rx="1"/><line x1="6" y1="8" x2="6" y2="16"/><line x1="10" y1="8" x2="10" y2="16"/><line x1="14" y1="8" x2="14" y2="16"/><line x1="18" y1="8" x2="18" y2="16"/><line x1="6" y1="4" x2="6" y2="8"/><line x1="18" y1="4" x2="18" y2="8"/></svg>
+        </span>
+        <span class="px-card__label">Mémoire RAM</span>
+      </div>
+      <div class="px-card__value"><span id="ram-used">—</span><em>Go</em></div>
+      <div class="px-gauge"><div class="px-gauge__fill" id="ram-bar"></div></div>
+      <div class="px-card__meta">
+        <span id="ram-detail">—</span>
+        <span id="ram-pct">—</span>
+      </div>
+    </div>
+
+    <div class="px-card px-card--swap">
+      <div class="px-card__header">
+        <span class="px-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 16V4m0 0L3 8m4-4 4 4"/><path d="M17 8v12m0 0 4-4m-4 4-4-4"/></svg>
+        </span>
+        <span class="px-card__label">Swap</span>
+      </div>
+      <div class="px-card__value"><span id="swap-used">—</span><em>Go</em></div>
+      <div class="px-gauge"><div class="px-gauge__fill" id="swap-bar"></div></div>
+      <div class="px-card__meta">
+        <span id="swap-detail">—</span>
+        <span id="swap-pct">—</span>
+      </div>
+    </div>
+
+    <div class="px-card px-card--uptime">
+      <div class="px-card__header">
+        <span class="px-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </span>
+        <span class="px-card__label">Uptime</span>
+      </div>
+      <div class="px-card__value px-card__value--sm" id="uptime-val">—</div>
+      <div class="px-card__meta">
+        <span id="uptime-since">—</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Stockage Proxmox -->
+  <section class="px-section">
+    <h2 class="px-section__title">Stockages Proxmox</h2>
+    <div class="px-storage-list" id="px-storage">
+      <div class="px-storage-row px-skeleton">
+        <div class="px-storage-row__info"><span class="px-storage-row__name">—</span></div>
+        <div class="px-storage-row__bar-wrap"><div class="px-gauge"><div class="px-gauge__fill"></div></div></div>
+        <span class="px-storage-row__detail">—</span>
+        <span class="px-storage-row__pct">—%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Disques physiques -->
+  <section class="px-section">
+    <h2 class="px-section__title">Disques physiques</h2>
+
+    <!-- Graphiques donuts HDD / SSD -->
+    <div class="px-disk-donuts" id="px-disk-donuts">
+      <div class="px-donut-card" id="px-donut-hdd">
+        <svg class="px-donut-svg" viewBox="0 0 120 120">
+          <circle class="px-donut-track" cx="60" cy="60" r="48"/>
+          <circle class="px-donut-fill px-donut-fill--hdd" cx="60" cy="60" r="48"
+                  id="donut-hdd-arc" stroke-dasharray="0 301.6"/>
+        </svg>
+        <div class="px-donut-center">
+          <span class="px-donut-pct" id="donut-hdd-pct">—</span>
+          <span class="px-donut-label">HDD</span>
+        </div>
+        <div class="px-donut-meta" id="donut-hdd-meta">—</div>
+      </div>
+
+      <div class="px-donut-card" id="px-donut-ssd">
+        <svg class="px-donut-svg" viewBox="0 0 120 120">
+          <circle class="px-donut-track" cx="60" cy="60" r="48"/>
+          <circle class="px-donut-fill px-donut-fill--ssd" cx="60" cy="60" r="48"
+                  id="donut-ssd-arc" stroke-dasharray="0 301.6"/>
+        </svg>
+        <div class="px-donut-center">
+          <span class="px-donut-pct" id="donut-ssd-pct">—</span>
+          <span class="px-donut-label">SSD / NVMe</span>
+        </div>
+        <div class="px-donut-meta" id="donut-ssd-meta">—</div>
+      </div>
+    </div>
+
+    <!-- Liste détaillée -->
+    <div class="px-disk-list" id="px-disks">
+      <div class="px-disk-row px-skeleton">
+        <span>—</span><span>—</span><span>—</span><span>—</span><span>—</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const STATS_URL = "{{ url_for('proxmox.proxmox_stats') }}";
+</script>
+<script src="{{ url_for('proxmox.static', filename='js/proxmox.js') }}"></script>
+{% endblock %}

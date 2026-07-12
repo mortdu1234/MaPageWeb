@@ -1,0 +1,306 @@
+/* ── database.css ── */
+
+/* ─── Layout ─────────────────────────────────────────── */
+.db-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 40px 80px;
+}
+
+/* ─── Header ─────────────────────────────────────────── */
+.db-header {
+  margin-bottom: 40px;
+}
+
+.db-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.db-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+}
+
+/* ─── Controls bar ────────────────────────────────────── */
+.db-controls {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.db-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* Select */
+.db-select-wrap { flex: 0 0 auto; min-width: 220px; }
+
+.select-arrow-wrap {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+}
+
+.db-select {
+  width: 100%;
+  appearance: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 40px 10px 14px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.db-select:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(184,154,106,0.15);
+}
+
+.db-select:hover { border-color: var(--accent); }
+
+.select-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+/* Search */
+.db-search-wrap {
+  flex: 1 1 300px;
+  transition: opacity 0.25s;
+}
+
+.db-search-wrap[aria-hidden="true"] {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.db-search {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 80px 10px 38px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+
+.db-search::placeholder { color: var(--muted); }
+
+.db-search:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(184,154,106,0.15);
+}
+
+.db-search::-webkit-search-cancel-button { display: none; }
+
+.match-count {
+  position: absolute;
+  right: 12px;
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ─── States ─────────────────────────────────────────── */
+.db-empty,
+.db-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 80px 24px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.empty-icon {
+  width: 64px;
+  height: 64px;
+  color: var(--line);
+  opacity: 0.8;
+}
+
+/* Loader dots */
+.loader-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.loader-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: dot-bounce 1.2s infinite ease-in-out;
+}
+
+.loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-8px); opacity: 1; }
+}
+
+.db-error {
+  padding: 16px 20px;
+  background: #fff5f5;
+  border: 1px solid #fcd0d0;
+  border-radius: 6px;
+  color: #a33030;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* ─── Table ──────────────────────────────────────────── */
+.db-table-wrap { animation: fadeInUp 0.3s ease; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.db-meta {
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.db-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+.db-table thead {
+  background: var(--accent);
+  color: #f5f2ee;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.db-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.db-table th:last-child { border-right: none; }
+
+.db-table tbody tr {
+  border-bottom: 1px solid var(--line);
+  transition: background 0.12s;
+}
+
+.db-table tbody tr:last-child { border-bottom: none; }
+
+.db-table tbody tr:hover {
+  background: rgba(184,154,106,0.06);
+}
+
+.db-table td {
+  padding: 11px 16px;
+  color: var(--text);
+  vertical-align: middle;
+  border-right: 1px solid var(--line);
+  word-break: break-word;
+  max-width: 320px;
+}
+
+.db-table td:last-child { border-right: none; }
+
+/* Null / empty cells */
+.db-table td:empty::after {
+  content: '—';
+  color: var(--muted);
+  font-size: 0.8em;
+}
+
+/* Search highlight */
+.db-table mark {
+  background: rgba(184,154,106,0.28);
+  color: var(--accent);
+  border-radius: 2px;
+  padding: 0 1px;
+  font-weight: 600;
+}
+
+/* No results */
+.db-no-results {
+  display: none;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* ─── Responsive ─────────────────────────────────────── */
+@media (max-width: 640px) {
+  .db-section { padding: 40px 20px 60px; }
+  .db-controls { flex-direction: column; gap: 16px; }
+  .db-select-wrap { width: 100%; }
+}

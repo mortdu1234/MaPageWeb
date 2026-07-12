@@ -1,3 +1,4 @@
 .env
 __pycache__/
-keys/
+data/keys/
+data/uploads/
