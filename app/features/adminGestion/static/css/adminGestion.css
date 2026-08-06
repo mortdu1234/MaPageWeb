@@ -1,0 +1,62 @@
+.permissions-table-wrapper {
+  overflow-x: auto;
+  margin-top: 32px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.permissions-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 480px;
+}
+
+.permissions-table th,
+.permissions-table td {
+  padding: 14px 18px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.permissions-table thead th {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--bg);
+  border-bottom: 2px solid var(--gold);
+}
+
+.permissions-table .col-user {
+  text-align: left;
+  font-weight: 500;
+  position: sticky;
+  left: 0;
+  background: var(--surface);
+}
+
+.permissions-table thead .col-user {
+  background: var(--bg);
+}
+
+.permissions-table tbody tr:hover {
+  background: var(--bg);
+}
+
+.perm-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+.perm-checkbox:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.permissions-status {
+  margin-top: 16px;
+  font-size: 0.95rem;
+}

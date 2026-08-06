@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Denis ROBERT — Gestion des droits{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components/section.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('permissions.static', filename='css/adminGestion.css') }}"/>
+{% endblock %}
+
+{% block content %}
+<div class="section">
+  <p class="section-tag">Administration</p>
+  <h2 class="section-title">Gestion des droits</h2>
+
+  <div class="permissions-table-wrapper">
+    <table class="permissions-table" id="permissions-table">
+      <thead>
+        <tr>
+          <th class="col-user">Utilisateur</th>
+          {% for perm in permissions %}
+            <th class="col-perm" title="{{ perm.description or '' }}">{{ perm.name }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td class="col-user">{{ user.username }}</td>
+            {% for perm in permissions %}
+              <td class="col-perm">
+                <input
+                  type="checkbox"
+                  class="perm-checkbox"
+                  data-user-id="{{ user.id }}"
+                  data-permission-id="{{ perm.id }}"
+                  {% if (user.id, perm.id) in granted_set %}checked{% endif %}
+                />
+              </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <p id="permissions-status" class="permissions-status"></p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.getElementById('permissions-table').addEventListener('change', async (event) => {
+    const checkbox = event.target;
+    if (!checkbox.classList.contains('perm-checkbox')) return;
+
+    const status = document.getElementById('permissions-status');
+    const userId = checkbox.dataset.userId;
+    const permissionId = checkbox.dataset.permissionId;
+    const granted = checkbox.checked;
+
+    checkbox.disabled = true;
+    status.textContent = '';
+
+    try {
+      const res = await fetch('/permissions/toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          permission_id: permissionId,
+          granted: granted,
+        })
+      });
+
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.error || 'Erreur inconnue');
+      }
+    } catch (err) {
+      // Échec : on annule visuellement le changement
+      checkbox.checked = !granted;
+      status.style.color = 'red';
+      status.textContent = '❌ Mise à jour impossible : ' + err.message;
+    } finally {
+      checkbox.disabled = false;
+    }
+  });
+</script>
+{% endblock %}

@@ -80,9 +80,12 @@ def _register_blueprints(app: Flask) -> None:
     from .features.boardGames.ptitBac.routes import ptitBac_bp
     from .features.boardGames.smileLife.routes import boardGame_smileLife_bp
 
+    from .features.adminGestion.routes import permissions_bp
+
 
     from .features.databaseReader.routes import db_reader_bp
     blueprints = [
+        permissions_bp,
         ohanami_bp,triomino_bp,tresFute_bp,trainMexicain_bp,qwirkle_bp,ptitBac_bp,
         boardGame_smileLife_bp,db_reader_bp,
         database_bp,
