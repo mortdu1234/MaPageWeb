@@ -8,5 +8,6 @@
   { "label": "Base de données", "href": "/databaseReader" , "permission": ["showDatabase", "admin"]},
   { "label": "File Share",          "href": "/files" , "permission": ["uploadFile", "admin"]},
   { "label": "DashBoard",          "href": "/dashboard/proxmox" , "permission": ["showTerminal", "admin"]},
-  { "label": "Servers", "href": "/serverhub" , "permission": ["minecraft", "admin"]}
+  { "label": "Servers", "href": "/serverhub" , "permission": ["minecraft", "admin"]},
+  { "label": "Admin", "href": "/adminGestion" , "permission": ["admin"]}
 ]
