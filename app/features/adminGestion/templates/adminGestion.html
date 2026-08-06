@@ -62,7 +62,7 @@
     status.textContent = '';
 
     try {
-      const res = await fetch('/permissions/toggle', {
+      const res = await fetch('/adminGestion/toggle', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
