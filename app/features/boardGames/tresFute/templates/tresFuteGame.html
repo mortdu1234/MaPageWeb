@@ -23,6 +23,40 @@
     <p>Fiche de score interactive — cochez et saisissez vos points</p>
   </div>
 
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- ZONE DES SCORES                             -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="tf-score-zone" id="tf-score-zone">
+    <div class="tf-score-chip tf-score-chip--yellow">
+      <span class="tf-score-label">Jaune</span>
+      <span class="tf-score-value" id="score-jaune">0</span>
+    </div>
+    <div class="tf-score-chip tf-score-chip--blue">
+      <span class="tf-score-label">Bleu</span>
+      <span class="tf-score-value" id="score-bleu">0</span>
+    </div>
+    <div class="tf-score-chip tf-score-chip--green">
+      <span class="tf-score-label">Vert</span>
+      <span class="tf-score-value" id="score-vert">0</span>
+    </div>
+    <div class="tf-score-chip tf-score-chip--orange">
+      <span class="tf-score-label">Orange</span>
+      <span class="tf-score-value" id="score-orange">0</span>
+    </div>
+    <div class="tf-score-chip tf-score-chip--purple">
+      <span class="tf-score-label">Violet</span>
+      <span class="tf-score-value" id="score-violet">0</span>
+    </div>
+    <div class="tf-score-chip tf-score-chip--white">
+      <span class="tf-score-label">🦊 Renards</span>
+      <span class="tf-score-value" id="score-blanc">0</span>
+    </div>
+    <div class="tf-score-chip tf-score-chip--total">
+      <span class="tf-score-label">Total</span>
+      <span class="tf-score-value" id="score-total">0</span>
+    </div>
+  </section>
+
   <div class="tf-sheet" id="tf-sheet">
 
     <!-- ═══════════════════════════════════════════ -->
@@ -111,13 +145,13 @@
                     <case-fute cochable>3</case-fute>
                     <case-fute cochable>4</case-fute>
                     <case-fute cochable>6</case-fute>
-                    <case-fute cochable>🦊</case-fute>
+                    <case-fute entourable class="renard">🦊</case-fute>
                 </div>
                 <div class="tf-yellow-row">
-                    <case-fute cochable>10</case-fute>
-                    <case-fute cochable>14</case-fute>
-                    <case-fute cochable>16</case-fute>
-                    <case-fute cochable>20</case-fute>
+                    <case-fute entourable>10</case-fute>
+                    <case-fute entourable>14</case-fute>
+                    <case-fute entourable>16</case-fute>
+                    <case-fute entourable>20</case-fute>
                     <case-fute cochable>+1</case-fute>
                 </div>
             </div>
@@ -133,17 +167,17 @@
         <div class="tf-blue-container">
             <div class="tf-blue-score-container">
                 <div class="tf-blue-container">
-                    <case-fute cochable>1</case-fute>
-                    <case-fute cochable>2</case-fute>
-                    <case-fute cochable>4</case-fute>
-                    <case-fute cochable>7</case-fute>
-                    <case-fute cochable>11</case-fute>
-                    <case-fute cochable>16</case-fute>
-                    <case-fute cochable>27</case-fute>
-                    <case-fute cochable>29</case-fute>
-                    <case-fute cochable>37</case-fute>
-                    <case-fute cochable>46</case-fute>
-                    <case-fute cochable>56</case-fute>
+                    <case-fute>1</case-fute>
+                    <case-fute>2</case-fute>
+                    <case-fute>4</case-fute>
+                    <case-fute>7</case-fute>
+                    <case-fute>11</case-fute>
+                    <case-fute>16</case-fute>
+                    <case-fute>27</case-fute>
+                    <case-fute>29</case-fute>
+                    <case-fute>37</case-fute>
+                    <case-fute>46</case-fute>
+                    <case-fute>56</case-fute>
                 </div>
                 <div class="tf-blue-container-bonus">
                     <case-fute >1</case-fute>
@@ -181,7 +215,7 @@
                         <case-fute cochable>10</case-fute>
                         <case-fute cochable>11</case-fute>
                         <case-fute cochable>12</case-fute>
-                        <case-fute cochable>🦊</case-fute>
+                        <case-fute entourable class="renard">🦊</case-fute>
                     </div>
                     <div class="tf-blue-row">
                         <case-fute cochable>🔄</case-fute>
@@ -203,17 +237,17 @@
       <div class="tf-section-label">green</div>
         <div class="tf-green-grid">
         <div class="tf-green-score-container">
-            <case-fute cochable>1</case-fute>
-            <case-fute cochable>3</case-fute>
-            <case-fute cochable>6</case-fute>
-            <case-fute cochable>10</case-fute>
-            <case-fute cochable>15</case-fute>
-            <case-fute cochable>21</case-fute>
-            <case-fute cochable>28</case-fute>
-            <case-fute cochable>36</case-fute>
-            <case-fute cochable>45</case-fute>
-            <case-fute cochable>55</case-fute>
-            <case-fute cochable>66</case-fute>
+            <case-fute>1</case-fute>
+            <case-fute>3</case-fute>
+            <case-fute>6</case-fute>
+            <case-fute>10</case-fute>
+            <case-fute>15</case-fute>
+            <case-fute>21</case-fute>
+            <case-fute>28</case-fute>
+            <case-fute>36</case-fute>
+            <case-fute>45</case-fute>
+            <case-fute>55</case-fute>
+            <case-fute>66</case-fute>
         </div>
         <div class="tf-green-container">
             <case-fute cochable>≥1</case-fute>
@@ -235,7 +269,7 @@
             <case-fute cochable>+1</case-fute>
             <case-fute></case-fute>
             <case-fute cochable><img src="{{ url_for('tresFute.static', filename='img/Xblue.svg') }}" class="case-img" alt="Xblue"></case-fute>
-            <case-fute cochable>🦊</case-fute>
+            <case-fute entourable class="renard">🦊</case-fute>
             <case-fute></case-fute>
             <case-fute cochable><img src="{{ url_for('tresFute.static', filename='img/6violet.svg') }}" class="case-img" alt="6violet"></case-fute>
             <case-fute cochable>🔄</case-fute>
@@ -272,7 +306,7 @@
             <case-fute cochable><img src="{{ url_for('tresFute.static', filename='img/Xjaune.svg') }}" class="case-img" alt="Xjaune"></case-fute>
             <case-fute cochable>+1</case-fute>
             <case-fute>x2</case-fute>
-            <case-fute cochable>🦊</case-fute>
+            <case-fute entourable class="renard">🦊</case-fute>
             <case-fute>x2</case-fute>
             <case-fute cochable><img src="{{ url_for('tresFute.static', filename='img/6violet.svg') }}" class="case-img" alt="6violet"></case-fute>
             <case-fute>x3</case-fute>
@@ -306,7 +340,7 @@
             <case-fute cochable><img src="{{ url_for('tresFute.static', filename='img/Xblue.svg') }}" class="case-img" alt="Xblue"></case-fute>
             <case-fute cochable>+1</case-fute>
             <case-fute cochable><img src="{{ url_for('tresFute.static', filename='img/Xjaune.svg') }}" class="case-img" alt="Xjaune"></case-fute>
-            <case-fute cochable>🦊</case-fute>
+            <case-fute entourable class="renard">🦊</case-fute>
             <case-fute cochable>🔄</case-fute>
             <case-fute cochable><img src="{{ url_for('tresFute.static', filename='img/Xvert.svg') }}" class="case-img" alt="Xvert"></case-fute>
             <case-fute cochable><img src="{{ url_for('tresFute.static', filename='img/6orange.svg') }}" class="case-img" alt="6orange"></case-fute>
@@ -361,5 +395,6 @@
 {% block game_script %}
 <script type="module" src="{{ url_for('tresFute.static', filename='js/Dice.js') }}"></script>
 <script type="module" src="{{ url_for('tresFute.static', filename='js/Case.js') }}"></script>
+<script src="{{ url_for('tresFute.static', filename='js/calculScore.js') }}"></script>
 <script src="{{ url_for('tresFute.static', filename='js/tresFute.js') }}"></script>
 {% endblock %}

@@ -71,7 +71,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6px;
-  max-width: 560px;
+  max-width: 620px;
   margin: 0 auto;
 }
 
@@ -380,12 +380,16 @@ case-fute[entourable] { cursor: pointer; }
   filter: brightness(1.3);
 }
 
-/* Cellule vide (pas de cochable/cochee) */
-.tf-blue-grid case-fute:not([cochable]):not([cochee]) {
+/* Cellule vide (pas de cochable/cochee) — le renard garde le style de base */
+.tf-blue-grid case-fute:not([cochable]):not([cochee]):not(.renard) {
   background: transparent;
   border-color: transparent;
   box-shadow: none;
   cursor: default;
+}
+
+.tf-blue-grid case-fute.renard:hover {
+  filter: brightness(1.3);
 }
 
 
@@ -463,7 +467,8 @@ case-fute[entourable] { cursor: pointer; }
   cursor: default;
 }
 
-.tf-green-bonus-container case-fute[cochable] {
+.tf-green-bonus-container case-fute[cochable],
+.tf-green-bonus-container case-fute.renard {
   background: #0a5a1a;
   border: 2px solid var(--c-green-border);
   color: #a0ffc0;
@@ -473,12 +478,13 @@ case-fute[entourable] { cursor: pointer; }
   cursor: pointer;
 }
 
-.tf-green-bonus-container case-fute[cochable]:hover {
+.tf-green-bonus-container case-fute[cochable]:hover,
+.tf-green-bonus-container case-fute.renard:hover {
   filter: brightness(1.25);
 }
 
-/* Cases vides dans le bonus (sans attribut) */
-.tf-green-bonus-container case-fute:not([cochable]) {
+/* Cases vides dans le bonus (sans attribut) — le renard garde le style ci-dessus */
+.tf-green-bonus-container case-fute:not([cochable]):not(.renard) {
   background: transparent;
   border-color: transparent;
 }
@@ -540,16 +546,19 @@ case-fute[entourable] { cursor: pointer; }
   cursor: default;
 }
 
-.tf-orange-bonus-container case-fute[cochable] {
+.tf-orange-bonus-container case-fute[cochable],
+.tf-orange-bonus-container case-fute.renard {
   background: #983810;
   border: 2px solid var(--c-orange-border);
   color: #ffc060;
   min-height: 28px;
   font-size: 0.6rem;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+  cursor: pointer;
 }
 
-.tf-orange-bonus-container case-fute[cochable]:hover {
+.tf-orange-bonus-container case-fute[cochable]:hover,
+.tf-orange-bonus-container case-fute.renard:hover {
   filter: brightness(1.2);
 }
 
@@ -610,16 +619,19 @@ case-fute[entourable] { cursor: pointer; }
   cursor: default;
 }
 
-.tf-purple-bonus-container case-fute[cochable] {
+.tf-purple-bonus-container case-fute[cochable],
+.tf-purple-bonus-container case-fute.renard {
   background: #4c1098;
   border: 2px solid var(--c-purple-border);
   color: #d898ff;
   min-height: 28px;
   font-size: 0.6rem;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+  cursor: pointer;
 }
 
-.tf-purple-bonus-container case-fute[cochable]:hover {
+.tf-purple-bonus-container case-fute[cochable]:hover,
+.tf-purple-bonus-container case-fute.renard:hover {
   filter: brightness(1.2);
 }
 
@@ -665,11 +677,122 @@ case-fute .color-badge.purple { background: #c060ff; }
 
 
 /* ═══════════════════════════════════════════════════════════════
+   BONUS DISPONIBLES (débloqués, pas encore utilisés)
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes bonusPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255,255,255,0.65), 0 1px 3px rgba(0,0,0,0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(255,255,255,0), 0 1px 3px rgba(0,0,0,0.5);
+  }
+}
+
+case-fute.bonus-disponible {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+  filter: brightness(1.18) saturate(1.35);
+  animation: bonusPulse 1.5s ease-in-out infinite;
+  z-index: 2;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ZONE DES SCORES
+   ═══════════════════════════════════════════════════════════════ */
+
+.tf-score-zone {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  max-width: 620px;
+  margin: 0 auto 12px;
+}
+
+.tf-score-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 2px 4px rgba(0,0,0,0.35);
+}
+
+.tf-score-label {
+  font-size: 0.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  opacity: 0.75;
+  margin-bottom: 2px;
+  white-space: nowrap;
+}
+
+.tf-score-value {
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.tf-score-chip--yellow {
+  background: linear-gradient(150deg, #c49818 0%, #7a5508 100%);
+  border-color: var(--c-yellow-border);
+  color: #2a1600;
+}
+.tf-score-chip--yellow .tf-score-label { color: rgba(40,20,0,0.6); }
+
+.tf-score-chip--blue {
+  background: linear-gradient(150deg, #1050c8 0%, #062148 100%);
+  border-color: var(--c-blue-border);
+  color: #d8ecff;
+}
+
+.tf-score-chip--green {
+  background: linear-gradient(150deg, #168030 0%, #053014 100%);
+  border-color: var(--c-green-border);
+  color: #d0ffdc;
+}
+
+.tf-score-chip--orange {
+  background: linear-gradient(150deg, #c05010 0%, #5c1800 100%);
+  border-color: var(--c-orange-border);
+  color: #ffe4c8;
+}
+
+.tf-score-chip--purple {
+  background: linear-gradient(150deg, #6818b8 0%, #260055 100%);
+  border-color: var(--c-purple-border);
+  color: #f0d8ff;
+}
+
+.tf-score-chip--white {
+  background: linear-gradient(150deg, #e8e8ec 0%, #b8b8c0 100%);
+  border-color: #fff;
+  color: #202028;
+}
+.tf-score-chip--white .tf-score-label { color: rgba(20,20,30,0.6); }
+
+.tf-score-chip--total {
+  background: #000;
+  border-color: #fff;
+  color: #fff;
+  min-width: 74px;
+}
+.tf-score-chip--total .tf-score-value { font-size: 1.35rem; }
+
+
+/* ═══════════════════════════════════════════════════════════════
    ZONE DES DÉS
    ═══════════════════════════════════════════════════════════════ */
 
 .tf-dice-zone {
-  max-width: 560px;
+  max-width: 620px;
   margin: 12px auto 0;
   background: linear-gradient(150deg, #1a1a2e 0%, #0d0d1a 100%);
   border: 2px solid #404060;
