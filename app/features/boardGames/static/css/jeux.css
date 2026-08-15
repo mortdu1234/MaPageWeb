@@ -11,3 +11,32 @@
 .game-body p { margin-bottom: 20px; }
 .game-body h3 { font-family: "Cormorant Garamond", serif; font-size: 1.4rem; font-weight: 600; color: var(--accent); margin: 36px 0 12px; }
 @media (max-width: 768px) { .game-detail { padding: 40px 24px; } }
+.game-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--gold);
+  text-decoration: none;
+  padding: 10px 22px;
+  border: 1px solid var(--gold);
+  margin-bottom: 32px;
+  transition: all 0.25s;
+}
+
+.game-link::after {
+  content: '↗';
+  transition: transform 0.2s;
+}
+
+.game-link:hover {
+  background: var(--gold);
+  color: #fff;
+}
+
+.game-link:hover::after {
+  transform: translate(2px, -2px);
+}
