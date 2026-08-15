@@ -13,7 +13,7 @@ tresFute_bp = make_blueprint("tresFute", __name__, __file__, "/jeux/tresFute")
 
 # Nom du jeu tel qu'enregistré dans la table `jeux` (colonne `name`).
 # ⚠️ À ajuster si le nom en base diffère (ex: "Très Futé").
-NOM_JEU = "tresFute"
+NOM_JEU = "Très Futé"
 
 
 @tresFute_bp.route("/")
