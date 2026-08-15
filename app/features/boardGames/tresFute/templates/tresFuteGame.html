@@ -10,9 +10,6 @@
 {% block submit_url %}{{ url_for('tresFute.tresFute_submit') }}{% endblock %}
 
 {% block extra_controls %}
-<div class="control-group">
-  <button class="btn-reset" id="btn-reset" type="button">🔄 Réinitialiser</button>
-</div>
 {% endblock %}
 
 {% block content %}
@@ -419,6 +416,211 @@
     </div>
 
   </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- MODALE D'ENVOI DU SCORE                     -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="tf-modal-overlay" id="tf-modal-overlay" hidden>
+    <div class="tf-modal" role="dialog" aria-modal="true" aria-labelledby="tf-modal-title">
+      <div class="tf-modal-header">
+        <h2 id="tf-modal-title">📤 Envoyer le score</h2>
+        <button type="button" class="tf-modal-close" id="tf-modal-close" aria-label="Fermer">✕</button>
+      </div>
+
+      <form id="tf-modal-form" class="tf-modal-form">
+
+        <!-- Joueur -->
+        <div class="tf-modal-field">
+          <label for="tf-select-joueur">Joueur</label>
+          <select id="tf-select-joueur" required>
+            <option value="" disabled selected>— Choisir un joueur —</option>
+            <option value="__new__">➕ Nouveau joueur…</option>
+          </select>
+          <div class="tf-modal-new-fields" id="tf-new-joueur-fields" hidden>
+            <input type="text" id="tf-new-joueur-prenom" placeholder="Prénom">
+            <input type="text" id="tf-new-joueur-nom" placeholder="Nom">
+          </div>
+        </div>
+
+        <!-- Partie -->
+        <div class="tf-modal-field">
+          <label for="tf-select-partie">Partie</label>
+          <select id="tf-select-partie" required>
+            <option value="" disabled selected>— Choisir une partie —</option>
+            <option value="__new__">➕ Nouvelle partie…</option>
+          </select>
+        </div>
+
+        <!-- Score -->
+        <div class="tf-modal-field">
+          <label for="tf-modal-score">Score</label>
+          <input type="number" id="tf-modal-score" readonly>
+        </div>
+
+        <div class="tf-modal-error" id="tf-modal-error" hidden></div>
+
+        <div class="tf-modal-actions">
+          <button type="button" class="tf-modal-cancel" id="tf-modal-cancel">Annuler</button>
+          <button type="submit" class="tf-modal-submit" id="tf-modal-submit">Valider</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="control-group">
+  <button class="btn-reset" id="btn-reset" type="button">🔄 Réinitialiser</button>
+  <button class="btn-envoyer" id="btn-envoyer-score" type="button">📤 Envoyer le score</button>
+</div>
+
+
+  <style>
+    .btn-envoyer {
+      padding: 0 16px;
+      height: 38px;
+      border-radius: 8px;
+      border: 2px solid #2e7d4f;
+      background: linear-gradient(135deg, #1e5030, #113018);
+      color: #a0e0c0;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+    .btn-envoyer:hover {
+      background: linear-gradient(135deg, #257048, #164522);
+      border-color: #4fae7a;
+      color: #d0ffe6;
+    }
+    .btn-envoyer:active { transform: scale(0.97); }
+
+    .tf-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+    .tf-modal-overlay[hidden] { display: none; }
+
+    .tf-modal {
+      width: 100%;
+      max-width: 420px;
+      background: #14142c;
+      border: 1px solid #3a3a70;
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+      color: #e6e6ff;
+      overflow: hidden;
+    }
+
+    .tf-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid #2a2a55;
+    }
+    .tf-modal-header h2 { margin: 0; font-size: 1.05rem; }
+
+    .tf-modal-close {
+      background: none;
+      border: none;
+      color: #a0a0e0;
+      font-size: 1.1rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .tf-modal-close:hover { color: #fff; }
+
+    .tf-modal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .tf-modal-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .tf-modal-field label {
+      font-size: 0.78rem;
+      color: #a0a0e0;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .tf-modal-field select,
+    .tf-modal-field input {
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #3a3a70;
+      background: #1e1e42;
+      color: #e6e6ff;
+      font-size: 0.9rem;
+    }
+    .tf-modal-field select:focus,
+    .tf-modal-field input:focus {
+      outline: none;
+      border-color: #7070c0;
+    }
+    .tf-modal-field input[readonly] {
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+
+    .tf-modal-new-fields {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .tf-modal-new-fields[hidden] { display: none; }
+    .tf-modal-new-fields input { flex: 1; }
+
+    .tf-modal-error {
+      background: rgba(220, 60, 60, 0.15);
+      border: 1px solid rgba(220, 60, 60, 0.4);
+      color: #ffb0b0;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+    }
+    .tf-modal-error[hidden] { display: none; }
+
+    .tf-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .tf-modal-cancel,
+    .tf-modal-submit {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .tf-modal-cancel {
+      background: transparent;
+      border-color: #3a3a70;
+      color: #a0a0e0;
+    }
+    .tf-modal-cancel:hover { border-color: #7070b0; color: #d0d0ff; }
+
+    .tf-modal-submit {
+      background: linear-gradient(135deg, #1e5030, #113018);
+      border-color: #2e7d4f;
+      color: #a0e0c0;
+    }
+    .tf-modal-submit:hover { border-color: #4fae7a; color: #d0ffe6; }
+    .tf-modal-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  </style>
 </main>
 {% endblock %}
 
@@ -427,4 +629,5 @@
 <script type="module" src="{{ url_for('tresFute.static', filename='js/Case.js') }}"></script>
 <script src="{{ url_for('tresFute.static', filename='js/calculScore.js') }}"></script>
 <script src="{{ url_for('tresFute.static', filename='js/tresFute.js') }}"></script>
+<script src="{{ url_for('tresFute.static', filename='js/submitScore.js') }}"></script>
 {% endblock %}

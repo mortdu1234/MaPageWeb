@@ -23,6 +23,28 @@ def get_jeu_id_by_jeu_name(jeu: str) -> int | None:
         release_db(conn)
 
 
+def get_parties_by_jeu(jeu: str) -> list[dict]:
+    """
+    Retourne les parties existantes pour un jeu donné, les plus récentes en
+    premier (par id décroissant).
+    Ex : [{"id": 12, "nb_joueurs": 4}, ...]
+    """
+    conn = get_db()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT p.id, p.nb_joueurs
+            FROM parties p
+            JOIN jeux j ON j.id = p.jeu_id
+            WHERE j.name = %s
+            ORDER BY p.id DESC
+        """, (jeu,))
+        rows = cur.fetchall()
+        return [{"id": r[0], "nb_joueurs": r[1]} for r in rows]
+    finally:
+        release_db(conn)
+
+
 # --------- CREATIONS DE PARTIES ---------
 def create_partie(donnees: dict):
     """
@@ -78,5 +100,32 @@ def create_partie(donnees: dict):
         conn.rollback()
         raise e
 
+    finally:
+        release_db(conn)
+
+
+def create_partie_simple(jeu: str) -> int:
+    """
+    Crée une partie "vide" pour un jeu donné, sans scores initiaux.
+    Utile pour le formulaire d'envoi de score joueur par joueur : on crée
+    la partie une fois, puis on y rattache les scores au fur et à mesure
+    via submit_score() / insert_joueur_partie().
+
+    Retourne l'id de la nouvelle partie.
+    """
+    id_jeu = get_jeu_id_by_jeu_name(jeu)
+    if id_jeu is None:
+        raise ValueError(f"Jeu introuvable en base : {jeu!r}")
+
+    conn = get_db()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO parties (jeu_id, nb_joueurs) VALUES (%s, %s) RETURNING id;",
+            (id_jeu, 0)
+        )
+        new_id = cur.fetchone()[0]  # type: ignore
+        conn.commit()
+        return new_id
     finally:
         release_db(conn)
