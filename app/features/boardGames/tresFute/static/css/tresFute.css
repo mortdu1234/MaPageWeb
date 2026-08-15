@@ -1,914 +1,751 @@
 /* ═══════════════════════════════════════════════════════════════
-   tresFute.css — Fiche de score interactive — Très Futé
+   tresFute.css — Thème "plateau néon" calqué sur la fiche originale
    ═══════════════════════════════════════════════════════════════ */
 
-/* ─── Variables ─────────────────────────────────────────────── */
 :root {
-  --cell:         38px;
-  --gap:          4px;
-  --radius:       9px;
-  --section-r:    13px;
+  --tf-bg:         #07070d;
+  --tf-panel:      #101019;
+  --tf-panel-2:    #15151f;
+  --tf-line:       rgba(255,255,255,0.08);
+  --tf-text:       #eef0fa;
+  --tf-text-dim:   #8d90a8;
 
-  /* Couleurs sections */
-  --c-dark-bg:        #181824;
-  --c-dark-cell:      #252538;
-  --c-dark-border:    #404060;
+  --tf-gold:       #f0c419;
+  --tf-blue:       #3aa0f2;
+  --tf-green:      #4ede84;
+  --tf-orange:     #ff8a2b;
+  --tf-purple:     #b16bf5;
+  --tf-grey:       #c9cddb;
+  --tf-red:        #e5395a;
 
-  --c-yellow-bg:      #c49010;
-  --c-yellow-cell:    #f5d440;
-  --c-yellow-border:  #ffe050;
-  --c-yellow-shadow:  #8b6408;
-
-  --c-blue-bg:        #0c3588;
-  --c-blue-cell:      #1a58d0;
-  --c-blue-border:    #3c7ce8;
-
-  --c-green-bg:       #0b4820;
-  --c-green-cell:     #158830;
-  --c-green-border:   #28e050;
-
-  --c-orange-bg:      #7a2800;
-  --c-orange-cell:    #d86010;
-  --c-orange-border:  #ff8828;
-
-  --c-purple-bg:      #310068;
-  --c-purple-cell:    #6c18c0;
-  --c-purple-border:  #aa48f0;
+  --tf-radius-sm:  10px;
+  --tf-radius-md:  18px;
+  --tf-radius-lg:  28px;
 }
 
-/* ─── Reset minimal ─────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── Fond général ─────────────────────────────────────────── */
 
-/* ─── Conteneur principal ───────────────────────────────────── */
 .tf-main {
-  font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
-  background: transparent;
-  min-height: 100vh;
-  padding: 8px;
-  color: #fff;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(120,90,255,0.10), transparent 55%),
+    var(--tf-bg);
+  color: var(--tf-text);
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  padding: 24px 16px 48px;
 }
 
 .page-header {
   text-align: center;
-  padding: 6px 0 12px;
+  margin-bottom: 18px;
 }
-
 .page-header h1 {
-  font-size: 1.55rem;
-  font-weight: 900;
-  letter-spacing: -0.02em;
+  margin: 0 0 4px;
+  font-size: 1.9rem;
+  letter-spacing: 0.03em;
+  color: var(--tf-text);
+  text-shadow: 0 0 18px rgba(255,255,255,0.25);
 }
-
 .page-header p {
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.38);
-  margin-top: 3px;
-  letter-spacing: 0.04em;
+  margin: 0;
+  color: var(--tf-text-dim);
+  font-size: 0.9rem;
 }
 
-/* ─── Grille de la fiche ────────────────────────────────────── */
+/* ── Zone des scores (chips en haut) ─────────────────────────── */
+
+.tf-score-zone {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 900px;
+  margin: 0 auto 22px;
+}
+
+.tf-score-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--tf-panel);
+  border: 2px solid var(--tf-line);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.tf-score-label { color: var(--tf-text-dim); font-weight: 600; }
+.tf-score-value {
+  min-width: 1.6em;
+  text-align: center;
+  color: var(--tf-text);
+  font-size: 1rem;
+}
+
+.tf-score-chip--yellow { border-color: var(--tf-gold);   box-shadow: 0 0 12px rgba(240,196,25,0.35); }
+.tf-score-chip--yellow .tf-score-value { color: var(--tf-gold); }
+.tf-score-chip--blue   { border-color: var(--tf-blue);   box-shadow: 0 0 12px rgba(58,160,242,0.35); }
+.tf-score-chip--blue   .tf-score-value { color: var(--tf-blue); }
+.tf-score-chip--green  { border-color: var(--tf-green);  box-shadow: 0 0 12px rgba(78,222,132,0.35); }
+.tf-score-chip--green  .tf-score-value { color: var(--tf-green); }
+.tf-score-chip--orange { border-color: var(--tf-orange); box-shadow: 0 0 12px rgba(255,138,43,0.35); }
+.tf-score-chip--orange .tf-score-value { color: var(--tf-orange); }
+.tf-score-chip--purple { border-color: var(--tf-purple); box-shadow: 0 0 12px rgba(177,107,245,0.35); }
+.tf-score-chip--purple .tf-score-value { color: var(--tf-purple); }
+.tf-score-chip--white  { border-color: var(--tf-red);    box-shadow: 0 0 12px rgba(229,57,90,0.35); }
+.tf-score-chip--white  .tf-score-value { color: var(--tf-red); }
+.tf-score-chip--total  {
+  border-color: #fff;
+  background: linear-gradient(135deg, #1c1c2a, #101019);
+  box-shadow: 0 0 16px rgba(255,255,255,0.3);
+}
+.tf-score-chip--total .tf-score-value { color: #fff; font-size: 1.15rem; }
+
+/* ── Feuille (carte principale) ──────────────────────────────── */
+
 .tf-sheet {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  max-width: 620px;
+  max-width: 760px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* Sections pleine largeur */
-.tf-tours-section,
-.tf-refresh-section,
-.tf-plusOne-section,
-.tf-green-section,
-.tf-orange-section,
-.tf-purple-section {
-  grid-column: 1 / -1;
-}
-
-/* Jaune et Bleu côte à côte */
-.tf-yellow-section { grid-column: 1; }
-.tf-blue-section   { grid-column: 2; }
-
-/* ─── Base des sections ─────────────────────────────────────── */
 .tf-section {
-  border-radius: var(--section-r);
-  padding: 8px 9px;
   position: relative;
+  padding: 14px 16px;
 }
 
 .tf-section-label {
-  font-size: 0.48rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  opacity: 0.52;
-  margin-bottom: 6px;
+  display: none; /* labels décoratifs internes, non présents sur le visuel d'origine */
 }
-
-/* ─── case-fute — élément de base ──────────────────────────── */
-case-fute {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: var(--cell);
-  min-height: var(--cell);
-  border-radius: var(--radius);
-  font-weight: 900;
-  font-size: 0.8rem;
-  user-select: none;
-  text-align: center;
-  line-height: 1.1;
-  padding: 2px;
-  position: relative;
-  transition: filter 0.12s ease, border-color 0.12s ease, background 0.12s ease;
-}
-
-case-fute[cochable] { cursor: pointer; }
-case-fute[modifiable] { cursor: text; }
-case-fute[entourable] { cursor: pointer; }
-
 
 /* ═══════════════════════════════════════════════════════════════
-   SECTION TOURS
+   CASES — style de base repris/complété pour matcher le visuel
+   (couleurs pilotées ici par section ; la forme vient de case.css)
    ═══════════════════════════════════════════════════════════════ */
+
+case-fute { display: inline-flex; align-items: center; }
+
+.tf-sheet .case {
+  background: #f4f6fb;
+  border-radius: var(--tf-radius-sm);
+  color: #12121c;
+  font-weight: 800;
+}
+
+.tf-sheet .case__contenu {
+  color: #12121c;
+}
+
+.tf-sheet .case-img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+/* ── Renard (case entourable spéciale) ───────────────────────── */
+.renard .case,
+case-fute.renard .case {
+  background: radial-gradient(circle, #2a0f16, #12060a);
+  color: var(--tf-red);
+  box-shadow: 0 0 10px rgba(229,57,90,0.55);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOURS — rangée de 6 dés + rangée bonus
+   ═══════════════════════════════════════════════════════════════ */
+
 .tf-tours-section {
-  background: #000000;
-  border: 2px solid var(--c-dark-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .tf-tours-container,
 .tf-tours-container-bonus {
   display: flex;
-  gap: var(--gap);
+  gap: 10px;
+  justify-content: center;
   flex-wrap: wrap;
-  align-items: center;
 }
 
-.tf-tours-container { margin-bottom: 5px; }
-
-/* Cases numérotées (1-6) */
-.tf-tours-container case-fute {
-  background: transparent;
-  border: 2px solid var(--c-dark-border);
-  color: #d8d8f0;
-  min-width: 44px;
-  min-height: 44px;
-  font-size: 1.05rem;
-  border-radius: 10px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 2px 4px rgba(0,0,0,0.5);
+.tf-tours-container .case {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--tf-radius-md);
+  background: linear-gradient(180deg, #ffffff, #dfe3ee);
+  box-shadow: 0 0 10px rgba(255,255,255,0.25), inset 0 0 0 2px rgba(0,0,0,0.06);
+  font-size: 1.3rem;
 }
 
-.tf-tours-container case-fute[cochable]:hover {
-  border-color: #8080b0;
-  background: rgba(255,255,255,0.06);
+.tf-tours-container-bonus .case {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--tf-radius-md);
+  background: linear-gradient(180deg, #2a2a38, #16161f);
+  color: var(--tf-text);
+  border: 2px solid rgba(255,255,255,0.18);
+  font-size: 0.95rem;
 }
-
-/* Cases bonus */
-.tf-tours-container-bonus case-fute {
-  background: transparent;
-  border: 2px solid #333348;
-  color: #9090c0;
-  min-height: 30px;
-  min-width: 44px;
-  font-size: 0.65rem;
-  border-radius: 7px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
-}
-
-.tf-tours-container-bonus case-fute:not([cochable]) {
-  opacity: 0.6;
-  cursor: default;
-}
-
-.tf-tours-container-bonus case-fute[cochable]:hover {
-  border-color: #7070a8;
-}
-
+.tf-tours-container-bonus .case__contenu { color: var(--tf-text); }
 
 /* ═══════════════════════════════════════════════════════════════
-   SECTIONS REFRESH & +1
+   REFRESH & +1 — rangées de pastilles grises en capsule
    ═══════════════════════════════════════════════════════════════ */
+
 .tf-refresh-section,
 .tf-plusOne-section {
-  background: #000000;
-  border: 2px solid var(--c-dark-border);
+  background: var(--tf-panel);
+  border: 2px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  padding: 12px 22px;
 }
 
 .tf-refresh-container,
 .tf-plusOne-container {
   display: flex;
-  gap: var(--gap);
-  flex-wrap: wrap;
-  align-items: center;
+  gap: 12px;
+  justify-content: center;
 }
 
-.tf-refresh-container case-fute[entourable],
-.tf-plusOne-container case-fute[entourable] {
+.tf-refresh-container .case,
+.tf-plusOne-container .case {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: transparent;
-  border: 2px solid #383855;
-  min-width: 42px;
-  min-height: 42px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.05);
+  background: radial-gradient(circle at 35% 30%, #4a4d60, #23242f 70%);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.15);
 }
-
-.tf-refresh-container case-fute[entourable]:hover,
-.tf-plusOne-container case-fute[entourable]:hover {
-  border-color: #7878aa;
-  background: rgba(255,255,255,0.06);
+.tf-refresh-container .case--entouree,
+.tf-plusOne-container .case--entouree {
+  box-shadow: inset 0 0 0 3px var(--tf-grey), 0 0 8px rgba(255,255,255,0.4);
 }
-
-/* État cerclé (ajouté par JS) */
-.tf-refresh-container case-fute[entourable].active,
-.tf-plusOne-container case-fute[entourable].active {
-  border: 3px solid #fff;
-  background: rgba(255,255,255,0.1);
+.tf-refresh-container .case--cochee .case__croix line,
+.tf-plusOne-container .case--cochee .case__croix line {
+  stroke: var(--tf-grey);
 }
-
 
 /* ═══════════════════════════════════════════════════════════════
-   SECTION JAUNE
+   JAUNE & BLEU — grilles 4×5 encadrées, fond sombre, glow
    ═══════════════════════════════════════════════════════════════ */
+
+.tf-yellow-blue-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.tf-yellow-blue-row .tf-yellow-section,
+.tf-yellow-blue-row .tf-blue-section {
+  flex: 1 1 0;
+  min-width: 280px;
+}
+
+.tf-yellow-section,
+.tf-blue-section {
+  border-radius: var(--tf-radius-lg);
+  border: 2px solid;
+  background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.05), transparent 60%), var(--tf-panel);
+}
+
 .tf-yellow-section {
-  background: linear-gradient(150deg, #c49818 0%, #7a5508 100%);
-  border: 3px solid var(--c-yellow-border);
-  box-shadow: 0 0 14px rgba(255,210,30,0.2);
+  border-color: var(--tf-gold);
+  box-shadow: 0 0 22px rgba(240,196,25,0.25), inset 0 0 30px rgba(240,196,25,0.05);
+}
+.tf-blue-section {
+  border-color: var(--tf-blue);
+  box-shadow: 0 0 22px rgba(58,160,242,0.25), inset 0 0 30px rgba(58,160,242,0.05);
 }
 
-.tf-yellow-section .tf-section-label {
-  color: rgba(255,235,100,0.72);
-}
-
-/* ── Grille jaune (remplacer <table> par .tf-yellow-grid) ── */
 .tf-yellow-grid {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+}
+
+/* Le HTML réutilise la classe ".tf-blue-container" à deux niveaux différents :
+   une fois comme conteneur racine (score + grille empilés), une fois comme
+   simple rangée des jalons (1,2,4,7…56). On les cible séparément pour éviter
+   que la rangée de jalons hérite du flex-direction:column du conteneur racine. */
+.tf-blue-section > .tf-blue-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tf-blue-score-container > .tf-blue-container {
+  display: flex;
+  flex-direction: row;
   gap: 4px;
-}
-
-.tf-yellow-row {
-  display: flex;
-  gap: 4px;
-}
-
-.tf-yellow-grid case-fute {
-  background: var(--c-yellow-cell);
-  border: 2px solid #d4b028;
-  color: #2a1600;
-  flex: 1;
+  width: 100%;
   min-width: 0;
-  min-height: 34px;
-  font-size: 0.78rem;
-  border-radius: 7px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 1px 3px rgba(0,0,0,0.5);
 }
-
-.tf-yellow-grid case-fute[cochable]:hover {
-  filter: brightness(1.12);
-}
-
-/* Cellule pré-cochée (X barré) */
-.tf-yellow-grid case-fute[cochee] {
-  background: #7a5508;
-  border-color: #9a7010;
-  color: transparent;
-  cursor: default;
-}
-
-.tf-yellow-grid case-fute[cochee]::after {
-  content: '✕';
-  position: absolute;
-  color: var(--c-yellow-cell);
-  font-size: 1rem;
-  font-weight: 900;
-}
-
-/* Ligne des scores (dernière) */
-.tf-yellow-row.tf-yellow-scores case-fute {
-  background: #5c3e00;
-  border-color: #8a6010;
-  color: #f5d040;
-  min-height: 26px;
-  font-size: 0.72rem;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
-}
-
-
-/* ═══════════════════════════════════════════════════════════════
-   SECTION BLEUE
-   ═══════════════════════════════════════════════════════════════ */
-.tf-blue-section {
-  background: linear-gradient(150deg, #1050c8 0%, #062148 100%);
-  border: 3px solid var(--c-blue-border);
-  box-shadow: 0 0 14px rgba(40,100,255,0.2);
-}
-
-.tf-blue-section .tf-section-label {
-  color: rgba(140,200,255,0.72);
-}
-
-.tf-blue-score-container {
-  margin-bottom: 7px;
-}
-
-/* Track de score (cellules de valeur) */
-.tf-blue-container {
-  display: flex;
-  gap: 3px;
-  flex-wrap: wrap;
-}
-
-.tf-blue-container case-fute {
-  background: var(--c-blue-cell);
-  border: 2px solid var(--c-blue-border);
-  color: #c8e4ff;
+.tf-blue-score-container > .tf-blue-container case-fute {
+  flex: 1 1 0;
   min-width: 0;
-  min-height: 24px;
-  font-size: 0.62rem;
-  border-radius: 5px;
-  flex: 1;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 1px 3px rgba(0,0,0,0.5);
+  justify-content: center;
 }
 
-.tf-blue-container case-fute[cochable]:hover {
-  filter: brightness(1.3);
-}
-
-/* Labels 1–11 sous le track */
-.tf-blue-container-bonus {
-  display: flex;
-  gap: 3px;
-  flex-wrap: wrap;
-  margin-top: 2px;
-}
-
-.tf-blue-container-bonus case-fute {
-  background: transparent;
-  border: none;
-  color: rgba(160,215,255,0.45);
-  font-size: 0.55rem;
-  min-height: 13px;
-  flex: 1;
-  cursor: default;
-}
-
-/* ── Grille de valeurs bleue (remplacer <table> par .tf-blue-grid) ── */
 .tf-blue-grid {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 8px;
 }
 
+.tf-yellow-row,
 .tf-blue-row {
   display: flex;
-  gap: 3px;
-}
-
-.tf-blue-grid case-fute {
-  background: var(--c-blue-cell);
-  border: 2px solid var(--c-blue-border);
-  color: #fff;
-  min-width: 0;
-  min-height: 30px;
-  font-size: 0.72rem;
-  border-radius: 7px;
-  flex: 1;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 1px 3px rgba(0,0,0,0.5);
-}
-
-.tf-blue-grid case-fute[cochable]:hover {
-  filter: brightness(1.3);
-}
-
-/* Cellule vide (pas de cochable/cochee) — le renard garde le style de base */
-.tf-blue-grid case-fute:not([cochable]):not([cochee]):not(.renard) {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  cursor: default;
-}
-
-.tf-blue-grid case-fute.renard:hover {
-  filter: brightness(1.3);
-}
-
-
-/* ═══════════════════════════════════════════════════════════════
-   SECTION VERTE
-   ═══════════════════════════════════════════════════════════════ */
-.tf-green-section {
-  background: linear-gradient(150deg, #168030 0%, #053014 100%);
-  border: 3px solid var(--c-green-border);
-  box-shadow: 0 0 14px rgba(30,200,60,0.18);
-}
-
-.tf-green-section .tf-section-label {
-  color: rgba(100,255,130,0.72);
-}
-
-/* Grille verte : 11 colonnes, 3 rangées (score / centre / bonus) */
-.tf-green-grid {
-  display: grid;
-  grid-template-columns: repeat(11, 1fr);
-  grid-template-rows: auto auto auto;
-  gap: 3px;
-}
-
-/* Score row (tf-green-score-container) */
-.tf-green-score-container {
-  display: contents; /* Les enfants s'insèrent dans la grille parente */
-}
-
-/* Centre row (tf-green-container) */
-.tf-green-container {
-  display: contents;
-}
-
-/* Bonus row (tf-green-bonus-container) */
-.tf-green-bonus-container {
-  display: contents;
-}
-
-/* Cases du score (rangée 1) */
-.tf-green-score-container case-fute {
-  grid-row: 1;
-  background: rgba(0,0,0,0.15);
-  border: 2px solid var(--c-green-border);
-  color: #a0ffc0;
-  min-height: 22px;
-  font-size: 0.6rem;
-  border-radius: 5px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
-}
-
-/* Cases du centre (rangée 2) — les grandes cases cochables */
-.tf-green-container case-fute {
-  grid-row: 2;
-  background: var(--c-green-cell);
-  border: 2px solid var(--c-green-border);
-  border-radius: 18px;       /* capsule */
-  color: #a0ffc0;
-  min-height: 34px;
-  font-size: 0.65rem;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 1px 3px rgba(0,0,0,0.5);
-}
-
-.tf-green-container case-fute[cochable]:hover {
-  filter: brightness(1.25);
-}
-
-/* Cases bonus (rangée 3) */
-.tf-green-bonus-container case-fute {
-  grid-row: 3;
-  background: transparent;
-  min-height: 20px;
-  font-size: 0.56rem;
-  border-radius: 4px;
-  cursor: default;
-}
-
-.tf-green-bonus-container case-fute[cochable],
-.tf-green-bonus-container case-fute.renard {
-  background: #0a5a1a;
-  border: 2px solid var(--c-green-border);
-  color: #a0ffc0;
-  min-height: 26px;
-  font-size: 0.6rem;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-  cursor: pointer;
-}
-
-.tf-green-bonus-container case-fute[cochable]:hover,
-.tf-green-bonus-container case-fute.renard:hover {
-  filter: brightness(1.25);
-}
-
-/* Cases vides dans le bonus (sans attribut) — le renard garde le style ci-dessus */
-.tf-green-bonus-container case-fute:not([cochable]):not(.renard) {
-  background: transparent;
-  border-color: transparent;
-}
-
-
-/* ═══════════════════════════════════════════════════════════════
-   SECTION ORANGE
-   ═══════════════════════════════════════════════════════════════ */
-.tf-orange-section {
-  background: linear-gradient(150deg, #c05010 0%, #5c1800 100%);
-  border: 3px solid var(--c-orange-border);
-  box-shadow: 0 0 14px rgba(220,100,20,0.2);
-}
-
-.tf-orange-section .tf-section-label {
-  color: rgba(255,195,90,0.72);
-}
-
-.tf-orange-container {
-  display: flex;
-  gap: 3px;
-  flex-wrap: wrap;
-  margin-bottom: 4px;
-}
-
-.tf-orange-container case-fute[modifiable] {
-  background: #e07828;
-  border: 2px solid var(--c-orange-border);
-  color: #1e0800;
-  min-width: 0;
-  min-height: 36px;
-  font-size: 1rem;
-  flex: 1;
-  border-radius: 8px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 3px rgba(0,0,0,0.5);
-}
-
-.tf-orange-container case-fute[modifiable]:hover {
-  filter: brightness(1.1);
-}
-
-/* Bonus row */
-.tf-orange-bonus-container {
-  display: flex;
-  gap: 3px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.tf-orange-bonus-container case-fute {
-  background: transparent;
-  border: none;
-  color: rgba(255,195,90,0.55);
-  min-width: 0;
-  min-height: 18px;
-  font-size: 0.56rem;
-  flex: 1;
-  border-radius: 4px;
-  cursor: default;
-}
-
-.tf-orange-bonus-container case-fute[cochable],
-.tf-orange-bonus-container case-fute.renard {
-  background: #983810;
-  border: 2px solid var(--c-orange-border);
-  color: #ffc060;
-  min-height: 28px;
-  font-size: 0.6rem;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-  cursor: pointer;
-}
-
-.tf-orange-bonus-container case-fute[cochable]:hover,
-.tf-orange-bonus-container case-fute.renard:hover {
-  filter: brightness(1.2);
-}
-
-
-/* ═══════════════════════════════════════════════════════════════
-   SECTION VIOLETTE
-   ═══════════════════════════════════════════════════════════════ */
-.tf-purple-section {
-  background: linear-gradient(150deg, #6818b8 0%, #260055 100%);
-  border: 3px solid var(--c-purple-border);
-  box-shadow: 0 0 14px rgba(140,40,240,0.2);
-}
-
-.tf-purple-section .tf-section-label {
-  color: rgba(215,155,255,0.72);
-}
-
-.tf-purple-container {
-  display: flex;
-  gap: 3px;
-  flex-wrap: wrap;
-  margin-bottom: 4px;
-}
-
-.tf-purple-container case-fute[modifiable] {
-  background: #7828d0;
-  border: 2px solid var(--c-purple-border);
-  color: #f0d8ff;
-  min-width: 0;
-  min-height: 36px;
-  font-size: 1rem;
-  flex: 1;
-  border-radius: 8px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 1px 3px rgba(0,0,0,0.5);
-}
-
-.tf-purple-container case-fute[modifiable]:hover {
-  filter: brightness(1.1);
-}
-
-/* Bonus row */
-.tf-purple-bonus-container {
-  display: flex;
-  gap: 3px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.tf-purple-bonus-container case-fute {
-  background: transparent;
-  border: none;
-  color: rgba(215,155,255,0.55);
-  min-width: 0;
-  min-height: 18px;
-  font-size: 0.56rem;
-  flex: 1;
-  border-radius: 4px;
-  cursor: default;
-}
-
-.tf-purple-bonus-container case-fute[cochable],
-.tf-purple-bonus-container case-fute.renard {
-  background: #4c1098;
-  border: 2px solid var(--c-purple-border);
-  color: #d898ff;
-  min-height: 28px;
-  font-size: 0.6rem;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-  cursor: pointer;
-}
-
-.tf-purple-bonus-container case-fute[cochable]:hover,
-.tf-purple-bonus-container case-fute.renard:hover {
-  filter: brightness(1.2);
-}
-
-
-case-fute img.case-img {
-  width:  70%;
-  height: 70%;
-  object-fit: contain;
-  display: block;
-  pointer-events: none;
-}
-
-
-/* ═══════════════════════════════════════════════════════════════
-   ÉTATS GLOBAUX (gérés par JS — Case.js)
-   ═══════════════════════════════════════════════════════════════ */
-
-/* Cochée via JS */
-case-fute.is-checked::after {
-  content: '✓';
-  font-size: 1rem;
-  font-weight: 900;
-  color: white;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-}
-
-/* Indicateur de couleur croisée (badge en coin) */
-case-fute .color-badge {
-  position: absolute;
-  bottom: 2px;
-  right: 3px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1px solid rgba(0,0,0,0.4);
-}
-
-case-fute .color-badge.blue   { background: #4a90ff; }
-case-fute .color-badge.orange { background: #ff7020; }
-case-fute .color-badge.green  { background: #30e060; }
-case-fute .color-badge.yellow { background: #f5d040; }
-case-fute .color-badge.purple { background: #c060ff; }
-
-
-/* ═══════════════════════════════════════════════════════════════
-   BONUS DISPONIBLES (débloqués, pas encore utilisés)
-   ═══════════════════════════════════════════════════════════════ */
-
-@keyframes bonusPulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(255,255,255,0.65), 0 1px 3px rgba(0,0,0,0.5);
-  }
-  50% {
-    box-shadow: 0 0 0 5px rgba(255,255,255,0), 0 1px 3px rgba(0,0,0,0.5);
-  }
-}
-
-case-fute.bonus-disponible {
-  outline: 2px solid #fff;
-  outline-offset: 1px;
-  filter: brightness(1.18) saturate(1.35);
-  animation: bonusPulse 1.5s ease-in-out infinite;
-  z-index: 2;
-}
-
-
-/* ═══════════════════════════════════════════════════════════════
-   ZONE DES SCORES
-   ═══════════════════════════════════════════════════════════════ */
-
-.tf-score-zone {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
   justify-content: center;
-  max-width: 620px;
-  margin: 0 auto 12px;
 }
 
-.tf-score-chip {
+.tf-yellow-section .case,
+.tf-blue-section .case {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #ffffff, #e4e7f2);
+  font-size: 1rem;
+}
+
+.tf-yellow-section .case--cochee,
+.tf-blue-section .case--cochee {
+  background: linear-gradient(180deg, #2a2a38, #16161f);
+}
+.tf-yellow-section .case--cochee .case__croix line { stroke: var(--tf-gold); }
+.tf-blue-section   .case--cochee .case__croix line { stroke: var(--tf-blue); }
+
+/* Ligne des totaux (10/14/16/20) sous la grille jaune */
+.tf-yellow-row:last-child .case {
+  background: linear-gradient(180deg, #202030, #101018);
+  color: var(--tf-gold);
+  border: 2px solid rgba(240,196,25,0.4);
+  font-weight: 800;
+}
+.tf-yellow-row:last-child .case__contenu { color: var(--tf-gold); }
+
+.tf-blue-score-container {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+}
+
+/* Badges ronds des jalons (1,2,4,7…56)
+   width/height passent en % + max-width : les badges rétrécissent avec
+   la largeur disponible au lieu de forcer le conteneur à s'élargir et
+   de déborder du cadre bleu. */
+.tf-blue-score-container > .tf-blue-container .case {
+  width: 100%;
+  max-width: 30px;
+  aspect-ratio: 1;
+  height: auto;
+  min-width: 0;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid var(--tf-blue);
+  color: var(--tf-blue);
+  font-size: clamp(0.5rem, 1.8vw, 0.62rem);
+}
+.tf-blue-score-container > .tf-blue-container .case__contenu { color: var(--tf-blue); }
+
+/* Rangée fine 1..11 sous les jalons, sans cadre */
+.tf-blue-container-bonus {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+}
+.tf-blue-container-bonus case-fute {
+  flex: 1 1 0;
+  min-width: 0;
+  justify-content: center;
+}
+.tf-blue-container-bonus .case {
+  width: 100%;
+  max-width: 26px;
+  aspect-ratio: 1;
+  height: auto;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--tf-text-dim);
+  font-size: clamp(0.55rem, 1.6vw, 0.68rem);
+  font-weight: 600;
+}
+.tf-blue-container-bonus .case__contenu { color: var(--tf-text-dim); }
+
+.tf-blue-row .case {
+  width: 42px;
+  height: 42px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VERT / ORANGE / VIOLET — pistes horizontales façon capsule néon
+   ═══════════════════════════════════════════════════════════════ */
+
+.tf-green-section,
+.tf-orange-section,
+.tf-purple-section {
+  border-radius: 999px;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: var(--tf-panel-2);
+}
+
+.tf-green-section  { border-color: var(--tf-green);  box-shadow: 0 0 18px rgba(78,222,132,0.3); }
+.tf-orange-section { border-color: var(--tf-orange); box-shadow: 0 0 18px rgba(255,138,43,0.3); }
+.tf-purple-section { border-color: var(--tf-purple); box-shadow: 0 0 18px rgba(177,107,245,0.3); }
+
+.tf-green-section::before,
+.tf-orange-section::before,
+.tf-purple-section::before {
+  content: "➜";
+  flex: 0 0 auto;
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+.tf-green-section::before  { color: var(--tf-green); }
+.tf-orange-section::before { color: var(--tf-orange); }
+.tf-purple-section::before { color: var(--tf-purple); }
+
+.tf-green-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Contrairement au vert (qui a un div ".tf-green-grid" englobant ses 3
+   rangées), le HTML orange/violet met ses 2 rangées directement en enfants
+   de la section : on bascule la section en grille pour que la flèche ➜
+   couvre les 2 rangées et que celles-ci restent bien horizontales. */
+.tf-orange-section,
+.tf-purple-section {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  row-gap: 6px;
+  column-gap: 14px;
+}
+.tf-orange-section::before,
+.tf-purple-section::before {
+  grid-row: 1 / span 2;
+}
+.tf-orange-container,
+.tf-purple-container {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+.tf-orange-bonus-container,
+.tf-purple-bonus-container {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+}
+
+.tf-green-score-container,
+.tf-green-container,
+.tf-green-bonus-container,
+.tf-orange-container,
+.tf-orange-bonus-container,
+.tf-purple-container,
+.tf-purple-bonus-container {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Chaque case devient un item flexible qui se partage la largeur
+   disponible (au lieu d'une taille fixe en px) : la rangée de 11 cases
+   ne peut plus jamais devenir plus large que le pilulier vert/orange/violet
+   qui l'entoure. */
+.tf-green-score-container case-fute,
+.tf-green-container case-fute,
+.tf-green-bonus-container case-fute,
+.tf-orange-container case-fute,
+.tf-orange-bonus-container case-fute,
+.tf-purple-container case-fute,
+.tf-purple-bonus-container case-fute {
+  flex: 1 1 0;
+  min-width: 0;
+  justify-content: center;
+}
+
+.tf-green-section .case,
+.tf-orange-section .case,
+.tf-purple-section .case {
+  width: 100%;
+  max-width: 34px;
+  aspect-ratio: 1;
+  height: auto;
+  min-width: 0;
+  border-radius: 50%;
+  font-size: clamp(0.55rem, 1.8vw, 0.72rem);
+  background: linear-gradient(180deg, #ffffff, #e4e7f2);
+}
+
+.tf-green-score-container .case,
+.tf-orange-container .case,
+.tf-purple-container .case {
+  background: linear-gradient(180deg, #22232f, #14141c);
+  color: var(--tf-text);
+  border: 2px solid rgba(255,255,255,0.15);
+}
+.tf-green-score-container .case__contenu,
+.tf-orange-container .case__contenu,
+.tf-purple-container .case__contenu { color: var(--tf-text); }
+
+.tf-green-container .case--cochee,
+.tf-green-bonus-container .case--cochee {
+  background: linear-gradient(180deg, #163322, #0c1a12);
+}
+.tf-green-container .case--cochee .case__croix line,
+.tf-green-bonus-container .case--cochee .case__croix line { stroke: var(--tf-green); }
+
+.tf-orange-bonus-container .case--cochee {
+  background: linear-gradient(180deg, #33210f, #1a1108);
+}
+.tf-orange-bonus-container .case--cochee .case__croix line { stroke: var(--tf-orange); }
+
+.tf-purple-bonus-container .case--cochee {
+  background: linear-gradient(180deg, #2a1633, #16091c);
+}
+.tf-purple-bonus-container .case--cochee .case__croix line { stroke: var(--tf-purple); }
+
+/* Connecteurs en chevrons "<" entre les cases de la piste violette
+   (détail visible sur le visuel d'origine, propre à cette rangée) */
+.tf-purple-container,
+.tf-purple-bonus-container {
+  gap: 2px;
+}
+
+.purple-middle {
+  flex: 0 0 auto;
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 62px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  border: 2px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.04);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 2px 4px rgba(0,0,0,0.35);
-}
-
-.tf-score-label {
-  font-size: 0.5rem;
+  width: 10px;
+  color: var(--tf-purple);
   font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  opacity: 0.75;
-  margin-bottom: 2px;
-  white-space: nowrap;
-}
-
-.tf-score-value {
-  font-size: 1.15rem;
-  font-weight: 900;
+  font-size: 0.85rem;
   line-height: 1;
+  opacity: 0.65;
+  user-select: none;
 }
 
-.tf-score-chip--yellow {
-  background: linear-gradient(150deg, #c49818 0%, #7a5508 100%);
-  border-color: var(--c-yellow-border);
-  color: #2a1600;
+/* Cases "modifiable" (score orange/violet) : input numérique */
+.tf-orange-container .case,
+.tf-purple-container .case {
+  cursor: text;
 }
-.tf-score-chip--yellow .tf-score-label { color: rgba(40,20,0,0.6); }
-
-.tf-score-chip--blue {
-  background: linear-gradient(150deg, #1050c8 0%, #062148 100%);
-  border-color: var(--c-blue-border);
-  color: #d8ecff;
-}
-
-.tf-score-chip--green {
-  background: linear-gradient(150deg, #168030 0%, #053014 100%);
-  border-color: var(--c-green-border);
-  color: #d0ffdc;
+.tf-orange-container .case__input,
+.tf-purple-container .case__input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--tf-text);
+  text-align: center;
+  font-weight: 800;
+  font-size: 0.85rem;
 }
 
-.tf-score-chip--orange {
-  background: linear-gradient(150deg, #c05010 0%, #5c1800 100%);
-  border-color: var(--c-orange-border);
-  color: #ffe4c8;
+/* Multiplicateurs texte (x2 / x3) dans les rangées bonus */
+.tf-orange-bonus-container case-fute:not([cochable]):not([entourable]) .case,
+.tf-purple-bonus-container case-fute:not([cochable]):not([entourable]) .case {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--tf-text-dim);
+  font-weight: 700;
 }
-
-.tf-score-chip--purple {
-  background: linear-gradient(150deg, #6818b8 0%, #260055 100%);
-  border-color: var(--c-purple-border);
-  color: #f0d8ff;
-}
-
-.tf-score-chip--white {
-  background: linear-gradient(150deg, #e8e8ec 0%, #b8b8c0 100%);
-  border-color: #fff;
-  color: #202028;
-}
-.tf-score-chip--white .tf-score-label { color: rgba(20,20,30,0.6); }
-
-.tf-score-chip--total {
-  background: #000;
-  border-color: #fff;
-  color: #fff;
-  min-width: 74px;
-}
-.tf-score-chip--total .tf-score-value { font-size: 1.35rem; }
-
 
 /* ═══════════════════════════════════════════════════════════════
    ZONE DES DÉS
    ═══════════════════════════════════════════════════════════════ */
 
 .tf-dice-zone {
-  max-width: 620px;
-  margin: 12px auto 0;
-  background: linear-gradient(150deg, #1a1a2e 0%, #0d0d1a 100%);
-  border: 2px solid #404060;
-  border-radius: var(--section-r);
-  padding: 12px 14px 16px;
-  box-shadow: 0 0 18px rgba(80, 80, 180, 0.15);
+  max-width: 760px;
+  margin: 28px auto 0;
+  background: var(--tf-panel);
+  border: 2px solid var(--tf-line);
+  border-radius: var(--tf-radius-lg);
+  padding: 18px 20px;
 }
 
-/* ── En-tête : titre + contrôles ────────────────────── */
 .tf-dice-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 14px;
 }
 
 .tf-dice-title {
-  font-size: 0.9rem;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  color: rgba(200, 200, 255, 0.85);
-  text-transform: uppercase;
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--tf-text);
 }
 
 .tf-dice-controls {
   display: flex;
-  align-items: center;
-  gap: 7px;
+  gap: 10px;
 }
-
-.tf-dice-label-seuil {
-  font-size: 0.72rem;
-  color: rgba(200, 200, 255, 0.55);
-  white-space: nowrap;
-}
-
-.tf-dice-seuil {
-  width: 46px;
-  height: 34px;
-  border-radius: 8px;
-  border: 2px solid #404060;
-  background: #111122;
-  color: #e8e8ff;
-  font-size: 1rem;
-  font-weight: 700;
-  text-align: center;
-  outline: none;
-  transition: border-color 0.15s;
-  -moz-appearance: textfield;
-}
-.tf-dice-seuil::-webkit-inner-spin-button,
-.tf-dice-seuil::-webkit-outer-spin-button { -webkit-appearance: none; }
-.tf-dice-seuil:focus { border-color: #7070c0; }
 
 .tf-dice-reroll-btn {
-  padding: 0 14px;
-  height: 34px;
+  padding: 0 16px;
+  height: 36px;
   border-radius: 8px;
-  border: 2px solid #5050a0;
-  background: linear-gradient(135deg, #2a2a6e, #181848);
-  color: #c8c8ff;
-  font-size: 0.78rem;
+  border: 2px solid var(--tf-gold);
+  background: linear-gradient(135deg, #3a2e08, #1a1608);
+  color: var(--tf-gold);
   font-weight: 700;
-  letter-spacing: 0.04em;
   cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s, border-color 0.15s, transform 0.1s;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+  box-shadow: 0 0 10px rgba(240,196,25,0.3);
 }
-.tf-dice-reroll-btn:hover {
-  background: linear-gradient(135deg, #3838a0, #202070);
-  border-color: #8080d0;
-}
-.tf-dice-reroll-btn:active { transform: scale(0.96); }
+.tf-dice-reroll-btn:hover { filter: brightness(1.2); }
 
-/* ── Dés actifs ─────────────────────────────────────── */
-.tf-dice-active {
+.tf-dice-active,
+.tf-dice-aside,
+.tf-dice-selected {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
   justify-content: center;
-  min-height: 100px;
 }
 
-/* ── Zone "mis de côté" ─────────────────────────────── */
-.tf-dice-aside-wrapper {
+.tf-dice-aside-wrapper,
+.tf-dice-selected-wrapper {
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  border-top: 1px dashed rgba(255,255,255,0.15);
 }
 
 .tf-dice-aside-label {
-  font-size: 0.55rem;
-  font-weight: 900;
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.28);
-  margin-bottom: 10px;
+  color: var(--tf-text-dim);
+  margin-bottom: 8px;
 }
 
-.tf-dice-aside {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
+/* ── Dés colorés (jeu-dice[color]) ───────────────────────────── */
+
+jeu-dice .dice-shell[data-color="blue"]   .dice-face { background: linear-gradient(160deg, var(--tf-blue), #1a5a92);   }
+jeu-dice .dice-shell[data-color="white"]  .dice-face { background: linear-gradient(160deg, #ffffff, #c9cddb); color:#12121c; }
+jeu-dice .dice-shell[data-color="orange"] .dice-face { background: linear-gradient(160deg, var(--tf-orange), #a85417); }
+jeu-dice .dice-shell[data-color="gold"]   .dice-face { background: linear-gradient(160deg, var(--tf-gold), #a7860f);   }
+jeu-dice .dice-shell[data-color="purple"] .dice-face { background: linear-gradient(160deg, var(--tf-purple), #6b2fa0); }
+jeu-dice .dice-shell[data-color="green"]  .dice-face { background: linear-gradient(160deg, var(--tf-green), #1f8c4c);  }
+
+/* ═══════════════════════════════════════════════════════════════
+   BOUTONS GÉNÉRAUX (réinitialiser, reset dés…)
+   ═══════════════════════════════════════════════════════════════ */
+
+.btn-reset {
+  padding: 0 16px;
+  height: 36px;
+  border-radius: 8px;
+  border: 2px solid var(--tf-red);
+  background: linear-gradient(135deg, #3a0f18, #1a080c);
+  color: var(--tf-red);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(229,57,90,0.3);
+}
+.btn-reset:hover { filter: brightness(1.2); }
+
+/* ═══════════════════════════════════════════════════════════════
+   BONUS DISPONIBLES
+   calculScore.js bascule la classe ".bonus-disponible" sur chaque
+   <case-fute> dès que le bonus est débloqué et pas encore utilisé
+   (retirée automatiquement dès qu'elle est cochée / entourée).
+   On affiche un halo pulsant, teinté selon la couleur de la section.
+   ═══════════════════════════════════════════════════════════════ */
+
+.tf-tours-section  case-fute.bonus-disponible { --tf-bonus-glow: #ffffff; }
+.tf-yellow-section  case-fute.bonus-disponible { --tf-bonus-glow: var(--tf-gold); }
+.tf-blue-section    case-fute.bonus-disponible { --tf-bonus-glow: var(--tf-blue); }
+.tf-green-section   case-fute.bonus-disponible { --tf-bonus-glow: var(--tf-green); }
+.tf-orange-section  case-fute.bonus-disponible { --tf-bonus-glow: var(--tf-orange); }
+.tf-purple-section  case-fute.bonus-disponible { --tf-bonus-glow: var(--tf-purple); }
+/* Les renards restent dans leur rouge caractéristique, même si la
+   section qui les entoure a déjà une autre couleur définie plus haut. */
+case-fute.renard.bonus-disponible { --tf-bonus-glow: var(--tf-red); }
+
+case-fute.bonus-disponible .case {
+  position: relative;
+  z-index: 2;
+  animation: tf-bonus-pulse 1.6s ease-in-out infinite;
 }
 
-/* Dés dans la zone "mis de côté" : légèrement désaturés */
-.tf-dice-aside jeu-dice {
-  opacity: 0.55;
-  filter: saturate(0.4) brightness(0.8);
-  transition: opacity 0.3s, filter 0.3s;
+/* Petit badge étincelle en coin, pour repérer le bonus même sur les
+   écrans qui désactivent les animations (voir prefers-reduced-motion). */
+case-fute.bonus-disponible .case::before {
+  content: "✦";
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  font-size: 0.6em;
+  line-height: 1;
+  color: var(--tf-bonus-glow, #ffe066);
+  text-shadow: 0 0 6px var(--tf-bonus-glow, #ffe066);
+  pointer-events: none;
 }
-.tf-dice-aside jeu-dice:hover {
-  opacity: 0.8;
-  filter: saturate(0.7) brightness(0.95);
+
+@keyframes tf-bonus-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 2px var(--tf-bonus-glow, #ffe066),
+      0 0 10px 2px var(--tf-bonus-glow, #ffe066);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow:
+      0 0 0 4px var(--tf-bonus-glow, #ffe066),
+      0 0 22px 8px var(--tf-bonus-glow, #ffe066);
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  case-fute.bonus-disponible .case {
+    animation: none;
+    box-shadow:
+      0 0 0 3px var(--tf-bonus-glow, #ffe066),
+      0 0 14px 4px var(--tf-bonus-glow, #ffe066);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 600px) {
+  .tf-tours-container .case { width: 44px; height: 44px; font-size: 1.05rem; }
+  .tf-yellow-section .case,
+  .tf-blue-section .case { width: 36px; height: 36px; font-size: 0.85rem; }
+  .tf-green-section .case,
+  .tf-orange-section .case,
+  .tf-purple-section .case { max-width: 26px; min-width: 0; font-size: 0.6rem; }
+  .tf-blue-score-container > .tf-blue-container .case { max-width: 24px; }
+  .tf-blue-container-bonus .case { max-width: 20px; }
+  .purple-middle { width: 6px; font-size: 0.7rem; }
+  .tf-green-section::before,
+  .tf-orange-section::before,
+  .tf-purple-section::before { font-size: 1rem; }
 }
