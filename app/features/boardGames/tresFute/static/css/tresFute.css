@@ -562,15 +562,17 @@ case-fute.renard .case {
   font-size: 0.85rem;
 }
 
-/* Multiplicateurs texte (x2 / x3) dans les rangées bonus */
-.tf-orange-bonus-container case-fute:not([cochable]):not([entourable]) .case,
-.tf-purple-bonus-container case-fute:not([cochable]):not([entourable]) .case {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  color: var(--tf-text-dim);
-  font-weight: 700;
+/* Cases vides (aucun attribut, aucun contenu) dans les rangées bonus :
+   invisibles, mais on garde leur place dans la rangée pour rester
+   aligné avec la ligne du dessus (visibility, pas display:none). */
+.tf-green-bonus-container case-fute:not([cochable]):not([entourable]) .case:has(.case__contenu:empty),
+.tf-orange-bonus-container case-fute:not([cochable]):not([entourable]) .case:has(.case__contenu:empty),
+.tf-purple-bonus-container case-fute:not([cochable]):not([entourable]) .case:has(.case__contenu:empty) {
+  visibility: hidden;
 }
+
+/* Multiplicateurs texte (x2 / x3) : plus de style particulier — elles
+   gardent l'apparence badge normale (identique à la case "+1"). */
 
 /* ═══════════════════════════════════════════════════════════════
    ZONE DES DÉS
