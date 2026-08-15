@@ -20,7 +20,10 @@
   const inputPrenom    = document.getElementById('tf-new-joueur-prenom');
   const inputNom       = document.getElementById('tf-new-joueur-nom');
 
-  const selectPartie = document.getElementById('tf-select-partie');
+  const selectPartie      = document.getElementById('tf-select-partie');
+  const champsNvPartie    = document.getElementById('tf-new-partie-fields');
+  const inputNbJoueurs    = document.getElementById('tf-new-partie-nb-joueurs');
+
   const inputScore   = document.getElementById('tf-modal-score');
   const zoneErreur   = document.getElementById('tf-modal-error');
 
@@ -88,7 +91,7 @@
     parties.forEach((p) => {
       const opt = document.createElement('option');
       opt.value = String(p.id);
-      opt.textContent = `Partie #${p.id}`;
+      opt.textContent = `Partie #${p.id} (${p.nb_scores}/${p.nb_joueurs} joueurs)`;
       selectPartie.insertBefore(opt, optionNouveau(selectPartie));
     });
   }
@@ -99,6 +102,7 @@
     cacherErreur();
     form.reset();
     champsNvJoueur.hidden = true;
+    champsNvPartie.hidden = true;
     inputScore.value = scoreActuel();
 
     overlay.hidden = false;
@@ -122,6 +126,11 @@
   selectJoueur.addEventListener('change', () => {
     const nouveau = selectJoueur.value === '__new__';
     champsNvJoueur.hidden = !nouveau;
+  });
+
+  selectPartie.addEventListener('change', () => {
+    const nouvelle = selectPartie.value === '__new__';
+    champsNvPartie.hidden = !nouvelle;
   });
 
   btnOuvrir.addEventListener('click', ouvrirModale);
@@ -160,7 +169,16 @@
 
   async function resoudrePartieId() {
     if (selectPartie.value === '__new__') {
-      const res = await fetch(`${API_BASE}/api/parties`, { method: 'POST' });
+      const nbJoueurs = parseInt(inputNbJoueurs.value, 10);
+      if (!Number.isInteger(nbJoueurs) || nbJoueurs < 1) {
+        throw new Error('Merci de renseigner le nombre de joueurs de la nouvelle partie.');
+      }
+
+      const res = await fetch(`${API_BASE}/api/parties`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nb_joueurs: nbJoueurs }),
+      });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Impossible de créer la partie.');
       return data.id;

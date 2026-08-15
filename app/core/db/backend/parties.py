@@ -25,22 +25,27 @@ def get_jeu_id_by_jeu_name(jeu: str) -> int | None:
 
 def get_parties_by_jeu(jeu: str) -> list[dict]:
     """
-    Retourne les parties existantes pour un jeu donné, les plus récentes en
-    premier (par id décroissant).
-    Ex : [{"id": 12, "nb_joueurs": 4}, ...]
+    Retourne les parties INCOMPLÈTES d'un jeu donné, les plus récentes en
+    premier (par id décroissant). Une partie est "incomplète" tant que le
+    nombre de scores déjà enregistrés (table joueurs_partie) est inférieur
+    à son nb_joueurs.
+    Ex : [{"id": 12, "nb_joueurs": 4, "nb_scores": 2}, ...]
     """
     conn = get_db()
     try:
         cur = conn.cursor()
         cur.execute("""
-            SELECT p.id, p.nb_joueurs
+            SELECT p.id, p.nb_joueurs, COUNT(jp.joueur_id) AS nb_scores
             FROM parties p
             JOIN jeux j ON j.id = p.jeu_id
+            LEFT JOIN joueurs_partie jp ON jp.partie_id = p.id
             WHERE j.name = %s
+            GROUP BY p.id, p.nb_joueurs
+            HAVING COUNT(jp.joueur_id) < p.nb_joueurs
             ORDER BY p.id DESC
         """, (jeu,))
         rows = cur.fetchall()
-        return [{"id": r[0], "nb_joueurs": r[1]} for r in rows]
+        return [{"id": r[0], "nb_joueurs": r[1], "nb_scores": r[2]} for r in rows]
     finally:
         release_db(conn)
 
@@ -104,12 +109,15 @@ def create_partie(donnees: dict):
         release_db(conn)
 
 
-def create_partie_simple(jeu: str) -> int:
+def create_partie_simple(jeu: str, nb_joueurs: int) -> int:
     """
-    Crée une partie "vide" pour un jeu donné, sans scores initiaux.
-    Utile pour le formulaire d'envoi de score joueur par joueur : on crée
-    la partie une fois, puis on y rattache les scores au fur et à mesure
-    via submit_score() / insert_joueur_partie().
+    Crée une partie "vide" pour un jeu donné (sans scores initiaux), avec
+    un nombre de joueurs attendu donné. Utile pour le formulaire d'envoi
+    de score joueur par joueur : on crée la partie une fois avec son
+    nombre de joueurs, puis on y rattache les scores au fur et à mesure
+    via submit_score() / insert_joueur_partie(). La partie disparaît de
+    la liste des parties sélectionnables (get_parties_by_jeu) dès qu'elle
+    a reçu autant de scores que de joueurs.
 
     Retourne l'id de la nouvelle partie.
     """
@@ -117,12 +125,15 @@ def create_partie_simple(jeu: str) -> int:
     if id_jeu is None:
         raise ValueError(f"Jeu introuvable en base : {jeu!r}")
 
+    if not isinstance(nb_joueurs, int) or nb_joueurs < 1:
+        raise ValueError("nb_joueurs doit être un entier positif.")
+
     conn = get_db()
     try:
         cur = conn.cursor()
         cur.execute(
             "INSERT INTO parties (jeu_id, nb_joueurs) VALUES (%s, %s) RETURNING id;",
-            (id_jeu, 0)
+            (id_jeu, nb_joueurs)
         )
         new_id = cur.fetchone()[0]  # type: ignore
         conn.commit()

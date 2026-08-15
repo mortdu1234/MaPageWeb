@@ -71,12 +71,18 @@ def api_get_parties():
 @tresFute_bp.route("/api/parties", methods=["POST"])
 @require_permission("showGame")
 def api_create_partie():
-    """Crée une nouvelle partie (vide) pour ce jeu."""
+    """Crée une nouvelle partie (vide). Attend { "nb_joueurs": int }."""
+    data = request.get_json(silent=True) or {}
+    nb_joueurs = data.get("nb_joueurs")
+
+    if not isinstance(nb_joueurs, int) or nb_joueurs < 1:
+        return jsonify({"error": "Le nombre de joueurs doit être un entier positif."}), 400
+
     try:
-        partie_id = create_partie_simple(NOM_JEU)
+        partie_id = create_partie_simple(NOM_JEU, nb_joueurs)
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 400
-    return jsonify({"id": partie_id}), 201
+    return jsonify({"id": partie_id, "nb_joueurs": nb_joueurs}), 201
 
 
 # ═══════════════════════════════════════════════════════════════

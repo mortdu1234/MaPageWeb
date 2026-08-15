@@ -9,8 +9,6 @@
 
 {% block submit_url %}{{ url_for('tresFute.tresFute_submit') }}{% endblock %}
 
-{% block extra_controls %}
-{% endblock %}
 
 {% block content %}
 <main class="tf-main">
@@ -449,6 +447,9 @@
             <option value="" disabled selected>— Choisir une partie —</option>
             <option value="__new__">➕ Nouvelle partie…</option>
           </select>
+          <div class="tf-modal-new-fields" id="tf-new-partie-fields" hidden>
+            <input type="number" id="tf-new-partie-nb-joueurs" placeholder="Nombre de joueurs" min="1" step="1">
+          </div>
         </div>
 
         <!-- Score -->
@@ -468,11 +469,8 @@
   </div>
 
   <div class="control-group">
-  <button class="btn-reset" id="btn-reset" type="button">🔄 Réinitialiser</button>
-  <button class="btn-envoyer" id="btn-envoyer-score" type="button">📤 Envoyer le score</button>
-</div>
-
-
+    <button class="btn-envoyer" id="btn-envoyer-score" type="button">📤 Envoyer le score</button>
+  </div>
   <style>
     .btn-envoyer {
       padding: 0 16px;

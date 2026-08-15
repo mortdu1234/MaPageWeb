@@ -1,6 +1,6 @@
 """
 db/joueur_partie.py
-Toutes les requêtes SQL liées à la table `joueur_partie`.
+Toutes les requêtes SQL liées à la table `joueurs_partie`.
 """
 
 from . import get_db, release_db
@@ -16,7 +16,7 @@ def insert_joueur_partie(joueur_id: int, partie_id: int, score: int) -> None:
     try:
         cur = conn.cursor()
         cur.execute(
-            "INSERT INTO joueur_partie (joueur_id, partie_id, score) VALUES (%s, %s, %s)",
+            "INSERT INTO joueurs_partie (joueur_id, partie_id, score) VALUES (%s, %s, %s)",
             (joueur_id, partie_id, score)
         )
         conn.commit()
