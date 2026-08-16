@@ -71,7 +71,7 @@ def _register_blueprints(app: Flask) -> None:
     from .features.apropos.routes import apropos_bp
     from .features.contact.routes import contact_bp
 
-
+    from .features.boardGames.skyjo.routes import skyjo_bp
     from .features.boardGames.ohanami.routes import ohanami_bp
     from .features.boardGames.triomino.routes import triomino_bp
     from .features.boardGames.tresFute.routes import tresFute_bp
@@ -86,6 +86,7 @@ def _register_blueprints(app: Flask) -> None:
     from .features.databaseReader.routes import db_reader_bp
     blueprints = [
         permissions_bp,
+        skyjo_bp,
         ohanami_bp,triomino_bp,tresFute_bp,trainMexicain_bp,qwirkle_bp,ptitBac_bp,
         boardGame_smileLife_bp,db_reader_bp,
         database_bp,
