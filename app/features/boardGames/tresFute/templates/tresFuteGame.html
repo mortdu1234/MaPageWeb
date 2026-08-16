@@ -472,23 +472,31 @@
     <button class="btn-envoyer" id="btn-envoyer-score" type="button">📤 Envoyer le score</button>
   </div>
   <style>
+    .control-group {
+      display: flex;
+      justify-content: center;
+      margin: 28px auto 8px;
+    }
+
     .btn-envoyer {
-      padding: 0 16px;
-      height: 38px;
-      border-radius: 8px;
+      padding: 0 28px;
+      height: 48px;
+      border-radius: var(--tf-radius-md, 18px);
       border: 2px solid #2e7d4f;
       background: linear-gradient(135deg, #1e5030, #113018);
       color: #a0e0c0;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       font-weight: 700;
       letter-spacing: 0.03em;
       cursor: pointer;
-      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      transition: background 0.15s, border-color 0.15s, transform 0.1s, box-shadow 0.15s;
     }
     .btn-envoyer:hover {
       background: linear-gradient(135deg, #257048, #164522);
       border-color: #4fae7a;
       color: #d0ffe6;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 12px rgba(79, 174, 122, 0.35);
     }
     .btn-envoyer:active { transform: scale(0.97); }
 
@@ -577,7 +585,11 @@
       margin-top: 6px;
     }
     .tf-modal-new-fields[hidden] { display: none; }
-    .tf-modal-new-fields input { flex: 1; }
+    .tf-modal-new-fields input {
+      flex: 1 1 0;
+      min-width: 0;
+      box-sizing: border-box;
+    }
 
     .tf-modal-error {
       background: rgba(220, 60, 60, 0.15);
