@@ -30,4 +30,31 @@ def skyjo_game():
 @require_permission("showGame")
 @validate_json("skyjo.json")
 def skyjo_submit():
+    data = request.get_json()
+    
+    nb_joueurs = _int(data.get("nb_joueurs"), 0)
+    joueurs = data.get("joueurs", [])
+    
+    # Construire le dictionnaire de scores : {id_joueur: score}
+    scores = {}
+    for joueur in joueurs:
+        joueur_id = _int(joueur.get("id"))
+        score = _int(joueur.get("score"), 0)
+        
+        if joueur_id is not None:
+            scores[joueur_id] = score
+    
+    # Créer la partie avec les scores
+    try:
+        payload = {
+            "jeu": "skyjo",
+            "nb_joueurs": nb_joueurs,
+            "scores": scores
+        }
+        partie_id = create_partie(payload)
+        flash(f"✓ Partie Skyjo créée avec succès (ID: {partie_id})", "success")
+    except Exception as e:
+        flash(f"✗ Erreur lors de la création de la partie : {str(e)}", "error")
+        return redirect(url_for("skyjo.skyjo_game"))
+    
     return redirect(url_for("jeux.skyjo_game"))

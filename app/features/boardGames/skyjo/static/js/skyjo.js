@@ -272,28 +272,22 @@ class SkyjoScore {
     const nb      = this.nbJoueurs;
     const players = this._getSelectedPlayers();
 
-    const manches = [];
-    document.querySelectorAll(".round-row").forEach(tr => {
-      const r     = parseInt(tr.dataset.round);
-      const entry = { manche: r, joueurs: {} };
-      for (let j = 1; j <= nb; j++) {
-        const inp = document.getElementById(`round_r${r}_j${j}`);
-        entry.joueurs[`joueur${j}`] = inp ? (parseInt(inp.value) || 0) : 0;
-      }
-      manches.push(entry);
+    // Ajouter le score total à chaque joueur
+    const joueursAvecScores = players.map(p => {
+      const totalEl = document.getElementById(`total-j${p.joueur}`);
+      const score   = totalEl ? (parseInt(totalEl.textContent) || 0) : 0;
+      return {
+        joueur: p.joueur,
+        id:     p.id,
+        prenom: p.prenom,
+        nom:    p.nom,
+        score:  score,
+      };
     });
-
-    const totaux = {};
-    for (let j = 1; j <= nb; j++) {
-      const totalEl = document.getElementById(`total-j${j}`);
-      totaux[`joueur${j}`] = totalEl ? (parseInt(totalEl.textContent) || 0) : 0;
-    }
 
     return {
       nb_joueurs: nb,
-      joueurs:    players,
-      manches,
-      totaux,
+      joueurs:    joueursAvecScores,
     };
   }
 
