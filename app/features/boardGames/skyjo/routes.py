@@ -28,7 +28,6 @@ def skyjo_game():
 
 @skyjo_bp.route("/submit", methods=["POST"])
 @require_permission("showGame")
-@validate_json("skyjo.json")
 def skyjo_submit():
     data = request.get_json()
     
