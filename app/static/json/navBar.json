@@ -1,7 +1,7 @@
 [
   { "label": "Accueil",         "href": "/" },
   { "label": "Jeux de société", "href": "/jeux" , "permission": ["showGame", "admin"]},
-  { "label": "Statistiques", "href": "/statistiques" , "permission": ["showGame"]},
+  { "label": "Statistiques", "href": "/statistiques" , "permission": ["showGame", "admin"]},
   { "label": "À propos",        "href": "/apropos" },
   { "label": "Contact",         "href": "/contact" },
   { "label": "Mes projets",     "href": "/projets" },

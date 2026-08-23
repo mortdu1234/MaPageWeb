@@ -167,6 +167,100 @@
   font-weight: 700;
 }
 
+/* ── Lignes "jeu" dépliables dans la fiche joueur ── */
+.stats-hint {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--muted, #7a7168);
+}
+
+tr.joueur-jeu-row {
+  cursor: pointer;
+}
+
+tr.joueur-jeu-row:focus {
+  outline: 2px solid var(--gold, #b89a6a);
+  outline-offset: -2px;
+}
+
+tr.joueur-jeu-row td.td-left {
+  color: var(--accent, #3b3028);
+  font-weight: 600;
+}
+
+tr.joueur-jeu-detail-row td {
+  background: rgba(184, 154, 106, 0.04);
+  padding: 16px;
+}
+
+/* ── Historique des parties (jeu et joueur) ── */
+.stats-history {
+  margin-top: 20px;
+}
+
+.btn-toggle {
+  background: transparent;
+  border: 1px solid var(--gold, #b89a6a);
+  color: var(--gold, #b89a6a);
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.btn-toggle:hover {
+  background: var(--gold, #b89a6a);
+  color: #fff;
+}
+
+.parties-list {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.partie-card {
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #e0d9d0);
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+.partie-card-header {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted, #7a7168);
+  margin-bottom: 8px;
+}
+
+.partie-scores {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.partie-scores li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.9rem;
+  padding: 3px 0;
+}
+
+.partie-scores li.is-winner {
+  font-weight: 700;
+  color: var(--gold, #b89a6a);
+}
+
+.partie-scores li strong {
+  font-variant-numeric: tabular-nums;
+}
+
 @media (max-width: 640px) {
   .stats-select-row {
     flex-direction: column;

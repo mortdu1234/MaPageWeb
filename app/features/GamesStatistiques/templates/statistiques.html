@@ -57,6 +57,9 @@
         {% endfor %}
       </select>
     </div>
+
+    <div id="jeu-extremes" class="stats-cards" hidden></div>
+
     <div class="stats-table-wrap">
       <table class="stats-table" id="table-jeu" hidden>
         <thead>
@@ -66,11 +69,20 @@
             <th>1<sup>ère</sup> place</th>
             <th>Dernière place</th>
             <th>Score moyen</th>
+            <th>Score min</th>
+            <th>Score max</th>
           </tr>
         </thead>
         <tbody id="classement-jeu-body"></tbody>
       </table>
       <p id="jeu-empty" class="stats-empty" hidden>Aucune partie complète enregistrée pour ce jeu.</p>
+    </div>
+
+    <div class="stats-history" id="jeu-parties-wrap" hidden>
+      <button type="button" class="btn-toggle" id="toggle-jeu-parties" aria-expanded="false">
+        Afficher l'historique des parties
+      </button>
+      <div id="jeu-parties-list" class="parties-list" hidden></div>
     </div>
   </section>
 
@@ -98,11 +110,14 @@
             <th>1<sup>ère</sup> place</th>
             <th>Dernière place</th>
             <th>Score moyen</th>
+            <th>Score min</th>
+            <th>Score max</th>
           </tr>
         </thead>
         <tbody id="stats-joueur-body"></tbody>
       </table>
       <p id="joueur-empty" class="stats-empty" hidden>Ce joueur n'a encore aucune partie complète enregistrée.</p>
+      <p class="stats-hint" id="joueur-hint" hidden>Cliquez sur un jeu pour voir le détail de ses parties.</p>
     </div>
   </section>
 

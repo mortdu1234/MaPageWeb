@@ -7,6 +7,9 @@ from app.core.db.backend.stats import (
     get_nb_parties_par_jeu,
     get_classement_global,
     get_classement_par_jeu,
+    get_extremes_jeu,
+    get_parties_detail_par_jeu,
+    get_parties_detail_joueur_jeu,
     get_stats_joueur,
 )
 from app.core.db.backend.joueurs import get_all_joueurs
@@ -40,8 +43,15 @@ def api_global():
 @stats_bp.route("/api/jeu/<int:jeu_id>")
 @require_permission("showStats")
 def api_jeu(jeu_id):
-    """Classement détaillé pour un jeu donné."""
-    return jsonify(get_classement_par_jeu(jeu_id))
+    """
+    Classement détaillé, extrêmes (score le plus bas / le plus haut)
+    et historique complet des parties pour un jeu donné.
+    """
+    return jsonify({
+        "classement": get_classement_par_jeu(jeu_id),
+        "extremes": get_extremes_jeu(jeu_id),
+        "parties": get_parties_detail_par_jeu(jeu_id),
+    })
 
 
 @stats_bp.route("/api/joueur/<int:joueur_id>")
@@ -52,3 +62,14 @@ def api_joueur(joueur_id):
     if data is None:
         abort(404)
     return jsonify(data)
+
+
+@stats_bp.route("/api/joueur/<int:joueur_id>/jeu/<int:jeu_id>")
+@require_permission("showStats")
+def api_joueur_jeu(joueur_id, jeu_id):
+    """
+    Historique des parties d'un jeu auxquelles un joueur a participé
+    (avec le score de tous les joueurs de chaque partie). Utilisé pour
+    dérouler le détail quand on clique sur un jeu dans la fiche joueur.
+    """
+    return jsonify(get_parties_detail_joueur_jeu(joueur_id, jeu_id))
