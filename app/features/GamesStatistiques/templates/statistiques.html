@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Statistiques{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('statistiques.static', filename='css/stats.css') }}"/>
+{% endblock %}
+
+{% block content %}
+<div class="stats-page">
+
+  <header class="stats-header">
+    <h1>Statistiques</h1>
+    <p class="stats-intro">
+      Retrouvez ici les statistiques de toutes les parties enregistrées :
+      vue d'ensemble, classement général, détail par jeu et détail par joueur.
+    </p>
+  </header>
+
+  <!-- Vue d'ensemble : nb de parties par jeu -->
+  <section class="stats-section">
+    <h2>Parties jouées par jeu</h2>
+    <div id="parties-par-jeu" class="stats-cards">
+      <p class="stats-loading">Chargement…</p>
+    </div>
+  </section>
+
+  <!-- Classement général -->
+  <section class="stats-section">
+    <h2>Classement général</h2>
+    <div class="stats-table-wrap">
+      <table class="stats-table">
+        <thead>
+          <tr>
+            <th class="th-left">Joueur</th>
+            <th>Parties</th>
+            <th>1<sup>ère</sup> place</th>
+            <th>Dernière place</th>
+          </tr>
+        </thead>
+        <tbody id="classement-global-body">
+          <tr><td colspan="4" class="stats-loading">Chargement…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Statistiques par jeu -->
+  <section class="stats-section">
+    <h2>Statistiques par jeu</h2>
+    <div class="stats-select-row">
+      <label for="select-jeu">Choisir un jeu :</label>
+      <select id="select-jeu">
+        <option value="">— Sélectionner —</option>
+        {% for jeu in jeux %}
+        <option value="{{ jeu.id }}">{{ jeu.name | capitalize }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="stats-table-wrap">
+      <table class="stats-table" id="table-jeu" hidden>
+        <thead>
+          <tr>
+            <th class="th-left">Joueur</th>
+            <th>Parties</th>
+            <th>1<sup>ère</sup> place</th>
+            <th>Dernière place</th>
+            <th>Score moyen</th>
+          </tr>
+        </thead>
+        <tbody id="classement-jeu-body"></tbody>
+      </table>
+      <p id="jeu-empty" class="stats-empty" hidden>Aucune partie complète enregistrée pour ce jeu.</p>
+    </div>
+  </section>
+
+  <!-- Statistiques par joueur -->
+  <section class="stats-section">
+    <h2>Statistiques par joueur</h2>
+    <div class="stats-select-row">
+      <label for="select-joueur">Choisir un joueur :</label>
+      <select id="select-joueur">
+        <option value="">— Sélectionner —</option>
+        {% for joueur in joueurs %}
+        <option value="{{ joueur.id }}">{{ joueur.prenom }} {{ joueur.nom }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div id="joueur-totaux" class="stats-cards" hidden></div>
+
+    <div class="stats-table-wrap">
+      <table class="stats-table" id="table-joueur" hidden>
+        <thead>
+          <tr>
+            <th class="th-left">Jeu</th>
+            <th>Parties</th>
+            <th>1<sup>ère</sup> place</th>
+            <th>Dernière place</th>
+            <th>Score moyen</th>
+          </tr>
+        </thead>
+        <tbody id="stats-joueur-body"></tbody>
+      </table>
+      <p id="joueur-empty" class="stats-empty" hidden>Ce joueur n'a encore aucune partie complète enregistrée.</p>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('statistiques.static', filename='js/stats.js') }}" defer></script>
+{% endblock %}
