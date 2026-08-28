@@ -167,6 +167,40 @@ class Case extends HTMLElement {
   /** Décoche la case */
   decoche() { this.removeAttribute('cochee'); }
 
+  /**
+   * Force l'état d'une case "entourable" sans passer par un clic.
+   * 0 = rien | 1 = entourée | 2 = cochée
+   * Utilisé notamment par la restauration de sauvegarde locale.
+   */
+  setEtat(etat) {
+    if (![0, 1, 2].includes(etat)) return;
+    this._etat = etat;
+    const div = this.querySelector('.case');
+    if (!div) return;
+    div.classList.remove('case--entouree', 'case--cochee');
+    if (etat === 1) div.classList.add('case--entouree');
+    if (etat === 2) div.classList.add('case--cochee');
+  }
+
+  /**
+   * Force la valeur d'une case "modifiable" sans passer par la saisie.
+   * Passer null (ou une valeur hors 0–18) efface la case.
+   * Utilisé notamment par la restauration de sauvegarde locale.
+   */
+  setValeur(valeur) {
+    const contenu = this.querySelector('.case__contenu');
+    if (!contenu) return;
+
+    const num = parseInt(valeur, 10);
+    if (valeur === null || valeur === undefined || isNaN(num) || num < 0 || num > 18) {
+      this._valeur = null;
+      contenu.textContent = '';
+    } else {
+      this._valeur = num;
+      contenu.textContent = num;
+    }
+  }
+
   /** true si la case est cochée */
   get estCochee() { return this.hasAttribute('cochee'); }
 
