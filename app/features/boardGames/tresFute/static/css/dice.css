@@ -195,3 +195,13 @@ jeu-dice {
   .dice-face { width: 64px; height: 64px; }
   .dice-value { font-size: 1.5rem; }
 }
+
+@media (max-width: 360px) {
+  .dice-face { width: 52px; height: 52px; }
+  .dice-value { font-size: 1.2rem; }
+  .dice-label { font-size: 0.52rem; }
+  .dice-shell[data-size="4"] .dice-face,
+  .dice-shell[data-size="10"] .dice-face,
+  .dice-shell[data-size="12"] .dice-face,
+  .dice-shell[data-size="20"] .dice-face { width: 56px; height: 56px; }
+}
