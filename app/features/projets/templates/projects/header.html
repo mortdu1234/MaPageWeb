@@ -1,0 +1,30 @@
+{# En-tête d'un projet. Attend la variable `project`. #}
+<header class="project-header">
+  <h1>{{ project.nom }}</h1>
+  <p class="project-pitch">{{ project.accroche }}</p>
+
+  <dl class="project-meta">
+    <div>
+      <dt>Date</dt>
+      <dd>{{ project.date }}</dd>
+    </div>
+    <div>
+      <dt>Type</dt>
+      <dd>{{ types[project.type] }}</dd>
+    </div>
+    {% if project.git %}
+    <div>
+      <dt>Code source</dt>
+      <dd><a href="{{ project.git }}" target="_blank" rel="noopener noreferrer">Voir le dépôt Git</a></dd>
+    </div>
+    {% endif %}
+    <div class="project-meta-stack">
+      <dt>Technologies</dt>
+      <dd>
+        <ul class="tags">
+          {% for s in project.stack %}<li>{{ s }}</li>{% endfor %}
+        </ul>
+      </dd>
+    </div>
+  </dl>
+</header>
