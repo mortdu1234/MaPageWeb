@@ -764,10 +764,80 @@ case-fute.bonus-disponible .case::before {
    RESPONSIVE
    ═══════════════════════════════════════════════════════════════ */
 
+/* ── Reset de base : évite tout débordement horizontal ────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { max-width: 100%; overflow-x: hidden; }
+
+.tf-main { overflow-x: hidden; }
+
+/* ── Fluide par défaut (s'applique à tous les gabarits) ───────── */
+
+.tf-main {
+  padding: clamp(12px, 4vw, 24px) clamp(8px, 3vw, 16px) clamp(28px, 6vw, 48px);
+}
+
+.tf-sheet {
+  width: 100%;
+  max-width: 760px;
+  padding-inline: 0;
+}
+
+.tf-score-zone {
+  width: 100%;
+}
+
+.tf-dice-zone {
+  width: 100%;
+  max-width: 760px;
+}
+
+/* ── Grand écran (desktop large) ──────────────────────────────── */
+@media (min-width: 1400px) {
+  .tf-sheet,
+  .tf-dice-zone { max-width: 860px; }
+  .page-header h1 { font-size: 2.2rem; }
+}
+
+/* ── Tablette (portrait / petits laptops) ─────────────────────── */
+@media (max-width: 900px) {
+  .tf-yellow-blue-row { gap: 12px; }
+  .tf-yellow-blue-row .tf-yellow-section,
+  .tf-yellow-blue-row .tf-blue-section { min-width: 260px; }
+}
+
+/* ── Mobile standard ───────────────────────────────────────────── */
 @media (max-width: 600px) {
+  .page-header h1 { font-size: 1.5rem; }
+  .page-header p { font-size: 0.8rem; }
+
+  .tf-score-zone { gap: 6px; }
+  .tf-score-chip { padding: 6px 10px; font-size: 0.75rem; gap: 5px; }
+  .tf-score-chip--total .tf-score-value { font-size: 1rem; }
+
+  .tf-section { padding: 10px 10px; }
+
   .tf-tours-container .case { width: 44px; height: 44px; font-size: 1.05rem; }
+  .tf-tours-container-bonus .case { width: 38px; height: 38px; font-size: 0.8rem; }
+  .tf-tours-container,
+  .tf-tours-container-bonus { gap: 6px; }
+
+  .tf-refresh-section,
+  .tf-plusOne-section { padding: 10px 12px; }
+  .tf-refresh-container,
+  .tf-plusOne-container { gap: 6px; }
+  .tf-refresh-container .case,
+  .tf-plusOne-container .case { width: 32px; height: 32px; }
+
+  .tf-yellow-blue-row { flex-direction: column; }
+  .tf-yellow-blue-row .tf-yellow-section,
+  .tf-yellow-blue-row .tf-blue-section { min-width: 0; width: 100%; }
+
   .tf-yellow-section .case,
   .tf-blue-section .case { width: 36px; height: 36px; font-size: 0.85rem; }
+  .tf-yellow-row,
+  .tf-blue-row { gap: 6px; }
+
   .tf-green-section .case,
   .tf-orange-section .case,
   .tf-purple-section .case { max-width: 26px; min-width: 0; font-size: 0.6rem; }
@@ -777,4 +847,66 @@ case-fute.bonus-disponible .case::before {
   .tf-green-section::before,
   .tf-orange-section::before,
   .tf-purple-section::before { font-size: 1rem; }
+
+  .tf-green-section,
+  .tf-orange-section,
+  .tf-purple-section { padding: 8px 12px; gap: 8px; }
+
+  .tf-dice-zone { padding: 14px 12px; }
+  .tf-dice-header { flex-direction: column; align-items: stretch; text-align: center; }
+  .tf-dice-controls { justify-content: center; flex-wrap: wrap; }
+  .tf-dice-reroll-btn,
+  .btn-reset { flex: 1 1 140px; }
+
+  .control-group { flex-direction: column; gap: 10px; padding-inline: 8px; }
+  .btn-envoyer,
+  .btn-reset-sauvegarde { width: 100%; }
+}
+
+/* ── Petits téléphones ─────────────────────────────────────────── */
+@media (max-width: 400px) {
+  .tf-score-zone { gap: 5px; }
+  .tf-score-chip { padding: 5px 8px; font-size: 0.68rem; }
+
+  .tf-tours-container .case { width: 38px; height: 38px; font-size: 0.9rem; }
+  .tf-tours-container-bonus .case { width: 32px; height: 32px; font-size: 0.7rem; }
+
+  .tf-yellow-section .case,
+  .tf-blue-section .case { width: 30px; height: 30px; font-size: 0.72rem; }
+
+  .tf-green-section .case,
+  .tf-orange-section .case,
+  .tf-purple-section .case { max-width: 21px; font-size: 0.5rem; }
+  .tf-blue-score-container > .tf-blue-container .case { max-width: 19px; }
+  .tf-blue-container-bonus .case { max-width: 16px; }
+
+  .tf-green-score-container,
+  .tf-green-container,
+  .tf-green-bonus-container,
+  .tf-orange-container,
+  .tf-orange-bonus-container,
+  .tf-purple-container,
+  .tf-purple-bonus-container { gap: 3px; }
+
+  .purple-middle { width: 4px; font-size: 0.6rem; }
+
+  .tf-modal { max-width: 100%; }
+  .tf-modal-form { padding: 14px; }
+}
+
+/* ── Très petits écrans (≤ 340px) ────────────────────────────────── */
+@media (max-width: 340px) {
+  .tf-score-zone { flex-direction: column; align-items: stretch; }
+  .tf-score-chip { justify-content: space-between; }
+
+  .tf-tours-container .case { width: 34px; height: 34px; font-size: 0.8rem; }
+  .tf-yellow-section .case,
+  .tf-blue-section .case { width: 26px; height: 26px; font-size: 0.62rem; }
+}
+
+/* ── Mode paysage bas (mobile couché) ──────────────────────────── */
+@media (max-height: 480px) and (orientation: landscape) {
+  .page-header { margin-bottom: 8px; }
+  .tf-sheet { gap: 10px; }
+  .tf-section { padding: 8px 10px; }
 }

@@ -18,7 +18,7 @@ stats_bp = make_blueprint("statistiques", __name__, __file__, "/statistiques")
 
 
 @stats_bp.route("/")
-@require_permission("showStats")
+@require_permission("showStatistiques")
 def page():
     """Page principale des statistiques (bâtie sur base.html)."""
     return render_template(
@@ -31,7 +31,7 @@ def page():
 # ─── API JSON consommée par stats.js ──────────────────────────────────────────
 
 @stats_bp.route("/api/global")
-@require_permission("showStats")
+@require_permission("showStatistiques")
 def api_global():
     """Vue d'ensemble : nb de parties par jeu + classement général tous jeux confondus."""
     return jsonify({
@@ -41,7 +41,7 @@ def api_global():
 
 
 @stats_bp.route("/api/jeu/<int:jeu_id>")
-@require_permission("showStats")
+@require_permission("showStatistiques")
 def api_jeu(jeu_id):
     """
     Classement détaillé, extrêmes (score le plus bas / le plus haut)
@@ -55,7 +55,7 @@ def api_jeu(jeu_id):
 
 
 @stats_bp.route("/api/joueur/<int:joueur_id>")
-@require_permission("showStats")
+@require_permission("showStatistiques")
 def api_joueur(joueur_id):
     """Statistiques détaillées (par jeu + totaux) pour un joueur donné."""
     data = get_stats_joueur(joueur_id)
@@ -65,7 +65,7 @@ def api_joueur(joueur_id):
 
 
 @stats_bp.route("/api/joueur/<int:joueur_id>/jeu/<int:jeu_id>")
-@require_permission("showStats")
+@require_permission("showStatistiques")
 def api_joueur_jeu(joueur_id, jeu_id):
     """
     Historique des parties d'un jeu auxquelles un joueur a participé
