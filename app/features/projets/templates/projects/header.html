@@ -9,16 +9,19 @@
       <dt>Date</dt>
       <dd>{{ project.date }}</dd>
     </div>
+    {% if show_type|default(true) %}
     <div>
       <dt>Type</dt>
       <dd>{{ type_labels[project.type] }}</dd>
     </div>
+    {% endif %}
     {% if project.git %}
     <div>
       <dt>Code source</dt>
       <dd><a href="{{ project.git }}" target="_blank" rel="noopener noreferrer">Voir le dépôt Git</a></dd>
     </div>
     {% endif %}
+    {% if project.stack %}
     <div class="project-meta-stack">
       <dt>Technologies</dt>
       <dd>
@@ -27,5 +30,6 @@
         </ul>
       </dd>
     </div>
+    {% endif %}
   </dl>
 </header>

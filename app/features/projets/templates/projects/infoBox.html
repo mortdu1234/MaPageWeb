@@ -5,7 +5,7 @@
    data-type="{{ project.type }}"
    data-stack="{{ project.stack | join('|') }}">
   <div class="infobox-meta">
-    <span class="infobox-type">{{ type_labels[project.type] }}</span>
+    {% if show_type|default(true) %}<span class="infobox-type">{{ type_labels[project.type] }}</span>{% endif %}
     <time>{{ project.date }}</time>
   </div>
   <h3 class="infobox-title">{{ project.nom }}</h3>

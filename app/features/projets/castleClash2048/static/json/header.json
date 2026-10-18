@@ -1,0 +1,9 @@
+{
+  "nom": "Solveur 2048 (Castle Clash)",
+  "date": "A COMPLETER",
+  "type": "personnel",
+  "git": null,
+  "court": "Programme qui analyse l'état du jeu 2048 de Castle Clash, détermine le meilleur coup et le joue.",
+  "accroche": "A COMPLETER",
+  "stack": []
+}

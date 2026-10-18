@@ -1,0 +1,11 @@
+{
+  "nom": "Génération de nombres aléatoires",
+  "date": "A COMPLETER",
+  "type": "academique",
+  "git": null,
+  "court": "Étude de différents algorithmes de génération de nombres aléatoires et implémentation en Python.",
+  "accroche": "A COMPLETER",
+  "stack": [
+    "Python"
+  ]
+}

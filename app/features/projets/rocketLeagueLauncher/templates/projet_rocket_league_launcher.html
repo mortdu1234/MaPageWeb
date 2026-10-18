@@ -1,0 +1,31 @@
+{% extends tpl("projects/projectBase.html") %}
+
+{% block project_styles %}
+<link rel="stylesheet" href="{{ url_for('projets.projet_rocket_league_launcher.static', filename='css/rocketLeagueLauncher.css') }}"/>
+{% endblock %}
+
+{# Tout ce qui est dans ce block est libre : change, ajoute ou supprime des sections. #}
+{% block project_content %}
+
+  <section class="project-section" aria-labelledby="objectif">
+    <h2 id="objectif">Objectif du projet</h2>
+    <p>A COMPLETER</p>
+  </section>
+
+  <section class="project-section" aria-labelledby="realisation">
+    <h2 id="realisation">Réalisation du projet</h2>
+    <p>A COMPLETER</p>
+  </section>
+
+  <section class="project-section" aria-labelledby="problemes">
+    <h2 id="problemes">Problèmes rencontrés</h2>
+    <p>A COMPLETER</p>
+  </section>
+
+{% endblock %}
+
+{# Optionnel : un script propre à cette page
+{% block project_scripts %}
+<script src="{{ url_for('projets.projet_rocket_league_launcher.static', filename='js/rocketLeagueLauncher.js') }}" defer></script>
+{% endblock %}
+#}

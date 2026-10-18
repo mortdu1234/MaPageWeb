@@ -12,14 +12,24 @@ from .rsaAes.routes import rsa_aes_bp
 from .algoGenetique.routes import algo_genetique_bp
 from .etudeSiem.routes import etude_siem_bp
 from .loupGarou.routes import loup_garou_bp
+from .splendor.routes import splendor_bp
+from .nombresAleatoires.routes import nombres_aleatoires_bp
+from .adSkipper.routes import ad_skipper_bp
+from .rocketLeagueLauncher.routes import rocket_league_launcher_bp
+from .castleClash2048.routes import castle_clash_2048_bp
 
 # Ordre d'affichage dans le hub. Pour ajouter un projet : importer son blueprint et l'ajouter ici.
 PROJECT_BLUEPRINTS = [
     homelab_bp,
     smile_life_bp,
     site_web_bp,
+    castle_clash_2048_bp,
+    rocket_league_launcher_bp,
+    ad_skipper_bp,
     rsa_aes_bp,
+    nombres_aleatoires_bp,
     algo_genetique_bp,
+    splendor_bp,
     etude_siem_bp,
     loup_garou_bp,
 ]

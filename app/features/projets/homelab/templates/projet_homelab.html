@@ -1,6 +1,7 @@
 {% extends tpl("projects/projectBase.html") %}
 
 {% block project_styles %}
+<link rel="stylesheet" href="{{ url_for('projets.static', filename='css/infobox.css') }}"/>
 <link rel="stylesheet" href="{{ url_for('projets.projet_homelab.static', filename='css/homelab.css') }}"/>
 {% endblock %}
 
@@ -26,6 +27,16 @@
   <section class="project-section" aria-labelledby="problemes">
     <h2 id="problemes">Problèmes rencontrés</h2>
     <p class="muted">Cette section est en cours de rédaction.</p>
+  </section>
+
+  <section class="project-section" aria-labelledby="services">
+    <h2 id="services">Services du HomeLab</h2>
+    {% set show_type = false %}
+    <div class="hub-grid">
+      {% for project in services %}
+        {% include tpl("projects/infoBox.html") %}
+      {% endfor %}
+    </div>
   </section>
 
 {% endblock %}

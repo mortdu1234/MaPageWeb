@@ -5,12 +5,15 @@ REQUIRED = ("nom", "date", "type", "court", "accroche", "stack")
 TYPES = ("academique", "personnel")
 
 
-def load_header(bp):
+def load_header(bp, endpoint_prefix="projets"):
     """Lit static/json/header.json du dossier d'un projet.
 
     Ce fichier alimente à la fois l'infobox du hub et l'en-tête de la page du projet.
     Champs : nom, date, type ("academique" | "personnel"), git (URL ou null),
-    court (description de l'infobox), accroche (phrase du CV), stack (liste).
+    court (description de l'infobox), accroche (phrase du CV), stack (liste, peut être vide).
+
+    endpoint_prefix : chemin du blueprint parent. Pour un projet directement sous /projets
+    c'est "projets" ; pour un service du HomeLab : "projets.projet_homelab".
     """
     path = Path(bp.root_path) / "static" / "json" / "header.json"
     with path.open(encoding="utf-8") as f:
@@ -23,5 +26,5 @@ def load_header(bp):
         raise ValueError(f"{path} : type doit être 'academique' ou 'personnel'")
 
     header.setdefault("git", None)
-    header["endpoint"] = f"projets.{bp.name}.index"  # utilisé par l'infobox pour le lien
+    header["endpoint"] = f"{endpoint_prefix}.{bp.name}.index"  # utilisé par l'infobox pour le lien
     return header

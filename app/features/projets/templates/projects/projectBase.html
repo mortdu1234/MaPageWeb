@@ -9,15 +9,17 @@
 {% endblock %}
 
 {% block content %}
+{% set back_href = back_url|default(url_for('projets.mesprojets')) %}
+{% set back_text = back_label|default('← Retour aux projets') %}
 <article class="project">
 
-  <a class="btn-back" href="{{ url_for('projets.mesprojets') }}">← Retour aux projets</a>
+  <a class="btn-back" href="{{ back_href }}">{{ back_text }}</a>
 
   {% include tpl("projects/header.html") %}
 
   {% block project_content %}{% endblock %}
 
-  <a class="btn-back" href="{{ url_for('projets.mesprojets') }}">← Retour aux projets</a>
+  <a class="btn-back" href="{{ back_href }}">{{ back_text }}</a>
 
 </article>
 {% endblock %}
