@@ -1,0 +1,13 @@
+{
+  "nom": "Étude de logiciels SIEM",
+  "date": "2024",
+  "type": "academique",
+  "git": null,
+  "court": "Étude comparative de Microsoft Sentinel, IBM QRadar et Splunk.",
+  "accroche": "Étude comparative de différents logiciels SIEM (Microsoft Sentinel, IBM QRadar, Splunk).",
+  "stack": [
+    "Microsoft Sentinel",
+    "IBM QRadar",
+    "Splunk"
+  ]
+}

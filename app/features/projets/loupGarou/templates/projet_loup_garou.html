@@ -1,0 +1,34 @@
+{% extends "projects/projectBase.html" %}
+
+{% block project_styles %}
+<link rel="stylesheet" href="{{ url_for('projets.projet_loup_garou.static', filename='css/loupGarou.css') }}"/>
+{% endblock %}
+
+{# Tout ce qui est dans ce block est libre : change, ajoute ou supprime des sections. #}
+{% block project_content %}
+
+  <section class="project-section" aria-labelledby="objectif">
+    <h2 id="objectif">Objectif du projet</h2>
+    <p>Développer un jeu en équipe et apprendre à travailler à plusieurs sur un même code avec Git.</p>
+  </section>
+
+  <section class="project-section" aria-labelledby="realisation">
+    <h2 id="realisation">Réalisation du projet</h2>
+    <ul class="project-list">
+      <li>Développement du jeu en Python.</li>
+      <li>Collaboration avec Git : branches, fusions et gestion des conflits.</li>
+    </ul>
+  </section>
+
+  <section class="project-section" aria-labelledby="problemes">
+    <h2 id="problemes">Problèmes rencontrés</h2>
+    <p class="muted">Cette section est en cours de rédaction.</p>
+  </section>
+
+{% endblock %}
+
+{# Optionnel : un script propre à cette page
+{% block project_scripts %}
+<script src="{{ url_for('projets.projet_loup_garou.static', filename='js/loupGarou.js') }}" defer></script>
+{% endblock %}
+#}

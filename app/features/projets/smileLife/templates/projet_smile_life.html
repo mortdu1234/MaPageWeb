@@ -1,0 +1,35 @@
+{% extends "projects/projectBase.html" %}
+
+{% block project_styles %}
+<link rel="stylesheet" href="{{ url_for('projets.projet_smile_life.static', filename='css/smileLife.css') }}"/>
+{% endblock %}
+
+{# Tout ce qui est dans ce block est libre : change, ajoute ou supprime des sections. #}
+{% block project_content %}
+
+  <section class="project-section" aria-labelledby="objectif">
+    <h2 id="objectif">Objectif du projet</h2>
+    <p>Proposer une version en ligne de Smile Life jouable entre amis, en soignant la sécurité de l'application.</p>
+  </section>
+
+  <section class="project-section" aria-labelledby="realisation">
+    <h2 id="realisation">Réalisation du projet</h2>
+    <ul class="project-list">
+      <li>Application web en Python avec Flask.</li>
+      <li>Gestion des sessions de jeu.</li>
+      <li>Validation des entrées côté serveur.</li>
+    </ul>
+  </section>
+
+  <section class="project-section" aria-labelledby="problemes">
+    <h2 id="problemes">Problèmes rencontrés</h2>
+    <p class="muted">Cette section est en cours de rédaction.</p>
+  </section>
+
+{% endblock %}
+
+{# Optionnel : un script propre à cette page
+{% block project_scripts %}
+<script src="{{ url_for('projets.projet_smile_life.static', filename='js/smileLife.js') }}" defer></script>
+{% endblock %}
+#}

@@ -1,0 +1,40 @@
+{% extends "projects/projectBase.html" %}
+
+{% block project_styles %}
+<link rel="stylesheet" href="{{ url_for('projets.projet_rsa_aes.static', filename='css/rsaAes.css') }}"/>
+{% endblock %}
+
+{# Tout ce qui est dans ce block est libre : change, ajoute ou supprime des sections. #}
+{% block project_content %}
+
+  <section class="project-section" aria-labelledby="objectif">
+    <h2 id="objectif">Objectif du projet</h2>
+    <p>Comprendre le fonctionnement interne de RSA et AES en les programmant sans bibliothèque de chiffrement.</p>
+    <p>Étudier comment une implémentation correcte sur le papier peut fuiter des informations (side-channel attacks).</p>
+  </section>
+
+  <section class="project-section" aria-labelledby="realisation">
+    <h2 id="realisation">Réalisation du projet</h2>
+    <ul class="project-list">
+      <li>Implémentation de RSA en Python.</li>
+      <li>Implémentation d'AES en Python.</li>
+      <li>Analyse de différentes erreurs d'implémentation exposant à des attaques par canaux auxiliaires.</li>
+    </ul>
+  </section>
+
+  <section class="project-section" aria-labelledby="problemes">
+    <h2 id="problemes">Problèmes rencontrés</h2>
+    <div class="problem">
+      <h3>[À compléter] Exemple de difficulté</h3>
+      <p><strong>Problème.</strong> Décris l'obstacle rencontré.</p>
+      <p><strong>Solution.</strong> Décris comment tu l'as résolu.</p>
+    </div>
+  </section>
+
+{% endblock %}
+
+{# Optionnel : un script propre à cette page
+{% block project_scripts %}
+<script src="{{ url_for('projets.projet_rsa_aes.static', filename='js/rsaAes.js') }}" defer></script>
+{% endblock %}
+#}

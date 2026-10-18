@@ -33,7 +33,7 @@
     <h2 id="titre-{{ section.key }}">{{ section.titre }}</h2>
     <div class="hub-grid">
       {% for project in section.projets %}
-        {% include tpl('projects/infoBox.html') %}
+        {% include "projects/infoBox.html" %}
       {% endfor %}
     </div>
   </section>

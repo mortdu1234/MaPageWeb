@@ -1,32 +1,47 @@
-from flask import render_template, abort
+from flask import render_template
 from app.core.utils.blueprints import make_blueprint
-from .backend.data import PROJECTS, TYPES, get_project, all_stacks
+from app.features.projets.helpers import load_header
 
 projets_bp = make_blueprint("projets", __name__, __file__, url_prefix="/projets")
 
+# ── Un blueprint par projet : chaque dossier contient routes.py, templates/ et static/ ──
+from .homelab.routes import homelab_bp
+from .smileLife.routes import smile_life_bp
+from .siteWeb.routes import site_web_bp
+from .rsaAes.routes import rsa_aes_bp
+from .algoGenetique.routes import algo_genetique_bp
+from .etudeSiem.routes import etude_siem_bp
+from .loupGarou.routes import loup_garou_bp
 
-def _render(name, **ctx):
-    # tpl() permet aux templates d'inclure d'autres templates du blueprint
-    return render_template(
-        projets_bp.get_templates_path(name),
-        tpl=projets_bp.get_templates_path,
-        types=TYPES,
-        **ctx,
-    )
+# Ordre d'affichage dans le hub. Pour ajouter un projet : importer son blueprint et l'ajouter ici.
+PROJECT_BLUEPRINTS = [
+    homelab_bp,
+    smile_life_bp,
+    site_web_bp,
+    rsa_aes_bp,
+    algo_genetique_bp,
+    etude_siem_bp,
+    loup_garou_bp,
+]
+
+for _bp in PROJECT_BLUEPRINTS:
+    projets_bp.register_blueprint(_bp)
+
+TYPES = {"academique": "Académique", "personnel": "Personnel"}
 
 
 @projets_bp.route("/")
 def mesprojets():
+    # header.json est relu à chaque requête : pas besoin de redémarrer après une modification.
+    projects = [load_header(bp) for bp in PROJECT_BLUEPRINTS]
     sections = [
-        {"key": key, "titre": label, "projets": [p for p in PROJECTS if p["type"] == key]}
+        {"key": key, "titre": label, "projets": [p for p in projects if p["type"] == key]}
         for key, label in TYPES.items()
     ]
-    return _render("hub.html", sections=sections, stacks=all_stacks())
-
-
-@projets_bp.route("/<slug>")
-def projet(slug):
-    project = get_project(slug)
-    if project is None:
-        abort(404)
-    return _render("projects/main.html", project=project)
+    stacks = sorted({s for p in projects for s in p["stack"]}, key=str.lower)
+    return render_template(
+        projets_bp.get_templates_path("hub.html"),
+        sections=sections,
+        stacks=stacks,
+        types=TYPES,
+    )

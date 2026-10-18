@@ -1,0 +1,34 @@
+{% extends "projects/projectBase.html" %}
+
+{% block project_styles %}
+<link rel="stylesheet" href="{{ url_for('projets.projet_site_web.static', filename='css/siteWeb.css') }}"/>
+{% endblock %}
+
+{# Tout ce qui est dans ce block est libre : change, ajoute ou supprime des sections. #}
+{% block project_content %}
+
+  <section class="project-section" aria-labelledby="objectif">
+    <h2 id="objectif">Objectif du projet</h2>
+    <p>Disposer d'une vitrine regroupant mes projets, mon CV et mes outils personnels.</p>
+  </section>
+
+  <section class="project-section" aria-labelledby="realisation">
+    <h2 id="realisation">Réalisation du projet</h2>
+    <ul class="project-list">
+      <li>Application Flask organisée en blueprints, un par fonctionnalité.</li>
+      <li>Déploiement dans un conteneur Docker sur mon HomeLab.</li>
+    </ul>
+  </section>
+
+  <section class="project-section" aria-labelledby="problemes">
+    <h2 id="problemes">Problèmes rencontrés</h2>
+    <p class="muted">Cette section est en cours de rédaction.</p>
+  </section>
+
+{% endblock %}
+
+{# Optionnel : un script propre à cette page
+{% block project_scripts %}
+<script src="{{ url_for('projets.projet_site_web.static', filename='js/siteWeb.js') }}" defer></script>
+{% endblock %}
+#}

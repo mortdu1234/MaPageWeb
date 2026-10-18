@@ -1,0 +1,25 @@
+{# Layout commun des pages projet : bouton retour + en-tête. Le contenu est libre dans project_content. #}
+{% extends "base.html" %}
+
+{% block title %}{{ project.nom }} - Denis ROBERT{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('projets.static', filename='css/project.css') }}"/>
+{% block project_styles %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<article class="project">
+
+  <a class="btn-back" href="{{ url_for('projets.mesprojets') }}">← Retour aux projets</a>
+
+  {% include "projects/header.html" %}
+
+  {% block project_content %}{% endblock %}
+
+  <a class="btn-back" href="{{ url_for('projets.mesprojets') }}">← Retour aux projets</a>
+
+</article>
+{% endblock %}
+
+{% block scripts %}{% block project_scripts %}{% endblock %}{% endblock %}

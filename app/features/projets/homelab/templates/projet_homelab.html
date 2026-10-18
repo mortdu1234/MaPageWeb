@@ -1,0 +1,37 @@
+{% extends "projects/projectBase.html" %}
+
+{% block project_styles %}
+<link rel="stylesheet" href="{{ url_for('projets.projet_homelab.static', filename='css/homelab.css') }}"/>
+{% endblock %}
+
+{# Tout ce qui est dans ce block est libre : change, ajoute ou supprime des sections. #}
+{% block project_content %}
+
+  <section class="project-section" aria-labelledby="objectif">
+    <h2 id="objectif">Objectif du projet</h2>
+    <p>Héberger mes propres services (site web, applications) sur un serveur que je maîtrise de bout en bout, tout en les exposant de façon sécurisée.</p>
+    <p>Ce projet me sert aussi de terrain d'apprentissage pour l'administration système et la sécurité réseau.</p>
+  </section>
+
+  <section class="project-section" aria-labelledby="realisation">
+    <h2 id="realisation">Réalisation du projet</h2>
+    <ul class="project-list">
+      <li>Virtualisation avec Proxmox : services isolés dans des conteneurs LXC et Docker.</li>
+      <li>Accès distant via un tunnel WireGuard hébergé dans un conteneur LXC.</li>
+      <li>Reverse proxy Nginx pour exposer les services.</li>
+      <li>Keycloak comme SSO pour les applications conteneurisées.</li>
+    </ul>
+  </section>
+
+  <section class="project-section" aria-labelledby="problemes">
+    <h2 id="problemes">Problèmes rencontrés</h2>
+    <p class="muted">Cette section est en cours de rédaction.</p>
+  </section>
+
+{% endblock %}
+
+{# Optionnel : un script propre à cette page
+{% block project_scripts %}
+<script src="{{ url_for('projets.projet_homelab.static', filename='js/homelab.js') }}" defer></script>
+{% endblock %}
+#}

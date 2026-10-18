@@ -1,10 +1,11 @@
+{% set type_labels = {"academique": "Académique", "personnel": "Personnel"} %}
 {# Infobox d'un projet. Attend la variable `project`. Toute la case est un lien vers la page du projet. #}
 <a class="infobox"
-   href="{{ url_for('projets.projet', slug=project.slug) }}"
+   href="{{ url_for(project.endpoint) }}"
    data-type="{{ project.type }}"
    data-stack="{{ project.stack | join('|') }}">
   <div class="infobox-meta">
-    <span class="infobox-type">{{ types[project.type] }}</span>
+    <span class="infobox-type">{{ type_labels[project.type] }}</span>
     <time>{{ project.date }}</time>
   </div>
   <h3 class="infobox-title">{{ project.nom }}</h3>

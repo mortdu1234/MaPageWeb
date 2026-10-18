@@ -1,3 +1,4 @@
+{% set type_labels = {"academique": "Académique", "personnel": "Personnel"} %}
 {# En-tête d'un projet. Attend la variable `project`. #}
 <header class="project-header">
   <h1>{{ project.nom }}</h1>
@@ -10,7 +11,7 @@
     </div>
     <div>
       <dt>Type</dt>
-      <dd>{{ types[project.type] }}</dd>
+      <dd>{{ type_labels[project.type] }}</dd>
     </div>
     {% if project.git %}
     <div>
