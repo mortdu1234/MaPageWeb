@@ -2,7 +2,7 @@
   "nom": "Jeu du Loup-Garou",
   "date": "2024",
   "type": "academique",
-  "git": null,
+  "git": "https://github.com/Julien3556/Projet_Loups_Garous",
   "court": "Projet de groupe en Python, mené avec des outils de gestion de projet.",
   "accroche": "Projet de groupe en Python en utilisant des outils de gestion de projet (Git).",
   "stack": [
