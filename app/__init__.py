@@ -51,21 +51,6 @@ def _register_blueprints(app: Flask) -> None:
     from .features.serversGestion.minecraft.minigames.routes import serverMinijeux_bp
     from .features.tasksGestion.routes import tasks_bp
     from .features.projets.routes import projets_bp
-    from .features.projets.database.routes import database_bp
-    from .features.projets.vpn.routes import vpn_bp
-    from .features.projets.smileLife.routes import smileLife_bp
-    from .features.projets.serversGaming.routes import serversGaming_bp
-    from .features.projets.resolution2048.routes import resolution2048_bp
-    from .features.projets.nginx.routes import nginx_bp
-    from .features.projets.nextCloud.routes import nextCloud_bp
-    from .features.projets.maPageWeb.routes import maPageWeb_bp
-    from .features.projets.launcherRocketLeague.routes import launcher_bp
-    from .features.projets.JeuSplendor.routes import jeuSplendor_bp
-    from .features.projets.JeuLoupGarou.routes import jeuLoupGarou_bp
-    from .features.projets.homelab.routes import homelab_bp
-    from .features.projets.generationNombreAleatoire.routes import generationNombreAleatoire_bp
-    from .features.projets.algorithmeGenetique.routes import algorithmeGenetique_bp
-    from .features.projets.adSkipperDC.routes import adSkipperDC_bp
     
     from .features.index.routes import index_bp
     from .features.apropos.routes import apropos_bp
