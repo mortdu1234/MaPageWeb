@@ -30,6 +30,13 @@ for _bp in PROJECT_BLUEPRINTS:
 TYPES = {"academique": "Académique", "personnel": "Personnel"}
 
 
+@projets_bp.context_processor
+def inject_tpl():
+    # tpl("projects/header.html") donne le bon chemin de template, comme get_templates_path.
+    # Disponible aussi dans les pages des projets (blueprints enfants).
+    return {"tpl": projets_bp.get_templates_path}
+
+
 @projets_bp.route("/")
 def mesprojets():
     # header.json est relu à chaque requête : pas besoin de redémarrer après une modification.

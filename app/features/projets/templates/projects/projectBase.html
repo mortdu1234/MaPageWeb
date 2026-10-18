@@ -13,7 +13,7 @@
 
   <a class="btn-back" href="{{ url_for('projets.mesprojets') }}">← Retour aux projets</a>
 
-  {% include "projects/header.html" %}
+  {% include tpl("projects/header.html") %}
 
   {% block project_content %}{% endblock %}
 
