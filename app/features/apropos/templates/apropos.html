@@ -12,16 +12,10 @@
   <p class="section-tag">Mon parcours</p>
   <div class="about-grid">
     <div class="about-photo">
-      <object class="cv-viewer"
-              data="{{ url_for('apropos.static', filename='img/CV.pdf') }}#toolbar=0&navpanes=0&view=FitH"
-              type="application/pdf">
-        <div class="about-photo-inner">DR</div>
-      </object>
-      <a class="cv-download"
-        href="{{ url_for('apropos.static', filename='img/CV.pdf') }}"
-        target="_blank" rel="noopener" download>
-        Télécharger mon CV
-      </a>
+      <button type="button" class="cv-thumb" id="cv-open" aria-label="Agrandir mon CV">
+        <img src="{{ url_for('apropos.static', filename='img/CV.png') }}" alt="Aperçu de mon CV">
+        <span class="cv-thumb-hint">Cliquer pour agrandir</span>
+      </button>
     </div>
     <div class="about-content">
       <h2 class="section-title">À propos<br/><em style="font-style:italic;color:var(--gold);">de moi</em></h2>
@@ -42,4 +36,37 @@
     </div>
   </div>
 </div>
+
+<dialog class="cv-modal" id="cv-modal">
+  <div class="cv-modal-bar">
+    <span class="cv-modal-title">Mon CV</span>
+    <a class="cv-download"
+       href="{{ url_for('apropos.static', filename='img/CV.pdf') }}"
+       download="CV_Denis_ROBERT.pdf">Download</a>
+    <button type="button" class="cv-close" id="cv-close" aria-label="Fermer">×</button>
+  </div>
+  <iframe id="cv-frame" title="CV de Denis ROBERT"
+          data-src="{{ url_for('apropos.static', filename='img/CV.pdf') }}#view=FitH"></iframe>
+</dialog>
+
+<script>
+  (function () {
+    const modal = document.getElementById('cv-modal');
+    const frame = document.getElementById('cv-frame');
+
+    document.getElementById('cv-open').addEventListener('click', () => {
+      if (!frame.src) frame.src = frame.dataset.src;   // chargé à la première ouverture
+      modal.showModal();
+      document.body.style.overflow = 'hidden';
+    });
+
+    document.getElementById('cv-close').addEventListener('click', () => modal.close());
+
+    // clic en dehors de la fenêtre = fermeture
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
+
+    // se déclenche aussi avec Échap
+    modal.addEventListener('close', () => { document.body.style.overflow = ''; });
+  })();
+</script>
 {% endblock %}
