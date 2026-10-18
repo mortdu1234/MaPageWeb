@@ -11,10 +11,29 @@
 <div class="section">
   <p class="section-tag">Mon parcours</p>
   <div class="about-grid">
-    <div class="about-photo"><div class="about-photo-inner">DR</div></div>
+    <div class="about-photo">
+      <object class="cv-viewer"
+              data="{{ url_for('apropos.static', filename='img/CV.pdf') }}#toolbar=0&navpanes=0&view=FitH"
+              type="application/pdf">
+        <div class="about-photo-inner">DR</div>
+      </object>
+      <a class="cv-download"
+        href="{{ url_for('apropos.static', filename='img/CV.pdf') }}"
+        target="_blank" rel="noopener" download>
+        Télécharger mon CV
+      </a>
+    </div>
     <div class="about-content">
       <h2 class="section-title">À propos<br/><em style="font-style:italic;color:var(--gold);">de moi</em></h2>
-      <p class="about-text">Bonjour, je suis Denis ROBERT. Etudiant en cybersécurité, je suis passionné par les technologies de l'information et leur application dans la protection des données.</p>
+      <p class="about-text">
+        Étudiant en 4e année de cybersécurité du logiciel à l’ENSIBS, 
+        passionné par le développement sécurisé. Bases solides en cryptographie 
+        (implémentation de RSA et AES), en développement (Python, Java, Node.js, Flask)
+        et en administration système (auto-hébergement sous Proxmox, étude de SIEM : 
+        Sentinel, QRadar, Splunk). À la recherche d’un stage de 13 semaines minimum 
+        entre le 18 mai et le 1er septembre 2027 en Bretagne et aux alentours, 
+        avec l’objectif de poursuivre en contrat de professionnalisation.
+      </p>
       <p class="section-tag" style="margin-bottom:12px;">Centres d'intérêt</p>
       <ul class="skills-list">
         <li>Informatique</li><li>Cybersécurité</li><li>Badminton</li>
